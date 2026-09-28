@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /$
+Allow: /new
+Allow: /en/
+Disallow: /u/
+Sitemap: https://yanivyosefi.github.io/sidenote-en/sitemap.xml

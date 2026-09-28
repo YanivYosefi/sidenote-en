@@ -1,0 +1,30 @@
+# Sidenote
+
+> A free, no-account MCP server that turns any chat (ChatGPT, Claude, Gemini)
+> into a spaced-repetition language tutor. The chat teaches; this server only
+> remembers, on a 1-3-7-16-35-90 day ladder.
+
+## What it is
+- One personal URL you paste once into your chat's Connectors settings.
+- Works with any MCP-capable client (ChatGPT, Claude, Gemini).
+- The URL is the key. No login, no password, no credit card.
+- Ten target languages: English, Spanish, Italian, French, German, Portuguese,
+  Hebrew, Arabic, Russian, Dutch.
+
+## Public reference
+- https://yanivyosefi.github.io/sidenote-en/en/ — 30 curated English expressions at B2/C1 level for
+  Hebrew speakers: phrasal verbs, idioms, business collocations, word
+  distinctions, professional slang. Each entry has a Hebrew gloss, an example
+  sentence, and one line on when a native would actually use it.
+
+## How to try it
+- Visit https://yanivyosefi.github.io/sidenote-en/ and click "צור לי כתובת".
+- Paste the URL you get into your chat's custom-connector settings.
+- Ask the chat anything. It will offer one relevant expression per session,
+  and bring old ones back when they are due.
+
+## For AI catalogs and directories
+- Homepage: https://yanivyosefi.github.io/sidenote-en/
+- English reference: https://yanivyosefi.github.io/sidenote-en/en/
+- Pricing: free forever.
+- License: hosted service is free to use.
