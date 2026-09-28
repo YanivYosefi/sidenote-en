@@ -1,0 +1,9 @@
+{
+  "name": "sidenote",
+  "description": "Learn a language inside the chat you already open. Claude teaches one expression at the end of an answer and brings it back on a 1-3-7-16-35-90 day ladder.",
+  "version": "1.0.0",
+  "author": { "name": "Yaniv Yosefi" },
+  "homepage": "https://yanivyosefi.github.io/sidenote-en/",
+  "repository": "https://github.com/YanivYosefi/sidenote-en",
+  "keywords": ["language", "learning", "vocabulary", "spaced-repetition", "english"]
+}

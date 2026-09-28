@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="es" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sidenote — ללמוד שפה בתוך Claude</title>
-<meta name="description" content="Sidenote — פלאגין ל-Claude שמלמד אותך כל שפה תוך כדי עבודה. ביטוי אחד בסוף תשובה, קשור למה שבדיוק עשית. נשמר אצלך במחשב, בלי חשבון ובלי שרת.">
-<link rel="canonical" href="https://yanivyosefi.github.io/sidenote-en/">
+<title>Sidenote — aprende un idioma dentro de Claude</title>
+<meta name="description" content="Sidenote — un plugin de Claude que te enseña cualquier idioma mientras trabajas. Una expresión al final de una respuesta, ligada a lo que acabas de hacer. Guardado en tu equipo, sin cuenta y sin servidor.">
+<link rel="canonical" href="https://yanivyosefi.github.io/sidenote-en/home/es">
 <link rel="alternate" href="https://yanivyosefi.github.io/sidenote-en/" hreflang="he">
 <link rel="alternate" href="https://yanivyosefi.github.io/sidenote-en/home/en" hreflang="en">
 <link rel="alternate" href="https://yanivyosefi.github.io/sidenote-en/home/es" hreflang="es">
@@ -13,16 +13,16 @@
 <link rel="alternate" href="https://yanivyosefi.github.io/sidenote-en/home/ar" hreflang="ar">
 <link rel="alternate" href="https://yanivyosefi.github.io/sidenote-en/" hreflang="x-default">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sidenote — ללמוד שפה בתוך Claude">
-<meta property="og:description" content="Sidenote — פלאגין ל-Claude שמלמד אותך כל שפה תוך כדי עבודה. ביטוי אחד בסוף תשובה, קשור למה שבדיוק עשית. נשמר אצלך במחשב, בלי חשבון ובלי שרת.">
-<meta property="og:locale" content="he_IL">
-<meta property="og:url" content="https://yanivyosefi.github.io/sidenote-en/">
+<meta property="og:title" content="Sidenote — aprende un idioma dentro de Claude">
+<meta property="og:description" content="Sidenote — un plugin de Claude que te enseña cualquier idioma mientras trabajas. Una expresión al final de una respuesta, ligada a lo que acabas de hacer. Guardado en tu equipo, sin cuenta y sin servidor.">
+<meta property="og:locale" content="es_ES">
+<meta property="og:url" content="https://yanivyosefi.github.io/sidenote-en/home/es">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Sidenote","description":"Sidenote — פלאגין ל-Claude שמלמד אותך כל שפה תוך כדי עבודה. ביטוי אחד בסוף תשובה, קשור למה שבדיוק עשית. נשמר אצלך במחשב, בלי חשבון ובלי שרת.","applicationCategory":"EducationalApplication","operatingSystem":"Claude Code (macOS, Linux, Windows)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://yanivyosefi.github.io/sidenote-en/","inLanguage":["he","en","es","ru","ar"]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"זה מאט לי את העבודה?","acceptedAnswer":{"@type":"Answer","text":"לא. התשובה שביקשת נשארת מלאה ובאה ראשונה. הביטוי מגיע אחריה, בשורה אחת."}},{"@type":"Question","name":"צריך חשבון?","acceptedAnswer":{"@type":"Answer","text":"אין. אין הרשמה, אין מייל, אין כתובת אישית. מתקינים ומתחילים."}},{"@type":"Question","name":"כמה זה עולה?","acceptedAnswer":{"@type":"Answer","text":"כלום. הפלאגין רץ על המנוי של Claude שכבר יש לך."}},{"@type":"Question","name":"איפה נשמר מה שלמדתי?","acceptedAnswer":{"@type":"Answer","text":"בקובץ אחד במחשב שלך, ב-`~/.sidenote/state.json`. שום דבר לא יוצא החוצה."}},{"@type":"Question","name":"אילו שפות?","acceptedAnswer":{"@type":"Answer","text":"כל שפה ש-Claude יודע. אנגלית, ספרדית, צרפתית, איטלקית, גרמנית, פורטוגזית, יפנית, ערבית, רוסית ועוד."}},{"@type":"Question","name":"ואם אני רוצה לעצור?","acceptedAnswer":{"@type":"Answer","text":"`claude plugin uninstall sidenote`, ומוחקים את התיקייה. זהו."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Sidenote","description":"Sidenote — un plugin de Claude que te enseña cualquier idioma mientras trabajas. Una expresión al final de una respuesta, ligada a lo que acabas de hacer. Guardado en tu equipo, sin cuenta y sin servidor.","applicationCategory":"EducationalApplication","operatingSystem":"Claude Code (macOS, Linux, Windows)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://yanivyosefi.github.io/sidenote-en/home/es","inLanguage":["he","en","es","ru","ar"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Me ralentiza?","acceptedAnswer":{"@type":"Answer","text":"No. La respuesta que pediste sigue completa y va primero. La expresión llega después, en una línea."}},{"@type":"Question","name":"¿Necesito cuenta?","acceptedAnswer":{"@type":"Answer","text":"Ninguna. Sin registro, sin correo, sin dirección personal."}},{"@type":"Question","name":"¿Cuánto cuesta?","acceptedAnswer":{"@type":"Answer","text":"Nada. El plugin funciona con la suscripción de Claude que ya tienes."}},{"@type":"Question","name":"¿Dónde se guarda mi progreso?","acceptedAnswer":{"@type":"Answer","text":"En un archivo de tu equipo, en `~/.sidenote/state.json`. Nada sale de ahí."}},{"@type":"Question","name":"¿Qué idiomas?","acceptedAnswer":{"@type":"Answer","text":"Cualquiera que Claude conozca. Inglés, francés, italiano, alemán, portugués, japonés, hebreo, árabe, ruso y más."}},{"@type":"Question","name":"¿Y si quiero parar?","acceptedAnswer":{"@type":"Answer","text":"`claude plugin uninstall sidenote` y borras la carpeta. Ya está."}}]}</script>
 <style>
 :root{
   /* palette lifted from jointoucan.com */
@@ -369,39 +369,39 @@ footer p{margin:8px 0 0;color:var(--gray)}
 <body>
 
 <nav class="top"><div class="wrap">
-  <a href="/sidenote-en/" class="logo">Side<b>note</b></a>
+  <a href="/sidenote-en/home/es" class="logo">Side<b>note</b></a>
   <div class="nav-links">
-    <a href="#how">איך זה עובד</a>
-    <a href="#qs">שאלות</a>
+    <a href="#how">Cómo funciona</a>
+    <a href="#qs">Preguntas</a>
   </div>
   <div class="spacer"></div>
-  <div class="uilangs"><a href="/sidenote-en/" lang="he" aria-current="page">עברית</a><a href="/sidenote-en/home/en" lang="en">English</a><a href="/sidenote-en/home/es" lang="es">Español</a><a href="/sidenote-en/home/ru" lang="ru">Русский</a><a href="/sidenote-en/home/ar" lang="ar">العربية</a></div>
-  <a href="#install" class="nav-cta-link">העתק ותתחיל</a>
+  <div class="uilangs"><a href="/sidenote-en/" lang="he">עברית</a><a href="/sidenote-en/home/en" lang="en">English</a><a href="/sidenote-en/home/es" lang="es" aria-current="page">Español</a><a href="/sidenote-en/home/ru" lang="ru">Русский</a><a href="/sidenote-en/home/ar" lang="ar">العربية</a></div>
+  <a href="#install" class="nav-cta-link">Copia y empieza</a>
 </div></nav>
 
 <header><div class="wrap narrow">
-  <span class="free-tag"><i></i>חינם לכל החיים</span>
-  <h1>ללמוד <span class="sw" id="swword" dir="auto">English</span><br>בלי מאמץ...</h1>
-  <p class="lede">ללמוד שפה חדשה דרך השיחות היומיומיות עם קלוד קוד. הדרך הכי כייפית ויעילה שיש.</p>
+  <span class="free-tag"><i></i>Gratis de por vida</span>
+  <h1>Aprende <span class="sw" id="swword" dir="auto">English</span><br>sin esfuerzo...</h1>
+  <p class="lede">Aprende un idioma nuevo a través de tus conversaciones diarias con Claude Code. La forma más divertida y eficaz que hay.</p>
   <div class="chooser">
-    <span>אני מדבר</span>
-    <select id="nat" aria-label="אני מדבר"><option value="he" lang="he" selected>עברית</option><option value="en" lang="en">English</option><option value="es" lang="es">Español</option><option value="ru" lang="ru">Русский</option><option value="ar" lang="ar">العربية</option></select>
-    <span>ורוצה ללמוד</span>
-    <select id="tgt" aria-label="ורוצה ללמוד"><option value="en" lang="en">English</option><option value="es" lang="es">Español</option><option value="it" lang="it">Italiano</option><option value="ar" lang="ar">العربية</option><option value="fr" lang="fr">Français</option><option value="ko" lang="ko">한국어</option></select>
+    <span>Hablo</span>
+    <select id="nat" aria-label="Hablo"><option value="he" lang="he">עברית</option><option value="en" lang="en">English</option><option value="es" lang="es" selected>Español</option><option value="ru" lang="ru">Русский</option><option value="ar" lang="ar">العربية</option></select>
+    <span>y quiero aprender</span>
+    <select id="tgt" aria-label="y quiero aprender"><option value="en" lang="en">English</option><option value="fr" lang="fr">Français</option><option value="it" lang="it">Italiano</option><option value="de" lang="de">Deutsch</option><option value="pt" lang="pt">Português</option><option value="ja" lang="ja">日本語</option></select>
   </div>
   <div class="startbox">
     <div class="cmd light"><span class="p">$</span> claude plugin marketplace add YanivYosefi/sidenote-en
 <span class="p">$</span> claude plugin install sidenote@sidenote</div>
     <div class="copyrow">
       <button class="btn btn-sm" id="cp2" data-copy="claude plugin marketplace add YanivYosefi/sidenote-en
-claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותתחיל</button>
-      <span class="btn-note" style="margin:0">שתי שורות פעם אחת. רץ על המנוי שכבר יש לך.</span>
+claude plugin install sidenote@sidenote" data-done="Copiado">Copia y empieza</button>
+      <span class="btn-note" style="margin:0">Dos líneas, una sola vez. Funciona con la suscripción que ya pagas.</span>
     </div>
   </div>
   <div class="works-in">
-    <span>עובד ב־</span>
+    <span>Funciona en</span>
     <span class="chip ltr">Claude Code</span>
-    <span class="chip">באפליקציה או בטרמינל</span>
+    <span class="chip">app o terminal</span>
   </div>
   <div class="hero-media">
     <video autoplay muted loop playsinline preload="metadata"
@@ -412,24 +412,24 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
 </div></header>
 
 <div class="band" id="how"><div class="wrap narrow">
-  <h2>איך זה עובד</h2>
-  <ol class="steps"><li><div class="n">1</div><p>מדביקים שתי שורות</p></li><li><div class="n">2</div><p>בשיחה הראשונה בוחרים שפה ורמה</p></li><li><div class="n">3</div><p>ממשיכים לעבוד כרגיל</p></li></ol>
+  <h2>Cómo funciona</h2>
+  <ol class="steps"><li><div class="n">1</div><p>Pega dos líneas</p></li><li><div class="n">2</div><p>Elige idioma y nivel en la primera conversación</p></li><li><div class="n">3</div><p>Sigue trabajando como siempre</p></li></ol>
 </div></div>
 
 <section class="explain"><div class="wrap">
-  <h2>ככה זה נראה בפועל</h2>
-  <p class="xsub">שיחה אחת רגילה, מההתחלה ועד הביטוי שבסוף. אין מה להתקין כדי לראות.</p>
+  <h2>Míralo en acción</h2>
+  <p class="xsub">Una conversación normal, de principio a fin. No hace falta instalar nada para verla.</p>
   <div class="xrow">
     <ol class="xsteps">
-      <li data-x="0"><i>1</i><span>אתה כותב משהו</span></li>
-      <li data-x="1"><i>2</i><span>קלוד עונה כרגיל</span></li>
-      <li data-x="2"><i>3</i><span>ביטוי אחד נוסף בסוף</span></li>
-      <li class="xreplay"><button type="button" id="xrep">הרץ שוב</button></li>
+      <li data-x="0"><i>1</i><span>Escribes algo</span></li>
+      <li data-x="1"><i>2</i><span>Claude responde como siempre</span></li>
+      <li data-x="2"><i>3</i><span>Al final se añade una expresión</span></li>
+      <li class="xreplay"><button type="button" id="xrep">Ver otra vez</button></li>
     </ol>
     <div class="device"><span class="cam"></span>
     <div class="app xapp">
       <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t"><span id="xpair"></span></span></div>
-      <div class="app-body" dir="rtl">
+      <div class="app-body" dir="ltr">
         <p class="tq"><span id="xqt"></span><b class="car" id="xcar"></b></p>
         <div class="ta" id="xa"><s>✳</s><span id="xat"></span></div>
         <div class="tnote xnote" id="xn"></div>
@@ -441,99 +441,99 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
 
 <section class="feat"><div class="wrap"><div class="row">
   <div class="copy">
-    <p class="kicker">בתוך השיחה</p>
-    <h3>הביטוי בא מהתשובה שקיבלת</h3>
-    <p>שואלים שאלה רגילה, ומקבלים ביטוי אחד שיוצא מתוך אותה תשובה. לא רשימת מילים, לא כרטיסייה — משפט שכבר קראת.</p>
-    <span class="more">וכל שפה אחרת ש-Claude יודע.</span>
+    <p class="kicker">Dentro de la conversación</p>
+    <h3>La expresión sale de la respuesta que recibiste</h3>
+    <p>Haces una pregunta cualquiera y de esa misma respuesta cae una expresión. No es una lista ni una tarjeta: es una frase que ya leíste.</p>
+    <span class="more">Y cualquier otro idioma que Claude conozca.</span>
   </div>
   <div class="art" data-group="a">
     <div class="pane on" data-pane="en">
   <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → English</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">צריך להודיע ללקוחה שהמשלוח יוצא באיחור. תנסח לי הודעה קצרה.</p>
-      <div class="ta"><s>✳</s><span>עדיף לכתוב לה לפני שהיא שואלת.
-משפט אחד על העיכוב, תאריך חדש, ובלי התנצלות ארוכה.</span></div>
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → English</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.</p>
+      <div class="ta"><s>✳</s><span>Mejor escribirle antes de que pregunte.
+Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div>
       <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “עדיף לכתוב לה לפני שהיא שואלת”</span>
+      <span class="src">De la respuesta: “mejor escribirle antes de que pregunte”</span>
       <span class="expr" dir="ltr">to give someone a heads-up</span>
-      <span class="gloss">להודיע מראש, לפני שהצד השני צריך לשאול.</span>
+      <span class="gloss">avisar antes de que el otro tenga que preguntar.</span>
       <span class="ex" dir="ltr">I gave her a heads-up before she had to ask.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="es">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → Español</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">צריך להודיע ללקוחה שהמשלוח יוצא באיחור. תנסח לי הודעה קצרה.</p>
-      <div class="ta"><s>✳</s><span>עדיף לכתוב לה לפני שהיא שואלת.
-משפט אחד על העיכוב, תאריך חדש, ובלי התנצלות ארוכה.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “עדיף לכתוב לה לפני שהיא שואלת”</span>
-      <span class="expr" dir="ltr">avisar con tiempo</span>
-      <span class="gloss">להודיע מבעוד מועד, כשעוד אפשר להיערך.</span>
-      <span class="ex" dir="ltr">Le avisé con tiempo, antes de que preguntara.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="it">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → Italiano</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">צריך להודיע ללקוחה שהמשלוח יוצא באיחור. תנסח לי הודעה קצרה.</p>
-      <div class="ta"><s>✳</s><span>עדיף לכתוב לה לפני שהיא שואלת.
-משפט אחד על העיכוב, תאריך חדש, ובלי התנצלות ארוכה.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “עדיף לכתוב לה לפני שהיא שואלת”</span>
-      <span class="expr" dir="ltr">avvisare per tempo</span>
-      <span class="gloss">להספיק להודיע בזמן, לפני שנוצר נזק.</span>
-      <span class="ex" dir="ltr">L'ho avvisata per tempo, prima che lo chiedesse.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="ar">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → العربية</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">צריך להודיע ללקוחה שהמשלוח יוצא באיחור. תנסח לי הודעה קצרה.</p>
-      <div class="ta"><s>✳</s><span>עדיף לכתוב לה לפני שהיא שואלת.
-משפט אחד על העיכוב, תאריך חדש, ובלי התנצלות ארוכה.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “עדיף לכתוב לה לפני שהיא שואלת”</span>
-      <span class="expr rtl" dir="rtl">أعلَمَ مسبقًا  ·  aʿlama musbaqan</span>
-      <span class="gloss">ליידע מראש, לפני שנשאלת שאלה.</span>
-      <span class="ex rtl" dir="rtl">أعلمتُها مسبقًا قبل أن تسأل.</span></div>
     </div>
   </div>
 </div>
 <div class="pane" data-pane="fr">
   <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → Français</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">צריך להודיע ללקוחה שהמשלוח יוצא באיחור. תנסח לי הודעה קצרה.</p>
-      <div class="ta"><s>✳</s><span>עדיף לכתוב לה לפני שהיא שואלת.
-משפט אחד על העיכוב, תאריך חדש, ובלי התנצלות ארוכה.</span></div>
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Français</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.</p>
+      <div class="ta"><s>✳</s><span>Mejor escribirle antes de que pregunte.
+Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div>
       <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “עדיף לכתוב לה לפני שהיא שואלת”</span>
+      <span class="src">De la respuesta: “mejor escribirle antes de que pregunte”</span>
       <span class="expr" dir="ltr">prévenir à l'avance</span>
-      <span class="gloss">להקדים ולהודיע, לפני שנשאלת שאלה.</span>
+      <span class="gloss">avisar con antelación, cuando aún se puede reaccionar.</span>
       <span class="ex" dir="ltr">Je l'ai prévenue à l'avance, avant qu'elle ne demande.</span></div>
     </div>
   </div>
 </div>
-<div class="pane" data-pane="ko">
+<div class="pane" data-pane="it">
   <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → 한국어</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">צריך להודיע ללקוחה שהמשלוח יוצא באיחור. תנסח לי הודעה קצרה.</p>
-      <div class="ta"><s>✳</s><span>עדיף לכתוב לה לפני שהיא שואלת.
-משפט אחד על העיכוב, תאריך חדש, ובלי התנצלות ארוכה.</span></div>
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Italiano</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.</p>
+      <div class="ta"><s>✳</s><span>Mejor escribirle antes de que pregunte.
+Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div>
       <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “עדיף לכתוב לה לפני שהיא שואלת”</span>
-      <span class="expr" dir="ltr">미리 알려주다  ·  miri allyeojuda</span>
-      <span class="gloss">להודיע מראש, לפני שהשני צריך לשאול.</span>
-      <span class="ex" dir="ltr">그녀가 묻기 전에 미리 알려줬어요.</span></div>
+      <span class="src">De la respuesta: “mejor escribirle antes de que pregunte”</span>
+      <span class="expr" dir="ltr">avvisare per tempo</span>
+      <span class="gloss">avisar a tiempo, no cuando ya es tarde.</span>
+      <span class="ex" dir="ltr">L'ho avvisata per tempo, prima che lo chiedesse.</span></div>
+    </div>
+  </div>
+</div>
+<div class="pane" data-pane="de">
+  <div class="app">
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Deutsch</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.</p>
+      <div class="ta"><s>✳</s><span>Mejor escribirle antes de que pregunte.
+Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div>
+      <div class="tnote"><div class="tag">SIDENOTE</div>
+      <span class="src">De la respuesta: “mejor escribirle antes de que pregunte”</span>
+      <span class="expr" dir="ltr">rechtzeitig Bescheid geben</span>
+      <span class="gloss">dar aviso a tiempo para que todavía sirva.</span>
+      <span class="ex" dir="ltr">Ich habe ihr rechtzeitig Bescheid gegeben, bevor sie fragen musste.</span></div>
+    </div>
+  </div>
+</div>
+<div class="pane" data-pane="pt">
+  <div class="app">
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Português</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.</p>
+      <div class="ta"><s>✳</s><span>Mejor escribirle antes de que pregunte.
+Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div>
+      <div class="tnote"><div class="tag">SIDENOTE</div>
+      <span class="src">De la respuesta: “mejor escribirle antes de que pregunte”</span>
+      <span class="expr" dir="ltr">avisar com antecedência</span>
+      <span class="gloss">decirlo antes, no cuando ya pasó.</span>
+      <span class="ex" dir="ltr">Avisei-a com antecedência, antes que ela perguntasse.</span></div>
+    </div>
+  </div>
+</div>
+<div class="pane" data-pane="ja">
+  <div class="app">
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → 日本語</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.</p>
+      <div class="ta"><s>✳</s><span>Mejor escribirle antes de que pregunte.
+Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div>
+      <div class="tnote"><div class="tag">SIDENOTE</div>
+      <span class="src">De la respuesta: “mejor escribirle antes de que pregunte”</span>
+      <span class="expr" dir="ltr">前もって知らせる  ·  maemotte shiraseru</span>
+      <span class="gloss">decirlo de antemano, antes de que pregunten.</span>
+      <span class="ex" dir="ltr">彼女に聞かれる前に、前もって知らせておいた。</span></div>
     </div>
   </div>
 </div>
@@ -544,99 +544,99 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
   <div class="art" data-group="b">
     <div class="pane on" data-pane="en">
   <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → English</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">יש לי מחר יום עמוס. ממה כדאי להתחיל?</p>
-      <div class="ta"><s>✳</s><span>מהשיחה עם הספק.
-כל עוד היא פתוחה, כל השאר נדחף אחורה.</span></div>
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → English</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Mañana tengo el día lleno. ¿Por dónde empiezo?</p>
+      <div class="ta"><s>✳</s><span>Por la llamada con el proveedor.
+Mientras siga abierta, todo lo demás se va corriendo.</span></div>
       <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “כל עוד היא פתוחה, כל השאר נדחף אחורה”</span>
+      <span class="src">De la respuesta: “mientras siga abierta, todo lo demás se va corriendo”</span>
       <span class="expr" dir="ltr">to get it out of the way</span>
-      <span class="gloss">לסגור משהו מעיק ולפנות את הראש.</span>
+      <span class="gloss">quitarte algo de encima y seguir.</span>
       <span class="ex" dir="ltr">Make that call first and get it out of the way.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="es">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → Español</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">יש לי מחר יום עמוס. ממה כדאי להתחיל?</p>
-      <div class="ta"><s>✳</s><span>מהשיחה עם הספק.
-כל עוד היא פתוחה, כל השאר נדחף אחורה.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “כל עוד היא פתוחה, כל השאר נדחף אחורה”</span>
-      <span class="expr" dir="ltr">quitárselo de encima</span>
-      <span class="gloss">להוריד משהו מהראש ולהמשיך הלאה.</span>
-      <span class="ex" dir="ltr">Haz esa llamada y quítatelo de encima.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="it">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → Italiano</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">יש לי מחר יום עמוס. ממה כדאי להתחיל?</p>
-      <div class="ta"><s>✳</s><span>מהשיחה עם הספק.
-כל עוד היא פתוחה, כל השאר נדחף אחורה.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “כל עוד היא פתוחה, כל השאר נדחף אחורה”</span>
-      <span class="expr" dir="ltr">togliersi il pensiero</span>
-      <span class="gloss">להיפטר ממחשבה שרודפת אותך.</span>
-      <span class="ex" dir="ltr">Fai quella chiamata e togliti il pensiero.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="ar">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → العربية</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">יש לי מחר יום עמוס. ממה כדאי להתחיל?</p>
-      <div class="ta"><s>✳</s><span>מהשיחה עם הספק.
-כל עוד היא פתוחה, כל השאר נדחף אחורה.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “כל עוד היא פתוחה, כל השאר נדחף אחורה”</span>
-      <span class="expr rtl" dir="rtl">تخلّص من الأمر  ·  taḵallaṣ min al-amr</span>
-      <span class="gloss">לגמור עם העניין ולהשתחרר ממנו.</span>
-      <span class="ex rtl" dir="rtl">أجرِ تلك المكالمة أولًا وتخلّص من الأمر.</span></div>
     </div>
   </div>
 </div>
 <div class="pane" data-pane="fr">
   <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → Français</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">יש לי מחר יום עמוס. ממה כדאי להתחיל?</p>
-      <div class="ta"><s>✳</s><span>מהשיחה עם הספק.
-כל עוד היא פתוחה, כל השאר נדחף אחורה.</span></div>
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Français</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Mañana tengo el día lleno. ¿Por dónde empiezo?</p>
+      <div class="ta"><s>✳</s><span>Por la llamada con el proveedor.
+Mientras siga abierta, todo lo demás se va corriendo.</span></div>
       <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “כל עוד היא פתוחה, כל השאר נדחף אחורה”</span>
+      <span class="src">De la respuesta: “mientras siga abierta, todo lo demás se va corriendo”</span>
       <span class="expr" dir="ltr">s’en débarrasser</span>
-      <span class="gloss">לגמור עם זה ולא לגרור את זה הלאה.</span>
+      <span class="gloss">terminar con ello y dejar de arrastrarlo.</span>
       <span class="ex" dir="ltr">Passe cet appel et débarrasse-t’en.</span></div>
     </div>
   </div>
 </div>
-<div class="pane" data-pane="ko">
+<div class="pane" data-pane="it">
   <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">עברית → 한국어</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">יש לי מחר יום עמוס. ממה כדאי להתחיל?</p>
-      <div class="ta"><s>✳</s><span>מהשיחה עם הספק.
-כל עוד היא פתוחה, כל השאר נדחף אחורה.</span></div>
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Italiano</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Mañana tengo el día lleno. ¿Por dónde empiezo?</p>
+      <div class="ta"><s>✳</s><span>Por la llamada con el proveedor.
+Mientras siga abierta, todo lo demás se va corriendo.</span></div>
       <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">מתוך התשובה: “כל עוד היא פתוחה, כל השאר נדחף אחורה”</span>
-      <span class="expr" dir="ltr">먼저 해치우다  ·  meonjeo haechiuda</span>
-      <span class="gloss">לחסל משימה ולהוריד אותה מהראש.</span>
-      <span class="ex" dir="ltr">그 전화를 먼저 해치우세요.</span></div>
+      <span class="src">De la respuesta: “mientras siga abierta, todo lo demás se va corriendo”</span>
+      <span class="expr" dir="ltr">togliersi il pensiero</span>
+      <span class="gloss">sacártelo de la cabeza haciéndolo ya.</span>
+      <span class="ex" dir="ltr">Fai quella chiamata e togliti il pensiero.</span></div>
+    </div>
+  </div>
+</div>
+<div class="pane" data-pane="de">
+  <div class="app">
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Deutsch</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Mañana tengo el día lleno. ¿Por dónde empiezo?</p>
+      <div class="ta"><s>✳</s><span>Por la llamada con el proveedor.
+Mientras siga abierta, todo lo demás se va corriendo.</span></div>
+      <div class="tnote"><div class="tag">SIDENOTE</div>
+      <span class="src">De la respuesta: “mientras siga abierta, todo lo demás se va corriendo”</span>
+      <span class="expr" dir="ltr">etwas vom Tisch haben</span>
+      <span class="gloss">dejarlo zanjado de una vez.</span>
+      <span class="ex" dir="ltr">Mach den Anruf zuerst, dann hast du es vom Tisch.</span></div>
+    </div>
+  </div>
+</div>
+<div class="pane" data-pane="pt">
+  <div class="app">
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → Português</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Mañana tengo el día lleno. ¿Por dónde empiezo?</p>
+      <div class="ta"><s>✳</s><span>Por la llamada con el proveedor.
+Mientras siga abierta, todo lo demás se va corriendo.</span></div>
+      <div class="tnote"><div class="tag">SIDENOTE</div>
+      <span class="src">De la respuesta: “mientras siga abierta, todo lo demás se va corriendo”</span>
+      <span class="expr" dir="ltr">tirar isso da frente</span>
+      <span class="gloss">quitarlo de en medio y seguir.</span>
+      <span class="ex" dir="ltr">Faz essa ligação primeiro e tira isso da frente.</span></div>
+    </div>
+  </div>
+</div>
+<div class="pane" data-pane="ja">
+  <div class="app">
+    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Español → 日本語</span></div>
+    <div class="app-body" dir="ltr">
+      <p class="tq">Mañana tengo el día lleno. ¿Por dónde empiezo?</p>
+      <div class="ta"><s>✳</s><span>Por la llamada con el proveedor.
+Mientras siga abierta, todo lo demás se va corriendo.</span></div>
+      <div class="tnote"><div class="tag">SIDENOTE</div>
+      <span class="src">De la respuesta: “mientras siga abierta, todo lo demás se va corriendo”</span>
+      <span class="expr" dir="ltr">先に片づける  ·  saki ni katazukeru</span>
+      <span class="gloss">despacharlo primero y quedarte libre.</span>
+      <span class="ex" dir="ltr">その電話を先に片づけてしまおう。</span></div>
     </div>
   </div>
 </div>
   </div>
   <div class="copy">
-    <p class="kicker">לא רק קוד</p>
-    <h3>כל שיחה היא שיעור קצר</h3>
-    <p>הודעה ללקוחה, תכנון יום, מתכון, מייל לספק. הביטוי יוצא מהעבודה שעשית, לא מרשימה שמישהו הכין מראש.</p>
+    <p class="kicker">No solo código</p>
+    <h3>Cada conversación es una lección corta</h3>
+    <p>Un mensaje a una clienta, el plan de mañana, una receta, un correo a un proveedor. La expresión sale del trabajo que hiciste, no de una lista preparada.</p>
   </div>
 </div></div></section>
 
@@ -644,9 +644,9 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
 
 <section class="feat"><div class="wrap"><div class="row">
   <div class="copy">
-    <p class="kicker">בלי חשבון, בלי שרת</p>
-    <h3>הכל נשאר על המחשב שלך</h3>
-    <p>אין הרשמה ואין כתובת אישית לשמור. כל מה שלמדת יושב בקובץ אחד אצלך, ואין לי דרך לראות אותו.</p>
+    <p class="kicker">Sin cuenta, sin servidor</p>
+    <h3>Todo se queda en tu equipo</h3>
+    <p>Nada que registrar, ninguna dirección personal que guardar. Lo que aprendiste vive en un archivo tuyo, y yo no tengo forma de leerlo.</p>
   </div>
   <div class="art">
     <div class="filecard">
@@ -666,31 +666,31 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
 </div></div></section>
 
 <div class="kit"><div class="wrap">
-  <h2>מה יש בפנים</h2>
-  <div class="kgrid"><div><b>ביטוי אחד לשיחה</b><span>לא רשימה ולא שיעור. פריט אחד, קשור למה שבדיוק עשית.</span></div><div><b>כל שפה</b><span>אנגלית, ספרדית, צרפתית, גרמנית, איטלקית, יפנית, ערבית ועוד.</span></div><div><b>לעולם לא פעמיים</b><span>מה שכבר נלמד לא חוזר כחדש.</span></div><div><b>הרמה שלך</b><span>A2 עד C1. אפשר לשנות מתי שרוצים עם <code dir="ltr">/sidenote</code>.</span></div><div><b>אפס עלות</b><span>רץ על המנוי של Claude שכבר יש לך. אין API key ואין חיוב.</span></div><div><b>קובץ אחד</b><span>הכל ב-<code dir="ltr">state.json</code> אצלך. מחיקה = מחיקת הקובץ.</span></div></div>
+  <h2>Qué hay dentro</h2>
+  <div class="kgrid"><div><b>Una expresión por conversación</b><span>Ni lista ni lección. Un elemento, ligado a lo que acabas de hacer.</span></div><div><b>Cualquier idioma</b><span>Inglés, francés, alemán, italiano, portugués, japonés, árabe y más.</span></div><div><b>Nunca dos veces</b><span>Lo que ya aprendiste no vuelve como nuevo.</span></div><div><b>Tu nivel</b><span>De A2 a C1. Cámbialo cuando quieras con <code dir="ltr">/sidenote</code>.</span></div><div><b>Coste cero</b><span>Funciona con la suscripción de Claude que ya tienes. Sin API key, sin cobros.</span></div><div><b>Un solo archivo</b><span>Todo en <code dir="ltr">state.json</code>, en tu disco. Borrarlo lo borra todo.</span></div></div>
 </div></div>
 
 <div class="qs" id="qs"><div class="wrap">
-  <h2>שאלות הוגנות</h2>
-  <div class="qgrid"><div class="q"><b>זה מאט לי את העבודה?</b><p>לא. התשובה שביקשת נשארת מלאה ובאה ראשונה. הביטוי מגיע אחריה, בשורה אחת.</p></div><div class="q"><b>צריך חשבון?</b><p>אין. אין הרשמה, אין מייל, אין כתובת אישית. מתקינים ומתחילים.</p></div><div class="q"><b>כמה זה עולה?</b><p>כלום. הפלאגין רץ על המנוי של Claude שכבר יש לך.</p></div><div class="q"><b>איפה נשמר מה שלמדתי?</b><p>בקובץ אחד במחשב שלך, ב-<code dir="ltr">~/.sidenote/state.json</code>. שום דבר לא יוצא החוצה.</p></div><div class="q"><b>אילו שפות?</b><p>כל שפה ש-Claude יודע. אנגלית, ספרדית, צרפתית, איטלקית, גרמנית, פורטוגזית, יפנית, ערבית, רוסית ועוד.</p></div><div class="q"><b>ואם אני רוצה לעצור?</b><p><code dir="ltr">claude plugin uninstall sidenote</code>, ומוחקים את התיקייה. זהו.</p></div></div>
+  <h2>Preguntas justas</h2>
+  <div class="qgrid"><div class="q"><b>¿Me ralentiza?</b><p>No. La respuesta que pediste sigue completa y va primero. La expresión llega después, en una línea.</p></div><div class="q"><b>¿Necesito cuenta?</b><p>Ninguna. Sin registro, sin correo, sin dirección personal.</p></div><div class="q"><b>¿Cuánto cuesta?</b><p>Nada. El plugin funciona con la suscripción de Claude que ya tienes.</p></div><div class="q"><b>¿Dónde se guarda mi progreso?</b><p>En un archivo de tu equipo, en <code dir="ltr">~/.sidenote/state.json</code>. Nada sale de ahí.</p></div><div class="q"><b>¿Qué idiomas?</b><p>Cualquiera que Claude conozca. Inglés, francés, italiano, alemán, portugués, japonés, hebreo, árabe, ruso y más.</p></div><div class="q"><b>¿Y si quiero parar?</b><p><code dir="ltr">claude plugin uninstall sidenote</code> y borras la carpeta. Ya está.</p></div></div>
 </div></div>
 
 
 <div class="final" id="install"><div class="wrap narrow">
-  <h2>ללמוד מהר, בלי להתאמץ</h2>
-  <p>שתי שורות. פעם אחת.</p>
+  <h2>Aprende rápido, sin esfuerzo</h2>
+  <p>Dos líneas. Una sola vez.</p>
   <div class="cmd"><span class="p">$</span> claude plugin marketplace add YanivYosefi/sidenote-en
 <span class="p">$</span> claude plugin install sidenote@sidenote</div>
   <button class="btn btn-light" id="cp" data-copy="claude plugin marketplace add YanivYosefi/sidenote-en
-claude plugin install sidenote@sidenote" data-done="הועתק">העתק</button>
-  <span class="btn-note">דורש Claude Code. עובד על מק, לינוקס וּווינדוס.</span>
+claude plugin install sidenote@sidenote" data-done="Copiado">Copiar</button>
+  <span class="btn-note">Requiere Claude Code. Funciona en macOS, Linux y Windows.</span>
 </div></div>
 
 <footer><div class="wrap">
-  <a href="/sidenote-en/" class="logo">Side<b>note</b></a>
-  <p>ללמוד שפה בתוך העבודה שאתה עושה ממילא.</p>
+  <a href="/sidenote-en/home/es" class="logo">Side<b>note</b></a>
+  <p>Aprende un idioma dentro del trabajo que ya haces.</p>
   <div class="fnote">
-    <span>Sidenote · חינם וללא חשבון</span>
+    <span>Sidenote · gratis, sin cuenta</span>
     <a href="https://github.com/YanivYosefi/sidenote-en">GitHub</a>
     <a href="/sidenote-en/en/">English expressions</a>
   </div>
@@ -698,7 +698,7 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק</button
 
 <script>
 (function () {
-  var HERE = "he";
+  var HERE = "es";
   var ROUTES = {"he":"/sidenote-en/","en":"/sidenote-en/home/en","es":"/sidenote-en/home/es","ru":"/sidenote-en/home/ru","ar":"/sidenote-en/home/ar"};
 
   /* Only the shared root guesses. A link straight to /home/es came from an ad
@@ -726,8 +726,8 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק</button
   var SW = document.getElementById('swword');
   var NAT = document.getElementById('nat');
   var TGT = document.getElementById('tgt');
-  var WORDS = ["English","Español","Italiano","العربية","Français","한국어"];
-  var TARGETS = ["en","es","it","ar","fr","ko"];
+  var WORDS = ["English","Français","Italiano","Deutsch","Português","日本語"];
+  var TARGETS = ["en","fr","it","de","pt","ja"];
   var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var spin = null, wi = 0, ti = 0;
 
@@ -793,7 +793,7 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק</button
      next target language. Every run carries a token; bumping the token is how a
      run is cancelled, so scrolling away or picking a language never leaves two
      animations writing into the same element. */
-  var XD = [{"pair":"עברית → Español","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">מתוך התשובה: “תגיד לו את זה מראש בערב, לא בשתיים בלילה.”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">entrar en razón\u003c/span>\n      \u003cspan class=\"gloss\">להקשיב להיגיון ולהשתכנע — משהו שילד באמצע הלילה פשוט לא מסוגל לעשות.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">A las dos de la madrugada no hay manera de que entre en razón.\u003c/span>","q":"הילד בן 4 קם כל לילה בשתיים ולא נרדם חזרה בלי שאני נשכב איתו. איך נגמלים מזה בלי שבוע של בכי?","a":"במקום להיעלם בבת אחת, שב לידו על כיסא וכל שלושה לילות הזז אותו קצת לכיוון הדלת.\nתגיד לו את זה מראש בערב, לא בשתיים בלילה, כי בשתיים הוא לא קולט הסברים."},{"pair":"עברית → Italiano","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">מתוך התשובה: “תלחץ אותו לשכבה אחת שתיצרב מלמטה.”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">fare la crosticina\u003c/span>\n      \u003cspan class=\"gloss\">להשאיר אוכל במחבת בלי לערבב, עד שנוצר לו קרום פריך וזהוב מלמטה.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">Lascia il riso nella padella senza girarlo, così fa la crosticina.\u003c/span>","q":"נשאר לי סיר אורז מאתמול ועוד חצי קופסת עגבניות שרי. מה עושים עם זה שלא יהיה משעמם?","a":"תחצי את העגבניות, תזרוק אותן למחבת לוהטת עם שמן זית עד שהן מתפוצצות, ואז תוסיף את האורז ותלחץ אותו לשכבה אחת שתיצרב מלמטה.\nביצה מטוגנת מעל, הרבה פלפל שחור, ובסוף משהו חמוץ."},{"pair":"עברית → English","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">מתוך התשובה: “בירידה הארבע-ראשי בולם את כל משקל הגוף.”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">to take the brunt of it\u003c/span>\n      \u003cspan class=\"gloss\">לספוג את עיקר העומס — החלק שחוטף הכי חזק.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">On the way down, your knees take the brunt of it.\u003c/span>","q":"התחלתי לרוץ לפני חודש וכואב לי הברך רק בירידות. לוותר על ריצה או שיש משהו לעשות?","a":"לא צריך לוותר — כאב שמופיע רק בירידות הוא כמעט תמיד עומס על הפיקה, כי בירידה הארבע-ראשי בולם את כל משקל הגוף.\nבינתיים תקצר צעד, את התלולות פשוט תלך, ותוסיף סקוואטים פעמיים בשבוע."},{"pair":"עברית → Français","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">מתוך התשובה: “ברגע שההודעה נשמעת כמו כתב אישום, הוא נסגר ומתגונן.”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">se braquer\u003c/span>\n      \u003cspan class=\"gloss\">להיסגר ולהתגונן ברגע שמרגיש מותקף, ואז כבר לא מקשיב.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">Si tu lui écris ça sur le ton du reproche, il va se braquer.\u003c/span>","q":"השכן מלמעלה מזיז רהיטים בחצות כבר שבוע. אני רוצה לכתוב לו משהו בוואטסאפ שלא יפתח מלחמה.","a":"תכתוב מהמקום שלך, לא ממנו, ותן לו פתח לתקן: „אני גר מתחתיך ומתקשה להירדם. יש סיכוי לסגור את זה עד 22:00?”\nאל תוסיף „כבר שבוע”. ברגע שההודעה נשמעת כמו כתב אישום, הוא נסגר ומתגונן."},{"pair":"עברית → العربية","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">מתוך התשובה: “ותרו מראש על הקולוסיאום ועל קו המטרו A.”\u003c/span>\n      \u003cspan class=\"expr rtl\" dir=\"rtl\">اِنْسى الموضوع  ·  insa el-mawdouʿ\u003c/span>\n      \u003cspan class=\"gloss\">תשכח מזה, ותר על זה מראש — לא שווה את המאמץ.\u003c/span>\n      \u003cspan class=\"ex rtl\" dir=\"rtl\">اِنْسى الموضوع، ما في وقت.\u003c/span>","q":"שלושה ימים ברומא עם ילדה בת שנתיים בעגלה. מה ריאלי לעשות ומה לוותר עליו מראש?","a":"ריאלי: וילה בורגזה, הפנתיאון ופיאצה נבונה — שטוח, פתוח ובלי תור.\nותרו מראש על הקולוסיאום ועל קו המטרו A, שרוב תחנותיו בלי מעלית. טראם 8 כן."}];
+  var XD = [{"pair":"Español → English","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">De la respuesta: “mejor escribirle antes de que pregunte”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">to give someone a heads-up\u003c/span>\n      \u003cspan class=\"gloss\">avisar antes de que el otro tenga que preguntar.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">I gave her a heads-up before she had to ask.\u003c/span>","q":"Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.","a":"Mejor escribirle antes de que pregunte.\nUna línea sobre el retraso, una fecha nueva y sin disculpas largas."},{"pair":"Español → Français","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">De la respuesta: “mejor escribirle antes de que pregunte”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">prévenir à l'avance\u003c/span>\n      \u003cspan class=\"gloss\">avisar con antelación, cuando aún se puede reaccionar.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">Je l'ai prévenue à l'avance, avant qu'elle ne demande.\u003c/span>","q":"Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.","a":"Mejor escribirle antes de que pregunte.\nUna línea sobre el retraso, una fecha nueva y sin disculpas largas."},{"pair":"Español → Italiano","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">De la respuesta: “mejor escribirle antes de que pregunte”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">avvisare per tempo\u003c/span>\n      \u003cspan class=\"gloss\">avisar a tiempo, no cuando ya es tarde.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">L'ho avvisata per tempo, prima che lo chiedesse.\u003c/span>","q":"Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.","a":"Mejor escribirle antes de que pregunte.\nUna línea sobre el retraso, una fecha nueva y sin disculpas largas."},{"pair":"Español → Deutsch","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">De la respuesta: “mejor escribirle antes de que pregunte”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">rechtzeitig Bescheid geben\u003c/span>\n      \u003cspan class=\"gloss\">dar aviso a tiempo para que todavía sirva.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">Ich habe ihr rechtzeitig Bescheid gegeben, bevor sie fragen musste.\u003c/span>","q":"Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.","a":"Mejor escribirle antes de que pregunte.\nUna línea sobre el retraso, una fecha nueva y sin disculpas largas."},{"pair":"Español → Português","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">De la respuesta: “mejor escribirle antes de que pregunte”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">avisar com antecedência\u003c/span>\n      \u003cspan class=\"gloss\">decirlo antes, no cuando ya pasó.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">Avisei-a com antecedência, antes que ela perguntasse.\u003c/span>","q":"Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.","a":"Mejor escribirle antes de que pregunte.\nUna línea sobre el retraso, una fecha nueva y sin disculpas largas."},{"pair":"Español → 日本語","note":"\u003cdiv class=\"tag\">SIDENOTE\u003c/div>\n      \u003cspan class=\"src\">De la respuesta: “mejor escribirle antes de que pregunte”\u003c/span>\n      \u003cspan class=\"expr\" dir=\"ltr\">前もって知らせる  ·  maemotte shiraseru\u003c/span>\n      \u003cspan class=\"gloss\">decirlo de antemano, antes de que pregunten.\u003c/span>\n      \u003cspan class=\"ex\" dir=\"ltr\">彼女に聞かれる前に、前もって知らせておいた。\u003c/span>","q":"Tengo que avisar a una clienta de que su pedido se retrasa. Escríbeme algo breve.","a":"Mejor escribirle antes de que pregunte.\nUna línea sobre el retraso, una fecha nueva y sin disculpas largas."}];
   var xq = document.getElementById('xqt'), xa = document.getElementById('xat'),
       xaw = document.getElementById('xa'), xn = document.getElementById('xn'),
       xpair = document.getElementById('xpair'), xcar = document.getElementById('xcar'),

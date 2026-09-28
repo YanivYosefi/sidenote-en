@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "sidenote",
+  "description": "Sidenote — learn a language inside the chats you already have with Claude.",
+  "owner": { "name": "Yaniv Yosefi" },
+  "plugins": [
+    {
+      "name": "sidenote",
+      "description": "Learn a language inside the chat you already open. One expression at the end of an answer, brought back on a spaced ladder. Stored locally, no account.",
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://yanivyosefi.github.io/sidenote-en/"
+    }
+  ]
+}
