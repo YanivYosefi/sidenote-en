@@ -133,8 +133,9 @@ header .lede{font-size:21px;color:var(--gray);margin:20px auto 30px;max-width:66
   border-radius:14px;overflow:hidden;box-shadow:var(--sh);
   border:1px solid var(--line);aspect-ratio:16/9;background:var(--teal-wash)}
 .hero-media video,.hero-media img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-media::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;
-  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.82))}
+/* No gradient scrim any more. It existed to soften a decorative stock clip;
+   over the film it would sit exactly on top of the captions. */
+.hero-media video{object-fit:contain;background:var(--teal-wash)}
 
 /* how it works band */
 .band{background:var(--teal-wash);border-block:1px solid var(--teal-s);
@@ -297,6 +298,43 @@ header .lede{font-size:21px;color:var(--gray);margin:20px auto 30px;max-width:66
 .kgrid b{display:block;font-size:16px;color:var(--ink-d);margin-bottom:1px}
 .kgrid span{display:block;color:var(--gray);font-size:15px;line-height:1.55}
 
+/* how it differs.
+   Every product on this shelf charges a subscription, keeps your progress on
+   its server, and asks you to open one more thing. Those are the rows, so the
+   table argues the point instead of asserting it. */
+.cmp{background:#fff;padding:58px 0;border-bottom:1px solid var(--line)}
+.cmp h2{text-align:center;color:var(--ink-d);margin-bottom:8px}
+.cmp .csub{text-align:center;color:var(--gray);font-size:17px;margin:0 auto 30px;max-width:580px}
+/* Four columns will not honestly fit a phone. Rather than shrink the text to
+   unreadable, the table keeps a floor width and the narrow screen scrolls it. */
+.ctab-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ctab{width:100%;min-width:620px;border-collapse:separate;border-spacing:0;font-size:16px}
+.ctab th,.ctab td{padding:14px 18px;text-align:start;vertical-align:top;
+  border-bottom:1px solid var(--line)}
+.ctab thead th{font-size:14px;letter-spacing:.3px;color:var(--gray);font-weight:600;
+  border-bottom:1px solid var(--teal-s)}
+.ctab tbody th{font-weight:600;color:var(--ink-d);width:22%}
+.ctab td{color:var(--gray)}
+/* The product's own column is tinted for its whole height rather than per cell,
+   so the eye reads one continuous answer instead of four separate wins. */
+.ctab .me{background:var(--teal-wash);color:var(--teal-dd);font-weight:600}
+.ctab thead .me{font-weight:700;border-radius:8px 8px 0 0}
+.ctab tbody tr:last-child .me{border-radius:0 0 8px 8px}
+.ctab tbody tr:last-child th,.ctab tbody tr:last-child td{border-bottom:0}
+
+/* who it is not for — said out loud, because the people it does suit
+   recognise themselves faster once the others have been sent away */
+.notfor{background:var(--soft);padding:52px 0;border-bottom:1px solid var(--line)}
+.notfor h2{text-align:center;color:var(--ink-d);margin-bottom:26px}
+.nfgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.nfgrid div{background:#fff;border:1px solid var(--line);border-radius:8px;
+  padding:20px 22px;box-shadow:var(--sh-s)}
+.nfgrid b{display:block;font-family:var(--serif);font-size:18px;color:var(--ink-d);
+  margin-bottom:6px}
+.nfgrid p{margin:0;color:var(--gray);font-size:16px}
+.nfline{text-align:center;margin:26px auto 0;max-width:620px;font-size:18px;
+  color:var(--ink-d)}
+
 /* questions */
 .qs{background:#fff;padding:60px 0;border-bottom:1px solid var(--line)}
 .qs h2{text-align:center;color:var(--ink-d);margin-bottom:34px}
@@ -341,6 +379,9 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .xsteps{display:flex;flex-wrap:wrap;gap:4px 22px}
   .xsteps li{padding:6px 0;font-size:15px}
   .xsteps li.xreplay{padding-top:6px}
+  .nfgrid{grid-template-columns:1fr}
+  .ctab{font-size:15px}
+  .ctab th,.ctab td{padding:11px 12px}
 }
 @media(max-width:640px){
   body{font-size:16px}
@@ -403,10 +444,15 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
     <span class="chip ltr">Claude Code</span>
     <span class="chip">באפליקציה או בטרמינל</span>
   </div>
+  <!-- The film. It is the product on screen, not footage of someone at a
+       laptop: a viewer can already picture a person typing, which is exactly
+       why the old stock clip said nothing. Autoplays silently because its
+       captions carry the whole script, and keeps its controls so anyone who
+       wants to scrub or hear it can. -->
   <div class="hero-media">
-    <video autoplay muted loop playsinline preload="metadata"
-           poster="/sidenote-en/media/hero.jpg" aria-hidden="true">
-      <source src="/sidenote-en/media/hero.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline controls preload="metadata"
+           poster="/sidenote-en/media/film-poster.jpg">
+      <source src="/sidenote-en/media/sidenote-film.mp4" type="video/mp4">
     </video>
   </div>
 </div></header>
@@ -669,6 +715,26 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
   <h2>מה יש בפנים</h2>
   <div class="kgrid"><div><b>ביטוי אחד לשיחה</b><span>לא רשימה ולא שיעור. פריט אחד, קשור למה שבדיוק עשית.</span></div><div><b>כל שפה</b><span>אנגלית, ספרדית, צרפתית, גרמנית, איטלקית, יפנית, ערבית ועוד.</span></div><div><b>לעולם לא פעמיים</b><span>מה שכבר נלמד לא חוזר כחדש.</span></div><div><b>הרמה שלך</b><span>A2 עד C1. אפשר לשנות מתי שרוצים עם <code dir="ltr">/sidenote</code>.</span></div><div><b>אפס עלות</b><span>רץ על המנוי של Claude שכבר יש לך. אין API key ואין חיוב.</span></div><div><b>קובץ אחד</b><span>הכל ב-<code dir="ltr">state.json</code> אצלך. מחיקה = מחיקת הקובץ.</span></div></div>
 </div></div>
+
+<section class="cmp" id="cmp"><div class="wrap">
+  <h2>במה זה שונה מהכלים הרגילים</h2>
+  <p class="csub">הכלים האחרים לא רעים. הם פשוט מבקשים ממך עוד אפליקציה ועוד מנוי, כדי ללמד אותך רשימת מילים שמישהו אחר הכין.</p>
+  <div class="ctab-wrap"><table class="ctab">
+    <thead><tr>
+      <th></th>
+      <th class="me">Sidenote</th>
+      <th>תוספים לדפדפן</th>
+      <th>אפליקציות כרטיסיות</th>
+    </tr></thead>
+    <tbody><tr><th>מאיפה המילים</th><td class="me">מהתשובה שקראת עכשיו</td><td>מילים אקראיות בדף שפתחת</td><td>מרשימה שמישהו אחר הכין</td></tr><tr><th>מה צריך לפתוח</th><td class="me">כלום. זה כבר בתוך Claude Code</td><td>דפדפן, עם התוסף דלוק</td><td>את האפליקציה, כל יום</td></tr><tr><th>איפה ההתקדמות</th><td class="me">בקובץ אחד אצלך: <code dir="ltr">~/.sidenote/state.json</code></td><td>בשרת שלהם, מאחורי חשבון</td><td>בשרת שלהם, מאחורי חשבון</td></tr><tr><th>כמה זה עולה</th><td class="me">כלום. רץ על המנוי של Claude שכבר יש לך</td><td>חינם, ואז מנוי</td><td>עשרות שקלים בחודש</td></tr></tbody>
+  </table></div>
+</div></section>
+
+<section class="notfor"><div class="wrap">
+  <h2>למי זה לא מתאים</h2>
+  <div class="nfgrid"><div><b>אם אתה בא בשביל רצף ונקודות</b><p>אין כאן מה להחזיק בחיים. תפספס שבוע, תחזור, והכל מחכה איפה שהיה.</p></div><div><b>אם אתה מתחיל מאפס</b><p>זה מתחיל ב-A2. אם עוד לא ראית את השפה, תתחיל בקורס ותחזור לכאן.</p></div><div><b>אם אתה לא בתוך Claude Code</b><p>זה פלאגין ל-Claude Code. לא תוסף לדפדפן ולא אפליקציה בטלפון.</p></div></div>
+  <p class="nfline">אבל אם אתה שם ממילא כל יום, השפה פשוט מגיעה עם העבודה.</p>
+</div></section>
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>שאלות הוגנות</h2>
