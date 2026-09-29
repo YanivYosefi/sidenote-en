@@ -111,6 +111,12 @@ nav.top .spacer{flex:1}
 header{text-align:center;padding:66px 0 60px;
   background:linear-gradient(180deg,var(--teal-wash) 0%,#ffffff 78%)}
 header .lede{font-size:21px;color:var(--gray);margin:20px auto 30px;max-width:660px}
+/* The second line is the conclusion, so it gets to look like one: its own row,
+   the serif the page reserves for the thing being taught, and the teal. Broken
+   out of the paragraph rather than added as another <p> so the two stay one
+   thought with one gap under them. */
+header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
+  font-style:italic;font-size:23px;color:var(--teal-d)}
 .free-tag{display:inline-flex;align-items:center;gap:8px;background:#fff;
   border:1px solid var(--teal-s2);color:var(--teal-d);border-radius:20px;
   font-size:14px;font-weight:700;padding:6px 15px;margin-bottom:22px}
@@ -416,7 +422,7 @@ footer p{margin:8px 0 0;color:var(--gray)}
 <header><div class="wrap narrow">
   <span class="free-tag"><i></i>חינם לכל החיים</span>
   <h1>ללמוד <span class="sw" id="swword" dir="auto">English</span><br>בלי מאמץ...</h1>
-  <p class="lede">ללמוד שפה חדשה דרך השיחות היומיומיות עם קלוד קוד. הדרך הכי כייפית ויעילה שיש.</p>
+  <p class="lede">למידת שפה חדשה במקום שאתה כבר מבלה בו שעות כל יום.<span class="lede-b">הדרך הכי מהנה וקלה ללמוד.</span></p>
   <div class="chooser">
     <span>אני מדבר</span>
     <select id="nat" aria-label="אני מדבר"><option value="he" lang="he" selected>עברית</option><option value="en" lang="en">English</option><option value="es" lang="es">Español</option><option value="ru" lang="ru">Русский</option><option value="ar" lang="ar">العربية</option></select>
@@ -814,7 +820,7 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק</button
         showTarget(TARGETS[ti]);
         if (TGT) TGT.value = TARGETS[ti];
       });
-    }, 3400);
+    }, 2200);
   }
 
   if (TGT) TGT.addEventListener('change', function () {
