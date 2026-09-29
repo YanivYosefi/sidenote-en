@@ -17,7 +17,11 @@
 <meta property="og:description" content="Sidenote — פלאגין ל-Claude שמלמד אותך כל שפה תוך כדי עבודה. ביטוי אחד בסוף תשובה, קשור למה שבדיוק עשית. נשמר אצלך במחשב, בלי חשבון ובלי שרת.">
 <meta property="og:locale" content="he_IL">
 <meta property="og:url" content="https://yanivyosefi.github.io/sidenote-en/">
+<meta property="og:image" content="https://yanivyosefi.github.io/sidenote-en/media/sidenote-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yanivyosefi.github.io/sidenote-en/media/sidenote-og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
@@ -444,15 +448,19 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
     <span class="chip ltr">Claude Code</span>
     <span class="chip">באפליקציה או בטרמינל</span>
   </div>
-  <!-- The film. It is the product on screen, not footage of someone at a
-       laptop: a viewer can already picture a person typing, which is exactly
-       why the old stock clip said nothing. Autoplays silently because its
-       captions carry the whole script, and keeps its controls so anyone who
-       wants to scrub or hear it can. -->
+  <!-- The film. It cuts between a real desk and the real terminal, because
+       neither half stands alone: footage of a person typing says nothing about
+       what the product does, and a screen recording on its own is a support
+       article. Autoplays silently with captions burned in, since most people
+       meet it muted, and keeps its controls for anyone who wants the narration.
+       It does not loop — there is a voice-over, and a narrated film restarting
+       under someone reading the page is an interruption.
+       Filenames are versioned: the media is served immutable, so replacing a
+       clip under its old name shows the old one for days. -->
   <div class="hero-media">
-    <video autoplay muted loop playsinline controls preload="metadata"
-           poster="/sidenote-en/media/film-poster.jpg">
-      <source src="/sidenote-en/media/sidenote-film.mp4" type="video/mp4">
+    <video autoplay muted playsinline controls preload="metadata"
+           poster="/sidenote-en/media/film2-poster.jpg">
+      <source src="/sidenote-en/media/film2.mp4" type="video/mp4">
     </video>
   </div>
 </div></header>
