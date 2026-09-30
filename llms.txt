@@ -34,10 +34,10 @@ claude plugin install sidenote@sidenote
 
 ## Pages
 - Homepage (Hebrew): https://yanivyosefi.github.io/sidenote-en/
-- English: https://yanivyosefi.github.io/sidenote-en/home/en
-- Spanish: https://yanivyosefi.github.io/sidenote-en/home/es
-- Russian: https://yanivyosefi.github.io/sidenote-en/home/ru
-- Arabic: https://yanivyosefi.github.io/sidenote-en/home/ar
+- English: https://yanivyosefi.github.io/sidenote-en/home/en/
+- Spanish: https://yanivyosefi.github.io/sidenote-en/home/es/
+- Russian: https://yanivyosefi.github.io/sidenote-en/home/ru/
+- Arabic: https://yanivyosefi.github.io/sidenote-en/home/ar/
 - Reference: https://yanivyosefi.github.io/sidenote-en/en/ — 30 English
   expressions at B2/C1 for Hebrew speakers (phrasal verbs, idioms, business
   collocations, word distinctions, professional slang), each with a Hebrew
