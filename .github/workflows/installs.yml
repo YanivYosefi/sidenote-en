@@ -1,0 +1,45 @@
+# Snapshots the clone count daily, because GitHub only keeps 14 days of it.
+#
+# Needs a secret named TRAFFIC_TOKEN: a fine-grained PAT scoped to this
+# repository with "Administration: Read-only". The workflow's own
+# GITHUB_TOKEN cannot read the traffic API — that permission is not one it
+# can be granted.
+name: installs
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: installs
+  cancel-in-progress: false
+
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    if: github.repository == 'YanivYosefi/sidenote-en'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: node .github/scripts/installs.mjs
+        env:
+          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+
+      # A no-op day should not produce a commit — every push here rebuilds
+      # the Pages site.
+      - name: Commit if the numbers moved
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/installs.csv data/installs.json
+          git diff --staged --quiet && echo 'no change' && exit 0
+          git commit -m "Record install counts for $(date -u +%F)"
+          git push

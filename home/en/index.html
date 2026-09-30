@@ -143,6 +143,8 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .cmd.light .p{color:var(--teal-l)}
 .copyrow{display:flex;justify-content:center;align-items:center;gap:12px;
   flex-wrap:wrap;margin-top:14px}
+.installs{margin:10px 0 0;font-size:14px;color:var(--gray);text-align:center}
+.installs b{color:var(--teal-d);font-weight:700}
 
 /* hero film — a person, not a screenshot */
 .hero-media{position:relative;max-width:880px;margin:40px auto 0;
@@ -454,6 +456,7 @@ claude plugin install sidenote@sidenote" data-done="Copied">Copy and start</butt
       <span class="btn-note" style="margin:0">Two lines, once. Runs on the subscription you already pay for.</span>
     </div>
   </div>
+  <p class="installs" id="installs" hidden></p>
   <div class="works-in">
     <span>Works in</span>
     <span class="chip ltr">Claude Code</span>
@@ -1025,6 +1028,27 @@ claude plugin install sidenote@sidenote" data-done="Copied">Copy</button>
     if (document.readyState === 'complete') watch();
     else window.addEventListener('load', watch);
   }
+
+
+  /* Live download count. The number is written daily by a GitHub Action into
+     data/installs.json — it is unique git cloners from GitHub's own traffic
+     API, which is the only install signal that exists, since the plugin
+     never phones home and never will.
+
+     It stays hidden below MIN. A launch-day "3 downloads" argues against the
+     product better than silence does. Raise or lower MIN to taste; set it to
+     0 to always show. Any failure leaves the line hidden — a counter is not
+     worth a broken page. */
+  var MIN = 25;
+  var slot = document.getElementById('installs');
+  if (slot) fetch('/sidenote-en/data/installs.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !(d.installs >= MIN)) return;
+      slot.innerHTML = "{n} downloads so far".replace('{n}', '<b>' + d.installs.toLocaleString("en") + '</b>');
+      slot.hidden = false;
+    })
+    .catch(function () {});
 
 })();
 </script>
