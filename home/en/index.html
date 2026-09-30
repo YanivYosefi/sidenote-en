@@ -34,21 +34,37 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it slow me down?","acceptedAnswer":{"@type":"Answer","text":"No. The answer you asked for stays complete and comes first. The expression follows it, in one line."}},{"@type":"Question","name":"Do I need an account?","acceptedAnswer":{"@type":"Answer","text":"None. No signup, no email, no personal URL. Install and start."}},{"@type":"Question","name":"What does it cost?","acceptedAnswer":{"@type":"Answer","text":"Nothing. The plugin runs on the Claude subscription you already have."}},{"@type":"Question","name":"Where is my progress stored?","acceptedAnswer":{"@type":"Answer","text":"In one file on your own machine, at `~/.sidenote/state.json`. Nothing leaves it."}},{"@type":"Question","name":"Which languages?","acceptedAnswer":{"@type":"Answer","text":"Any language Claude knows. Spanish, French, Italian, German, Portuguese, Japanese, Hebrew, Arabic, Russian and more."}},{"@type":"Question","name":"How do I remove it completely?","acceptedAnswer":{"@type":"Answer","text":"`claude plugin uninstall sidenote`, then delete the folder. That is all."}},{"@type":"Question","name":"I stopped for a month. What happens?","acceptedAnswer":{"@type":"Answer","text":"Nothing is lost. The file stays where it is and the expressions wait. They do not pile up into a debt of two hundred reviews waiting for you on the day you come back. You pick up where you left off."}}]}</script>
 <style>
 :root{
-  /* palette lifted from jointoucan.com */
-  --teal:#00857C; --teal-d:#065C56; --teal-dd:#003936; --teal-l:#48A8A1;
-  --teal-s:#CEE9E6; --teal-s2:#9ACECA; --teal-wash:#EDF6F4;
-  --gold:#F3B761; --clay:#D97757;
-  --ink:#282828; --ink-d:#161616; --gray:#707070; --gray-l:#B4B4B4;
-  --line:#E6E6E6; --soft:#F5F5F5; --white:#FFFFFF;
+  /* The Sidenote palette. Four colours on warm paper, each with one job; the
+     rules, the contrast table and the do/don'ts are in design/colors.md.
+     Paper and ink ~60%, teal ~30%, clay and sun share the last ~10%. */
+  /* paper & ink — warm neutrals only, no pure grey anywhere */
+  --paper:#FFFCF7; --sand:#F6EFE2; --sand-d:#EFE5D2; --line:#E9DFCC;
+  --card:#FFFFFF;  /* a raised card or input on paper, never a page background */
+  --ink:#1F1E1D; --ink-d:#141312; --muted:#6B6459; --faint:#A39E93;
+  /* teal — the brand, every action and every selected state */
+  --teal:#00796F; --teal-d:#005A53; --teal-dd:#003B37; --teal-l:#2FA196;
+  --teal-t:#DCEFEC; --teal-b:#A9D6D0; --on-teal:#FFFCF7;
+  /* clay — Claude's own orange: Claude, and one warm accent per view. Never a button. */
+  --clay:#D97757; --clay-d:#A8451F; --clay-t:#FBE3D9;
+  /* sun — highlights, numbers, the button on a dark section. Never text on light. */
+  --sun:#F5B83D; --sun-d:#8A5A00; --sun-t:#FDEFCB;
+  /* deep — the dark teal sections */
+  --deep:#003B37; --deep-2:#002A27; --deep-card:#04322E; --deep-line:#0B4641;
+  --deep-text:#FFF6E6; --deep-sub:#E8DCC6;
+  /* night — the Claude app mockups, in Claude's warm darks */
+  --night:#1F1E1D; --night-bar:#171615; --night-2:#2B2A28; --night-line:#2A2927; --night-edge:#121110;
+  --night-text:#EEEBE4; --night-body:#C7C3BA; --night-muted:#A8A294; --night-faint:#857F73;
+  /* the Sidenote block inside the mockup: teal, lit for a dark screen */
+  --note-line:#37413F; --note-bg:rgba(0,121,111,.13); --note-tag:#5FC0B4; --note-hi:#7FD6C9;
   --serif:'Lora','Frank Ruhl Libre',Georgia,serif;
   --sans:'Karla','Assistant',-apple-system,BlinkMacSystemFont,Arial,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  --sh:0 1px 2px rgba(40,40,40,.05), 0 12px 28px rgba(40,40,40,.07);
-  --sh-s:0 1px 2px rgba(40,40,40,.06), 0 4px 12px rgba(40,40,40,.05);
+  --sh:0 1px 2px rgba(31,30,29,.05), 0 12px 28px rgba(31,30,29,.07);
+  --sh-s:0 1px 2px rgba(31,30,29,.06), 0 4px 12px rgba(31,30,29,.05);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--white);color:var(--ink);
+body{margin:0;background:var(--paper);color:var(--ink);
   font-family:var(--sans);font-size:17px;line-height:1.7;word-spacing:.05em;
   -webkit-font-smoothing:antialiased}
 .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
@@ -62,51 +78,52 @@ h3{font-size:24px}
 
 /* code-switched word — the Toucan device. It cycles through languages, so the
    page never reads as an English-only product. */
-.sw{unicode-bidi:isolate;color:var(--teal);
+.sw{unicode-bidi:isolate;color:var(--clay-d);
   font-family:var(--serif);font-style:italic;font-weight:600;
-  border-bottom:2px dotted var(--teal-s2);padding-bottom:1px;
+  padding:0 .06em;background:linear-gradient(transparent 64%,var(--sun-t) 64%);
   transition:opacity .28s ease}
 .sw.out{opacity:.16}
 
 /* nav */
-nav.top{border-bottom:1px solid var(--line);background:var(--white);position:sticky;top:0;z-index:20}
+nav.top{border-bottom:1px solid var(--line);background:var(--paper);position:sticky;top:0;z-index:20}
 nav.top .wrap{display:flex;align-items:center;gap:18px;height:66px}
 .logo{font-family:var(--serif);font-weight:700;font-size:21px;color:var(--ink-d);
   text-decoration:none;letter-spacing:-.3px}
 .logo b{color:var(--teal);font-weight:700}
 .nav-links{display:flex;gap:20px;margin-inline-start:6px}
-.nav-links a{color:var(--gray);text-decoration:none;font-size:15px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:15px}
 .nav-links a:hover{color:var(--ink)}
 nav.top .spacer{flex:1}
 .nav-cta-link{font-size:15px;font-weight:700;color:var(--teal-d);text-decoration:none;
-  border-bottom:2px solid var(--teal-s2);padding-bottom:1px;white-space:nowrap}
+  border-bottom:2px solid var(--teal-b);padding-bottom:1px;white-space:nowrap}
 .nav-cta-link:hover{border-color:var(--teal)}
 
 /* interface-language switcher */
 .uilangs{display:flex;gap:3px;align-items:center}
-.uilangs a{font-size:13.5px;color:var(--gray);text-decoration:none;padding:4px 9px;
+.uilangs a{font-size:13.5px;color:var(--muted);text-decoration:none;padding:4px 9px;
   border-radius:20px;line-height:1.3;white-space:nowrap}
-.uilangs a:hover{background:var(--soft);color:var(--ink)}
-.uilangs a[aria-current]{background:var(--teal-wash);color:var(--teal-d);font-weight:700}
+.uilangs a:hover{background:var(--sand);color:var(--ink)}
+.uilangs a[aria-current]{background:var(--teal-t);color:var(--teal-d);font-weight:700}
 
 /* buttons */
-.btn{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;
+.btn{display:inline-block;background:var(--teal);color:var(--on-teal);text-decoration:none;
   font-family:var(--sans);font-weight:700;font-size:17px;padding:14px 34px;
   border-radius:4px;border:none;cursor:pointer;line-height:1.4;
   box-shadow:0 2px 0 var(--teal-d)}
 .btn:hover{background:var(--teal-d);box-shadow:0 2px 0 var(--teal-dd)}
 .btn-sm{font-size:15px;padding:9px 20px}
-.btn-light{background:#fff;color:var(--teal-dd);box-shadow:0 2px 0 rgba(0,0,0,.12)}
-.btn-light:hover{background:#f4faf9;color:var(--teal-dd);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+/* the primary button on a deep section: sun, so it is the brightest thing there */
+.btn-light{background:var(--sun);color:var(--ink-d);box-shadow:0 2px 0 rgba(0,0,0,.22)}
+.btn-light:hover{background:#FFC857;color:var(--ink-d);box-shadow:0 2px 0 rgba(0,0,0,.3)}
 
-.more{display:block;font-size:14px;color:var(--gray);margin-top:14px}
+.more{display:block;font-size:14px;color:var(--muted);margin-top:14px}
 
 /* "I speak X and I want to learn Y" — the one control on the page. Everything
    else follows it: the headline word, both demos and the three-up block. */
 .chooser{display:flex;justify-content:center;align-items:center;gap:9px;
-  flex-wrap:wrap;margin:24px 0 8px;font-size:17px;color:var(--gray)}
+  flex-wrap:wrap;margin:24px 0 8px;font-size:17px;color:var(--muted)}
 .chooser select{font-family:var(--sans);font-size:16.5px;font-weight:700;
-  color:var(--teal-d);background:#fff;border:1px solid var(--teal-s2);
+  color:var(--teal-d);background:var(--card);border:1px solid var(--teal-b);
   border-radius:20px;padding:7px 15px;cursor:pointer;line-height:1.4;
   box-shadow:var(--sh-s);appearance:none;text-align:center}
 .chooser select:hover{border-color:var(--teal)}
@@ -114,58 +131,56 @@ nav.top .spacer{flex:1}
 
 /* hero */
 header{text-align:center;padding:66px 0 60px;
-  background:linear-gradient(180deg,var(--teal-wash) 0%,#ffffff 78%)}
-header .lede{font-size:21px;color:var(--gray);margin:20px auto 30px;max-width:660px}
+  background:linear-gradient(180deg,var(--sand) 0%,var(--paper) 78%)}
+header .lede{font-size:21px;color:var(--muted);margin:20px auto 30px;max-width:660px}
 /* The second line is the conclusion, so it gets to look like one: its own row,
    the serif the page reserves for the thing being taught, and the teal. Broken
    out of the paragraph rather than added as another <p> so the two stay one
    thought with one gap under them. */
 header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
   font-style:italic;font-size:23px;color:var(--teal-d)}
-.free-tag{display:inline-flex;align-items:center;gap:8px;background:#fff;
-  border:1px solid var(--teal-s2);color:var(--teal-d);border-radius:20px;
+.free-tag{display:inline-flex;align-items:center;gap:8px;background:var(--sun-t);
+  border:1px solid var(--sun);color:var(--sun-d);border-radius:20px;
   font-size:14px;font-weight:700;padding:6px 15px;margin-bottom:22px}
-.free-tag i{width:7px;height:7px;border-radius:50%;background:var(--teal);display:block}
-.btn-note{display:block;color:var(--gray);font-size:14px;margin-top:14px}
+.free-tag i{width:7px;height:7px;border-radius:50%;background:var(--sun);display:block}
+.btn-note{display:block;color:var(--muted);font-size:14px;margin-top:14px}
 .works-in{display:flex;justify-content:center;align-items:center;gap:9px;
-  flex-wrap:wrap;margin-top:26px;color:var(--gray);font-size:14px}
-.chip{background:#fff;border:1px solid var(--line);
-  border-radius:4px;padding:5px 13px;color:var(--gray);font-size:14px;font-weight:600;
+  flex-wrap:wrap;margin-top:26px;color:var(--muted);font-size:14px}
+.chip{background:var(--card);border:1px solid var(--line);
+  border-radius:4px;padding:5px 13px;color:var(--muted);font-size:14px;font-weight:600;
   box-shadow:var(--sh-s)}
 .chip.ltr{direction:ltr;unicode-bidi:isolate}
 
 /* No install button anywhere. Two lines to copy is the whole ask, and a box
    you can read is less of a commitment than a button that says "install". */
 .startbox{max-width:620px;margin:22px auto 0}
-.cmd.light{background:#F4F9F8;border-color:var(--teal-s);color:var(--teal-dd);
+.cmd.light{background:var(--card);border-color:var(--teal-b);color:var(--teal-dd);
   margin-bottom:0;box-shadow:var(--sh-s)}
 .cmd.light .p{color:var(--teal-l)}
 .copyrow{display:flex;justify-content:center;align-items:center;gap:12px;
   flex-wrap:wrap;margin-top:14px}
-.installs{margin:10px 0 0;font-size:14px;color:var(--gray);text-align:center}
+.installs{margin:10px 0 0;font-size:14px;color:var(--muted);text-align:center}
 .installs b{color:var(--teal-d);font-weight:700}
 
 /* hero film — a person, not a screenshot */
 .hero-media{position:relative;max-width:880px;margin:40px auto 0;
   border-radius:14px;overflow:hidden;box-shadow:var(--sh);
-  border:1px solid var(--line);aspect-ratio:16/9;background:var(--teal-wash)}
+  border:1px solid var(--line);aspect-ratio:16/9;background:var(--sand)}
 .hero-media video,.hero-media img{width:100%;height:100%;object-fit:cover;display:block}
 /* No gradient scrim any more. It existed to soften a decorative stock clip;
    over the film it would sit exactly on top of the captions. */
-.hero-media video{object-fit:contain;background:var(--teal-wash)}
+.hero-media video{object-fit:contain;background:var(--sand)}
 
 /* how it works band */
-.band{background:var(--teal-wash);border-block:1px solid var(--teal-s);
-  padding:56px 0;text-align:center}
-.band h2{color:var(--teal-dd)}
+.band{background:var(--deep);padding:56px 0;text-align:center}
+.band h2{color:var(--deep-text)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:36px;
   list-style:none;padding:0}
 .steps li{text-align:center}
-.steps .n{width:46px;height:46px;border-radius:50%;background:var(--teal);color:#fff;
+.steps .n{width:46px;height:46px;border-radius:50%;background:var(--sun);color:var(--ink-d);
   font-family:var(--serif);font-weight:700;font-size:20px;
-  display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
-  box-shadow:0 2px 0 var(--teal-d)}
-.steps p{margin:0;font-size:17px;color:var(--ink)}
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.steps p{margin:0;font-size:17px;color:var(--deep-sub)}
 
 /* feature rows */
 .feat{padding:64px 0;border-bottom:1px solid var(--line)}
@@ -179,81 +194,81 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .feat.flip .row{grid-template-columns:1.1fr 1fr}
 .feat.flip .art{order:-1}
 .kicker{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.9px;
-  text-transform:uppercase;color:var(--teal);margin:0 0 9px}
+  text-transform:uppercase;color:var(--clay-d);margin:0 0 9px}
 .feat h3{margin-bottom:10px;color:var(--ink-d)}
 /* scoped to the copy column: unscoped, it beat .tq and greyed out the
    question inside the chat mockup (2.9:1 on its dark bubble) */
-.feat .copy p{margin:0;color:var(--gray);font-size:17.5px}
+.feat .copy p{margin:0;color:var(--muted);font-size:17.5px}
 .feat .langs{margin-top:22px}
 
 /* ===== the Claude Code window =====
    Deliberately not a terminal: no traffic lights, no shell prompt, no
    monospace body. This is what Claude Code looks like inside the Claude app,
    which is where most people who would install this already are. */
-.app{border-radius:12px;overflow:hidden;background:#1F1E1D;
-  box-shadow:var(--sh);border:1px solid #121110}
-.app-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#171615;
-  border-bottom:1px solid #2A2927;direction:ltr}
+.app{border-radius:12px;overflow:hidden;background:var(--night);
+  box-shadow:var(--sh);border:1px solid var(--night-edge)}
+.app-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;background:var(--night-bar);
+  border-bottom:1px solid var(--night-line);direction:ltr}
 .app-bar .ic{color:var(--clay);font-size:17px;line-height:1;flex:none}
-.app-bar .nm{font-size:12.5px;color:#D6D2C8;font-weight:700;letter-spacing:.2px}
-.app-bar .t{margin-inline-start:auto;font-size:12px;color:#857F73;
+.app-bar .nm{font-size:12.5px;color:var(--night-text);font-weight:700;letter-spacing:.2px}
+.app-bar .t{margin-inline-start:auto;font-size:12px;color:var(--night-faint);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.app-body{padding:18px 17px 20px;font-size:15.5px;line-height:1.72;color:#C7C3BA;
+.app-body{padding:18px 17px 20px;font-size:15.5px;line-height:1.72;color:var(--night-body);
   min-height:252px}
-.tq{margin:0 0 15px;background:#2B2A28;color:#EEEBE4;border-radius:12px;
+.tq{margin:0 0 15px;background:var(--night-2);color:var(--night-text);border-radius:12px;
   padding:11px 14px;display:block}
 .ta{margin:0;display:flex;gap:11px;align-items:flex-start}
 .ta s{color:var(--clay);text-decoration:none;flex:none;font-size:15px;line-height:1.5}
 .ta span{display:block;white-space:pre-wrap;min-width:0}
-.tnote{margin-top:18px;border:1px solid #37413F;border-radius:9px;
-  background:rgba(0,133,124,.11);padding:12px 14px}
+.tnote{margin-top:18px;border:1px solid var(--note-line);border-radius:9px;
+  background:var(--note-bg);padding:12px 14px}
 .tnote .tag{font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:1.1px;
-  color:#5FC0B4;margin-bottom:7px;direction:ltr;unicode-bidi:isolate}
-.tnote .src{display:block;font-size:12.5px;color:#A8A294;margin:-2px 0 10px;
-  padding-inline-start:9px;border-inline-start:2px solid #3B4644}
-.expr{display:inline-block;background:rgba(0,0,0,.30);border:1px solid #33514D;
-  border-radius:4px;padding:3px 10px;font-size:15px;color:#7FD6C9;white-space:nowrap;
+  color:var(--note-tag);margin-bottom:7px;direction:ltr;unicode-bidi:isolate}
+.tnote .src{display:block;font-size:12.5px;color:var(--night-muted);margin:-2px 0 10px;
+  padding-inline-start:9px;border-inline-start:2px solid var(--note-line)}
+.expr{display:inline-block;background:rgba(0,0,0,.30);border:1px solid var(--note-line);
+  border-radius:4px;padding:3px 10px;font-size:15px;color:var(--note-hi);white-space:nowrap;
   font-weight:600}
 .expr.rtl{direction:rtl;font-family:var(--sans)}
-.gloss{display:block;margin-top:9px;font-size:14.5px;color:#ABA69B}
+.gloss{display:block;margin-top:9px;font-size:14.5px;color:var(--night-muted)}
 .ex{display:block;margin-top:7px;font-family:var(--serif);font-style:italic;
-  font-size:14.5px;color:#7FD6C9}
+  font-size:14.5px;color:var(--note-hi)}
 .ex.rtl{direction:rtl;text-align:right}
 .pane{display:none}
 .pane.on{display:block}
 
 /* the local file card */
 .filecard{border:1px solid var(--line);border-radius:10px;overflow:hidden;
-  box-shadow:var(--sh);background:#fff}
+  box-shadow:var(--sh);background:var(--card)}
 .filecard .fh{display:flex;align-items:center;gap:8px;padding:11px 14px;
-  direction:ltr;background:var(--soft);border-bottom:1px solid var(--line);
-  font-family:var(--mono);font-size:12.5px;color:var(--gray)}
+  direction:ltr;background:var(--sand);border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 .filecard .fh i{width:8px;height:8px;border-radius:50%;background:var(--teal);flex:none}
 .filecard pre{direction:ltr;margin:0;padding:16px 17px;font-family:var(--mono);
-  font-size:12.7px;line-height:1.85;color:#3f4a48;overflow-x:auto}
+  font-size:12.7px;line-height:1.85;color:var(--ink);overflow-x:auto}
 .filecard .k{color:var(--teal-d)}
-.filecard .s{color:#9b6a1f}
-.filecard .n{color:#8a5ea8}
+.filecard .s{color:var(--sun-d)}
+.filecard .n{color:var(--clay-d)}
 
 /* ===== the walk-through =====
    The explainer is animated in the page rather than shipped as a video file:
    it stays sharp at any width, it reads the same copy as everything else, and
    it costs nothing to download. Three beats, numbered on the left, and the
    Claude Code window on the right acting them out. */
-.explain{padding:62px 0;background:var(--teal-wash);border-bottom:1px solid var(--line)}
+.explain{padding:62px 0;background:var(--sand);border-bottom:1px solid var(--line)}
 .explain h2{text-align:center;color:var(--ink-d)}
-.xsub{text-align:center;color:var(--gray);max-width:620px;margin:12px auto 34px;font-size:17px}
+.xsub{text-align:center;color:var(--muted);max-width:620px;margin:12px auto 34px;font-size:17px}
 .xrow{display:grid;grid-template-columns:265px 1fr;gap:36px;align-items:start}
 .xsteps{list-style:none;margin:0;padding:0}
 .xsteps li{display:flex;gap:12px;align-items:center;padding:12px 0;
-  color:var(--gray);font-size:16.5px;transition:color .3s}
-.xsteps li i{flex:none;width:27px;height:27px;border-radius:50%;background:#fff;
-  border:1px solid var(--teal-s2);color:var(--teal-l);font-style:normal;font-weight:700;
+  color:var(--muted);font-size:16.5px;transition:color .3s}
+.xsteps li i{flex:none;width:27px;height:27px;border-radius:50%;background:var(--card);
+  border:1px solid var(--teal-b);color:var(--teal-d);font-style:normal;font-weight:700;
   font-size:13px;display:flex;align-items:center;justify-content:center;
   transition:background .3s,color .3s,box-shadow .3s,border-color .3s}
 .xsteps li.on{color:var(--ink-d)}
-.xsteps li.on i{background:var(--teal);border-color:var(--teal);color:#fff;
-  box-shadow:0 0 0 5px rgba(0,133,124,.15)}
+.xsteps li.on i{background:var(--teal);border-color:var(--teal);color:var(--on-teal);
+  box-shadow:0 0 0 5px var(--teal-t)}
 .xsteps li.xreplay{padding-top:18px}
 .xreplay button{font-family:var(--sans);font-size:14.5px;font-weight:700;color:var(--teal-d);
   background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;
@@ -263,18 +278,18 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
    moves while the animation runs. */
 /* The window sits in a laptop. A bare dark rectangle floating on a page reads
    as a screenshot of a terminal, which is the one thing this product is not. */
-.device{position:relative;padding:15px 15px 0;background:#2B302F;
+.device{position:relative;padding:15px 15px 0;background:#2E2D2B;
   border-radius:15px 15px 5px 5px;box-shadow:0 24px 52px rgba(0,0,0,.22)}
 .device .cam{position:absolute;top:6px;inset-inline-start:50%;width:5px;height:5px;
-  margin-inline-start:-2.5px;border-radius:50%;background:#57635F}
+  margin-inline-start:-2.5px;border-radius:50%;background:#5A5650}
 .device::after{content:"";display:block;height:10px;margin:13px -36px 0;
-  background:linear-gradient(180deg,#D3D7D6,#B9BFBD);border-radius:0 0 12px 12px}
+  background:linear-gradient(180deg,#DAD5CC,#BDB6AA);border-radius:0 0 12px 12px}
 @media(max-width:700px){.device::after{margin:13px -14px 0}}
 .xapp .app-body{min-height:0}
 #xat{white-space:pre-line}
 .xapp .tq{min-height:27px}
 .xapp .ta{min-height:56px;align-items:flex-start}
-.car{display:inline-block;width:2px;height:15px;background:var(--teal-l);
+.car{display:inline-block;width:2px;height:15px;background:var(--clay);
   vertical-align:-2px;margin-inline-start:2px;animation:blink 1s steps(1) infinite}
 .car.off{display:none}
 @keyframes blink{50%{opacity:0}}
@@ -287,20 +302,20 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
    replaces weighed more than the rest of the page's pictures together. */
 .goals{padding:56px 0;border-bottom:1px solid var(--line);text-align:center}
 .goals h2{color:var(--ink-d);margin-bottom:6px}
-.gsub{color:var(--gray);font-size:16.5px;margin:0}
+.gsub{color:var(--muted);font-size:16.5px;margin:0}
 .glist{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:780px;
   margin:26px auto 0;padding:0;list-style:none}
 .goal{display:flex;align-items:center;gap:12px;width:100%;text-align:start;
-  background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;
+  background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;
   font:inherit;font-size:16px;line-height:1.45;color:var(--ink);cursor:pointer;
   transition:border-color .15s,background .15s,transform .1s}
-.goal:hover{border-color:var(--teal-s)}
+.goal:hover{border-color:var(--teal-b)}
 .goal:active{transform:scale(.985)}
-.goal i{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--teal-s);
+.goal i{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--teal-b);
   display:grid;place-items:center;transition:background .15s,border-color .15s}
-.goal svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:3;
+.goal svg{width:15px;height:15px;fill:none;stroke:var(--on-teal);stroke-width:3;
   stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .15s}
-.goal[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-wash)}
+.goal[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-t)}
 .goal[aria-pressed="true"] i{background:var(--teal);border-color:var(--teal)}
 .goal[aria-pressed="true"] svg{opacity:1}
 .gdone{margin:22px 0 0;font-size:17px;color:var(--teal-dd);font-weight:600;
@@ -309,15 +324,15 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .gdone a{color:var(--teal);margin-inline-start:6px;white-space:nowrap;text-decoration:none;border-bottom:1.5px solid}
 
 /* the same answer in three languages at once */
-.trio{background:var(--teal-dd);padding:60px 0;color:#fff}
-.trio h2{text-align:center;color:#fff}
-.trio .sub{text-align:center;color:var(--teal-s2);max-width:560px;
+.trio{background:var(--deep);padding:60px 0;color:var(--deep-text)}
+.trio h2{text-align:center;color:var(--deep-text)}
+.trio .sub{text-align:center;color:var(--deep-sub);max-width:560px;
   margin:12px auto 32px;font-size:17px}
-.trio .app{max-width:660px;margin:0 auto 20px;border-color:#00201E}
+.trio .app{max-width:660px;margin:0 auto 20px;border-color:var(--deep-2)}
 .trio .app-body{min-height:0}
 .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.tcard{background:#04322E;border:1px solid #0B4641;border-radius:10px;padding:15px 16px}
-.tcard .lb{font-size:11.5px;font-weight:700;letter-spacing:.9px;color:#5FC0B4;
+.tcard{background:var(--deep-card);border:1px solid var(--deep-line);border-radius:10px;padding:15px 16px}
+.tcard .lb{font-size:11.5px;font-weight:700;letter-spacing:.9px;color:var(--note-tag);
   margin-bottom:11px;text-transform:uppercase;direction:ltr;unicode-bidi:isolate}
 .tcard .expr{white-space:normal}
 
@@ -326,36 +341,40 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .strip img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* what's inside */
-.kit{background:var(--soft);padding:54px 0;border-bottom:1px solid var(--line)}
+.kit{background:var(--sand);padding:54px 0;border-bottom:1px solid var(--line)}
 .kit h2{text-align:center;color:var(--ink-d);margin-bottom:28px}
 .kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:900px;margin-inline:auto;list-style:none;padding:0;margin:0}
-.kgrid li{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 14px 18px;
+.kgrid li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 14px 18px;
   text-align:center;box-shadow:var(--sh-s)}
-.kgrid i{width:40px;height:40px;border-radius:50%;background:var(--teal-wash);
+.kgrid i{width:40px;height:40px;border-radius:50%;background:var(--teal-t);
   display:grid;place-items:center;margin:0 auto 12px}
 .kgrid svg{width:20px;height:20px;fill:none;stroke:var(--teal);stroke-width:2.6;
   stroke-linecap:round;stroke-linejoin:round}
+.kgrid li:nth-child(3n+2) i{background:var(--clay-t)}
+.kgrid li:nth-child(3n+2) svg{stroke:var(--clay-d)}
+.kgrid li:nth-child(3n) i{background:var(--sun-t)}
+.kgrid li:nth-child(3n) svg{stroke:var(--sun-d)}
 .kgrid b{display:block;font-size:16px;color:var(--ink-d);line-height:1.35;margin-bottom:4px}
-.kgrid span{display:block;color:var(--gray);font-size:14.5px;line-height:1.45}
+.kgrid span{display:block;color:var(--muted);font-size:14.5px;line-height:1.45}
 
 /* how it differs.
    Every product on this shelf charges a subscription, keeps your progress on
    its server, and asks you to open one more thing. Those are the rows, so the
    table argues the point instead of asserting it. */
-.cmp{background:#fff;padding:58px 0;border-bottom:1px solid var(--line)}
+.cmp{background:var(--paper);padding:58px 0;border-bottom:1px solid var(--line)}
 /* Four columns will not honestly fit a phone. Rather than shrink the text to
    unreadable, the table keeps a floor width and the narrow screen scrolls it. */
 .ctab-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .ctab{width:100%;min-width:620px;border-collapse:separate;border-spacing:0;font-size:16px}
 .ctab th,.ctab td{padding:14px 18px;text-align:start;vertical-align:top;
   border-bottom:1px solid var(--line)}
-.ctab thead th{font-size:14px;letter-spacing:.3px;color:var(--gray);font-weight:600;
-  border-bottom:1px solid var(--teal-s)}
+.ctab thead th{font-size:14px;letter-spacing:.3px;color:var(--muted);font-weight:600;
+  border-bottom:1px solid var(--teal-b)}
 .ctab tbody th{font-weight:600;color:var(--ink-d);width:22%}
-.ctab td{color:var(--gray)}
+.ctab td{color:var(--muted)}
 /* The product's own column is tinted for its whole height rather than per cell,
    so the eye reads one continuous answer instead of four separate wins. */
-.ctab .me{background:var(--teal-wash);color:var(--teal-dd);font-weight:600}
+.ctab .me{background:var(--teal-t);color:var(--teal-dd);font-weight:600}
 .ctab thead .me{font-weight:700;border-radius:8px 8px 0 0}
 .ctab tbody tr:last-child .me{border-radius:0 0 8px 8px}
 .ctab tbody tr:last-child th,.ctab tbody tr:last-child td{border-bottom:0}
@@ -364,7 +383,7 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
    recognise themselves faster once the others have been sent away */
 
 /* questions */
-.qs{background:#fff;padding:60px 0;border-bottom:1px solid var(--line)}
+.qs{background:var(--paper);padding:60px 0;border-bottom:1px solid var(--line)}
 .qs h2{text-align:center;color:var(--ink-d);margin-bottom:34px}
 .qlist{max-width:760px;margin:0 auto}
 /* Collapsed by default: seven answers open at once was a wall of text. Native
@@ -374,33 +393,34 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
   align-items:center;gap:16px;padding:18px 4px;font-family:var(--serif);font-size:18px;color:var(--ink-d)}
 .q summary::-webkit-details-marker{display:none}
 .q summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;
-  background:var(--teal-wash);color:var(--teal);display:grid;place-items:center;
+  background:var(--teal-t);color:var(--teal-d);display:grid;place-items:center;
   font-family:var(--sans);font-size:20px;line-height:1;transition:transform .2s}
 .q[open] summary::after{transform:rotate(45deg)}
-.q p{margin:0;padding:0 4px 18px;color:var(--gray);font-size:16.5px}
+.q p{margin:0;padding:0 4px 18px;color:var(--muted);font-size:16.5px}
 code{direction:ltr;unicode-bidi:isolate;font-family:var(--mono);font-size:.88em;
-  background:var(--teal-wash);color:var(--teal-d);border-radius:3px;padding:1px 5px}
+  background:var(--teal-t);color:var(--teal-d);border-radius:3px;padding:1px 5px}
 
 /* final cta */
-.final{background:var(--teal-dd);color:#fff;text-align:center;padding:70px 0}
-.final h2{color:#fff}
-.final p{color:var(--teal-s2);font-size:19px;margin:14px auto 26px;max-width:460px}
-.final .btn-note{color:rgba(206,233,230,.6);margin-top:16px}
-.cmd{direction:ltr;text-align:left;background:#002926;border:1px solid #0B4641;
+.final{background:var(--deep);color:var(--deep-text);text-align:center;padding:70px 0}
+.final h2{color:var(--deep-text)}
+.final p{color:var(--deep-sub);font-size:19px;margin:14px auto 26px;max-width:460px}
+.final .btn-note{color:var(--deep-sub);margin-top:16px}
+.cmd{direction:ltr;text-align:left;background:var(--deep-2);border:1px solid var(--deep-line);
   border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:14px;
-  line-height:2;color:#CEE9E6;overflow-x:auto;white-space:pre;
+  line-height:2;color:var(--teal-t);overflow-x:auto;white-space:pre;
   max-width:620px;margin:0 auto 20px}
-.cmd .p{color:#4FB3A8;user-select:none}
+.cmd .p{color:var(--note-tag);user-select:none}
 
 /* footer */
-footer{background:var(--ink-d);color:var(--gray-l);padding:40px 0 34px;font-size:15px}
-footer .logo{color:#fff;font-size:20px}
-footer p{margin:8px 0 0;color:#A3A3A3}
-.fnote{border-top:1px solid #2b2b2b;margin-top:26px;padding-top:16px;
-  color:var(--gray);font-size:13.5px;display:flex;gap:14px;flex-wrap:wrap}
-.fnote span{color:#9A9A9A}
-.fnote a{color:#B4B4B4;text-decoration:none}
-.fnote a:hover{color:#fff}
+footer{background:var(--ink-d);color:var(--faint);padding:40px 0 34px;font-size:15px}
+footer .logo{color:var(--paper);font-size:20px}
+footer .logo b{color:var(--note-tag)}
+footer p{margin:8px 0 0;color:var(--faint)}
+.fnote{border-top:1px solid #2E2D2B;margin-top:26px;padding-top:16px;
+  color:var(--faint);font-size:13.5px;display:flex;gap:14px;flex-wrap:wrap}
+.fnote span{color:var(--faint)}
+.fnote a{color:var(--night-body);text-decoration:none}
+.fnote a:hover{color:var(--paper)}
 
 @media(max-width:880px){
   .nav-links{display:none}
@@ -458,7 +478,7 @@ footer p{margin:8px 0 0;color:#A3A3A3}
   .ctab thead th{font-size:12.5px;padding:8px 6px;text-align:center;border:0}
   .ctab tbody th{grid-column:1/-1;width:auto;padding:16px 2px 4px;border:0;font-size:15px}
   .ctab td{padding:10px 8px;font-size:13.5px;line-height:1.45;border:0;border-radius:8px;
-    background:#F6F8F8;overflow-wrap:anywhere}
+    background:var(--sand);overflow-wrap:anywhere}
   .ctab .me,.ctab thead .me,.ctab tbody tr:last-child .me{border-radius:8px}
   .ctab tbody tr{padding-bottom:6px;border-bottom:1px solid var(--line)}
 }
@@ -467,28 +487,32 @@ footer p{margin:8px 0 0;color:#A3A3A3}
 /* open source — the page's answer to "is this safe to install?". The badges are
    GitHub's own, live: if the privacy check ever fails, this section says so. */
 .srcline{margin:8px 0 0;text-align:center;font-size:14px}
-.srcline a{color:var(--gray);text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+.srcline a{color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;
   border-bottom:1px solid var(--line);padding-bottom:1px}
 .srcline a:hover{color:var(--ink-d)}
 .ghm{width:15px;height:15px;fill:currentColor;flex:none}
-.trust{background:var(--teal-wash);padding:58px 0;border-bottom:1px solid var(--line);text-align:center}
-.trust h2{color:var(--ink-d);margin-bottom:8px}
-.tsub{color:var(--gray);font-size:16.5px;max-width:620px;margin:0 auto}
+.trust{background:var(--deep);padding:58px 0;text-align:center}
+.trust h2{color:var(--deep-text);margin-bottom:8px}
+.tsub{color:var(--deep-sub);font-size:16.5px;max-width:620px;margin:0 auto}
 .tfacts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:28px auto 0;
   padding:0;list-style:none}
-.tfacts li{background:#fff;border:1px solid var(--teal-s);border-radius:12px;padding:16px 12px}
-.tfacts b{display:block;color:var(--teal-dd);font-size:17px}
-.tfacts span{display:block;color:var(--gray);font-size:14.5px;margin-top:2px}
+.tfacts li{background:var(--deep-card);border:1px solid var(--deep-line);border-radius:12px;padding:16px 12px}
+.tfacts b{display:block;color:var(--sun);font-size:17px}
+.tfacts span{display:block;color:var(--deep-sub);font-size:14.5px;margin-top:2px}
 .tbadges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px 0 0}
 .tbadges img{height:20px;display:block}
 .tbtns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
 .tbtns .btn{display:inline-flex;align-items:center;gap:8px}
-.tbtns .btn.ghost{background:#fff;color:var(--teal-d);box-shadow:none;border:1.5px solid var(--teal-s)}
+.trust .btn{background:var(--sun);color:var(--ink-d);box-shadow:0 2px 0 rgba(0,0,0,.22)}
+.trust .btn:hover{background:#FFC857}
+/* the secondary button on a deep section: an outline, never a second fill */
+.trust .btn.ghost{background:transparent;color:var(--deep-text);box-shadow:none;border:1.5px solid rgba(255,246,230,.45)}
+.trust .btn.ghost:hover{background:rgba(255,246,230,.08)}
 .tbtns .btn .ghm{width:17px;height:17px}
 .task{margin:30px auto 0;max-width:640px}
-.task p{color:var(--ink);font-size:16px;margin:0 0 10px;font-weight:600}
-.tprompt{background:#fff;border:1px solid var(--teal-s);border-radius:10px;padding:14px 16px;
-  font-size:15px;line-height:1.6;color:var(--ink);text-align:start;overflow-wrap:anywhere}
+.task p{color:var(--deep-text);font-size:16px;margin:0 0 10px;font-weight:600}
+.tprompt{background:var(--deep-card);border:1px solid var(--deep-line);border-radius:10px;padding:14px 16px;
+  font-size:15px;line-height:1.6;color:var(--deep-text);text-align:start;overflow-wrap:anywhere}
 .task .btn{margin-top:10px}
 @media(max-width:640px){
   /* three short chips in a row: the long version was a full screen of scrolling */
@@ -501,13 +525,13 @@ footer p{margin:8px 0 0;color:#A3A3A3}
 /* Phone visitors — most of them, arriving from a reel — cannot install a
    Claude Code plugin where they are. This hands the two lines to the phone's
    own share sheet so they arrive on the computer. Shown on touch screens only. */
-.sendme{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--teal-d);
-  border:1.5px solid var(--teal-s);box-shadow:none}
+.sendme{display:inline-flex;align-items:center;gap:8px;background:var(--card);color:var(--teal-d);
+  border:1.5px solid var(--teal-b);box-shadow:none}
 .sendme[hidden]{display:none}
-.sendme:hover{background:var(--teal-wash);color:var(--teal-dd)}
+.sendme:hover{background:var(--teal-t);color:var(--teal-dd)}
 .sendme svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.final .sendme{background:transparent;color:#fff;border-color:rgba(255,255,255,.45);margin-top:12px}
-.final .sendme:hover{background:rgba(255,255,255,.08);color:#fff}
+.final .sendme{background:transparent;color:var(--deep-text);border-color:rgba(255,246,230,.45);margin-top:12px}
+.final .sendme:hover{background:rgba(255,246,230,.08);color:var(--deep-text)}
 </style>
 </head>
 <body>
