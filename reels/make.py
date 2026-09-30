@@ -187,6 +187,63 @@ def samples():
     ]
 
 
+def library():
+    """Everything, filed by audience and format: the folder an editor works from.
+    Each job carries 'dir' = <audience>/<format>."""
+    ex = expressions()
+    en = json.load(open(HERE / 'content-en.json', encoding='utf-8'))
+    fo, he = en['foreign'], en['hebrew']
+    S = {j['slug']: j for j in samples()}
+    jobs = []
+    add = lambda d, js: jobs.extend(dict(j, dir=d) for j in js)
+    # Hebrew speakers learning English
+    add('he-learning-english/expression', ex)
+    add('he-learning-english/quiz', quizzes(ex)[::2])
+    add('he-learning-english/top3', top3s(ex))
+    add('he-learning-english/versus', versus(ex))
+    add('he-learning-english/demo', demos())
+    add('he-learning-english/pov', [S['he-6-pov']])
+    add('he-learning-english/screen', [S['he-7-screen-code'], S['he-8-screen-chat']])
+    # English speakers learning another language
+    add('en-learning-languages/screen', [S['en-0-screen-code']])
+    add('en-learning-languages/demo', [dict(d, slug=d['slug']) for d in english_demos()[:3]])
+    quiz_en = []
+    for i, q in enumerate(fo):
+        others = [f['meaning'].split(' — ')[0] for f in fo if f is not q][:2]
+        ans = i % 3
+        opts = others[:]; opts.insert(ans, q['meaning'].split(' — ')[0])
+        quiz_en.append(dict(type='quiz', ui='en', slug=f'quiz-{q["slug"]}', cat=q['lang'], expr=q['expr'],
+                            example=q['example'], options=opts, answer=ans))
+    add('en-learning-languages/quiz', quiz_en)
+    hooks = {'Italian': 'Italians say it<br>before every exam', 'Spanish': 'Spanish you won’t<br>learn in class',
+             'French': 'The French word<br>for Sunday mood'}
+    add('en-learning-languages/literally', [dict(type='lit', ui='en', slug=f'lit-{q["slug"]}', cat='', lang=q['lang'],
+        hook=hooks.get(q['lang'], 'Say it like a local'), **{k: q[k] for k in ('expr', 'lit', 'meaning', 'example', 'example_en')}) for q in fo])
+    add('en-learning-languages/pov', [S['en-4-pov']])
+    # English speakers learning Hebrew
+    add('learning-hebrew/literally', [dict(type='lit', ui='en', slug=f'lit-{h["slug"]}', cat='slang', lang='Hebrew',
+        hook='Hebrew you won’t find<br>in a textbook', **{k: h[k] for k in ('expr', 'tr', 'lit', 'meaning', 'example', 'example_en')}) for h in he])
+    add('learning-hebrew/pov', [S['hebrew-2-pov']])
+    return jobs
+
+
+def _render_chunk(args):
+    chunk, out, music = args
+    from playwright.sync_api import sync_playwright
+    exe = os.environ.get('CHROMIUM') or ('/opt/pw-browsers/chromium' if os.path.exists('/opt/pw-browsers/chromium') else None)
+    done = []
+    with sync_playwright() as p:
+        b = p.chromium.launch(**({'executable_path': exe} if exe else {}))
+        page = b.new_page(viewport={'width': 1080, 'height': 1920}, device_scale_factor=1)
+        for j in chunk:
+            dest = Path(out) / j.get('dir', '') / j['slug']
+            render(page, j, dest, music)
+            print(f'  done {j.get("dir", "")}/{j["slug"]}', flush=True)
+            done.append(j)
+        b.close()
+    return done
+
+
 def caption(job):
     tags = '#אנגלית #לימודאנגלית #ביטוייםבאנגלית #Claude #AI #Sidenote'
     end = 'Sidenote מלמד ביטוי אחד בכל שיחה עם Claude, מתוך התשובה שקיבלת. חינם, קוד פתוח. הקישור בפרופיל.'
@@ -274,11 +331,13 @@ def main():
     ap.add_argument('--limit', type=int)
     ap.add_argument('--music')
     ap.add_argument('--samples', action='store_true', help='one reel of every format, for every audience')
+    ap.add_argument('--library', action='store_true', help='everything, filed by audience and format')
+    ap.add_argument('--workers', type=int, default=1, help='render in parallel, one browser each')
     ap.add_argument('--out', default=str(HERE / 'out'))
     a = ap.parse_args()
 
     ex = expressions()
-    jobs = samples() if a.samples else ex + demos() + quizzes(ex) + top3s(ex) + versus(ex)
+    jobs = library() if a.library else samples() if a.samples else ex + demos() + quizzes(ex) + top3s(ex) + versus(ex)
     if a.only:
         jobs = [j for j in jobs if j['type'] == a.only]
     if a.id:
@@ -288,15 +347,15 @@ def main():
     if not jobs:
         sys.exit('nothing to render')
 
-    from playwright.sync_api import sync_playwright
-    exe = os.environ.get('CHROMIUM') or ('/opt/pw-browsers/chromium' if os.path.exists('/opt/pw-browsers/chromium') else None)
-    with sync_playwright() as p:
-        b = p.chromium.launch(**({'executable_path': exe} if exe else {}))
-        page = b.new_page(viewport={'width': 1080, 'height': 1920}, device_scale_factor=1)
+    if a.workers > 1:
+        from concurrent.futures import ProcessPoolExecutor
+        chunks = [jobs[i::a.workers] for i in range(a.workers)]
+        with ProcessPoolExecutor(a.workers) as pool:
+            list(pool.map(_render_chunk, [(c, a.out, a.music) for c in chunks if c]))
+    else:
         for i, j in enumerate(jobs, 1):
             print(f'[{i}/{len(jobs)}] {j["slug"]}', flush=True)
-            render(page, j, Path(a.out) / j['slug'], a.music)
-        b.close()
+        _render_chunk((jobs, a.out, a.music))
     print(f'done: {len(jobs)} reel(s) in {a.out}')
 
 

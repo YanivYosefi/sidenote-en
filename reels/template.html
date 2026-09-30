@@ -70,12 +70,12 @@ mark{background:linear-gradient(transparent 55%,var(--gold) 55%) no-repeat left/
 .win{position:absolute;left:70px;right:130px;top:560px;background:#1B1F1E;border-radius:34px;
   box-shadow:0 30px 90px rgba(4,65,61,.28);overflow:hidden;color:#E8ECEB}
 .win .top{display:flex;align-items:center;gap:14px;padding:26px 32px;background:#232826;font-size:30px;color:#9AA8A5}
-.win .top s{text-decoration:none;color:#E07A4F;font-size:34px}
+.win .top s{text-decoration:none;color:#D97757;font-size:34px}
 .win .top em{font-style:normal;margin-inline-start:auto;font-size:28px}
 .win .body{padding:34px 40px 44px;min-height:880px}
 .q{font-size:46px;line-height:1.45;color:#fff;padding-inline-start:44px;position:relative}
-.q:before{content:">";position:absolute;inset-inline-start:0;color:#E07A4F;font-family:monospace}
-.car{display:inline-block;width:4px;height:44px;background:#E07A4F;vertical-align:-8px;margin-inline-start:4px}
+.q:before{content:">";position:absolute;inset-inline-start:0;color:#D97757;font-family:monospace}
+.car{display:inline-block;width:4px;height:44px;background:#D97757;vertical-align:-8px;margin-inline-start:4px}
 .a{margin-top:40px;font-size:41px;line-height:1.55;color:#C9D2D0;white-space:pre-line}
 .note{margin-top:40px;border-radius:26px;background:#10352F;border:2px solid #1E6A5F;padding:32px 36px}
 .note .nt{font-weight:700;font-size:26px;letter-spacing:.14em;color:#6FD3C2}
@@ -189,7 +189,7 @@ mark{background:linear-gradient(transparent 55%,var(--gold) 55%) no-repeat left/
 .tl .dot{color:#6CC08B}
 .am{margin:14px 0 0;white-space:pre-line}
 .am .dot{color:#E8E6E1;margin-inline-end:10px}
-.sn{margin-top:22px;border:2px solid #2D8C7E;background:#12302B;border-radius:14px;padding:18px 24px}
+.sn{margin-top:22px;max-width:700px;border:2px solid #2D8C7E;background:#12302B;border-radius:14px;padding:18px 24px}
 .sn .k{font-family:Mono,monospace;font-size:17px;letter-spacing:.16em;color:#6FD3C2}
 .sn .src{font-size:20px;color:#9FB8B3;margin:6px 0 8px}
 .sn .x{font-family:Lora,serif;font-weight:700;font-size:40px;color:#fff;direction:ltr;text-align:left}
@@ -660,14 +660,22 @@ function setupScreen(j) {
   $('#out').style.zIndex = 8;
   /* measure in world coordinates while the camera is at rest */
   const world = $('#world'); world.style.transform = 'none';
+  /* measure the finished conversation: the answer is typed in later, so an
+     empty answer here would put the block too high and hide the overflow */
+  $('#umt').textContent = j.prompt; $('#amt').textContent = j.answer; $('#th').style.display = 'none';
   const W = el => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; };
-  const lapR = W($('.lap')), colR = W($('#col')), snR = W($('#sn'));
+  const lapR = W($('.lap')), colR = W($('#col')), snR0 = W($('#sn')), scrR = W($('#scr'));
+  /* Like a real chat, the conversation scrolls up when the block would land
+     under the input box. The camera frames where it ends up, not where it began. */
+  const overflow = Math.max(0, (snR0.y + snR0.h) - (scrR.y + scrR.h - 120));
+  const snR = { ...snR0, y: snR0.y - overflow };
   const CX = 510, CY = 1010;
   const frame = (r, s) => ({ s, x: CX - (r.x + r.w / 2) * s, y: CY - (r.y + r.h / 2) * s });
   const K0 = frame({ x: lapR.x - 120, y: lapR.y, w: lapR.w + 240, h: lapR.h + 46 }, 1000 / (lapR.w + 240));
   const convo = { x: colR.x, y: colR.y, w: colR.w, h: Math.min(colR.h, snR.y - colR.y + snR.h) };
   const K1 = frame(convo, 1.02);
-  const K2 = frame(snR, Math.min(1.5, 900 / snR.w));
+  /* a close-up on the block: as large as it can be without cropping it */
+  const K2 = frame(snR, Math.min(1.45, 1000 / snR.w));
   const mix = (a, b, k) => ({ s: a.s + (b.s - a.s) * k, x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k });
   const T = 16;
   return t => {
@@ -694,6 +702,7 @@ function setupScreen(j) {
     const ap = prog(t, a0, a0 + 1.3);
     $('#amt').textContent = j.answer.slice(0, Math.round(j.answer.length * ap));
     $('#am').style.visibility = ap > 0 ? 'visible' : 'hidden';
+    $('#col').style.transform = `translateY(${-overflow * inOut(prog(t, 5.0, 5.6))}px)`;
     const n = outC(prog(t, 5.3, 5.8));
     $('#sn').style.opacity = n; $('#sn').style.transform = `translateY(${(1 - n) * 24}px)`;
     if ($('#cur')) $('#cur').style.opacity = Math.floor(t * 2) % 2 ? 0 : 1;
