@@ -72,11 +72,15 @@
   .card{background:var(--teal-wash);border:1px solid var(--teal-s2);
     border-radius:8px;padding:18px 20px;margin:22px 0}
   .card b{color:var(--teal-d)}
+  /* the call to action was the browser's default blue */
+  .card a{display:inline-block;margin-top:10px;background:var(--teal);color:#fff;text-decoration:none;
+    font-weight:700;padding:9px 18px;border-radius:6px}
+  .card a:hover{background:var(--teal-d)}
   .expr-head{margin-bottom:6px}
   .expr-head .kind{display:inline-block;background:var(--teal-wash);
     color:var(--teal-d);border:1px solid var(--teal-s2);border-radius:14px;
     padding:2px 10px;font-size:13px;margin-bottom:12px}
-  .expr-title{font-family:Lora,Georgia,serif;font-size:38px;margin:0 0 6px;
+  .expr-title{font-family:Lora,Georgia,serif;font-size:38px;margin:0 0 6px;text-align:right;
     direction:ltr;unicode-bidi:isolate;color:var(--ink);line-height:1.2}
   .expr-block{margin:22px 0}
   .expr-block h2{font-family:Assistant,Arial,sans-serif;font-size:15px;
