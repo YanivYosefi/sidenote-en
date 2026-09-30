@@ -25,9 +25,12 @@
 <link rel="icon" href="/sidenote-en/media/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/sidenote-en/media/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/sidenote-en/media/icon-180.png" sizes="180x180">
+<link rel="preload" as="image" href="/sidenote-en/media/film2-poster-en.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap"></noscript>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Sidenote","description":"Sidenote — плагин для Claude, который учит вас любому языку прямо во время работы. Одно выражение в конце ответа, связанное с тем, что вы только что делали. Хранится у вас, без аккаунта и без сервера.","applicationCategory":"EducationalApplication","operatingSystem":"Claude Code (macOS, Linux, Windows)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://yanivyosefi.github.io/sidenote-en/home/ru","inLanguage":["he","en","es","ru","ar"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Это меня замедлит?","acceptedAnswer":{"@type":"Answer","text":"Нет. Нужный ответ остаётся полным и идёт первым. Выражение приходит после него, одной строкой."}},{"@type":"Question","name":"Нужен аккаунт?","acceptedAnswer":{"@type":"Answer","text":"Нет. Ни регистрации, ни почты, ни личного адреса."}},{"@type":"Question","name":"Сколько стоит?","acceptedAnswer":{"@type":"Answer","text":"Ничего. Плагин работает на подписке Claude, которая у вас уже есть."}},{"@type":"Question","name":"Где хранится прогресс?","acceptedAnswer":{"@type":"Answer","text":"В одном файле на вашем компьютере, в `~/.sidenote/state.json`. Наружу ничего не уходит."}},{"@type":"Question","name":"Какие языки?","acceptedAnswer":{"@type":"Answer","text":"Любой, который знает Claude. Английский, испанский, французский, итальянский, немецкий, японский, иврит, арабский и другие."}},{"@type":"Question","name":"Как удалить всё?","acceptedAnswer":{"@type":"Answer","text":"`claude plugin uninstall sidenote` и удалить папку. Всё."}},{"@type":"Question","name":"Я не заходил месяц. Что будет?","acceptedAnswer":{"@type":"Answer","text":"Ничего не теряется. Файл остаётся на месте, а выражения ждут. Они не накапливаются в долг из двухсот повторов, который свалится на вас в день возвращения. Вы продолжите с того места, где остановились."}}]}</script>
 <style>
@@ -466,7 +469,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
        Filenames are versioned: the media is served immutable, so replacing a
        clip under its old name shows the old one for days. -->
   <div class="hero-media">
-    <video autoplay muted playsinline controls preload="metadata"
+    <video muted playsinline controls preload="none"
            poster="/sidenote-en/media/film2-poster-en.jpg">
       <source src="/sidenote-en/media/film2-en.mp4" type="video/mp4">
     </video>
@@ -998,6 +1001,31 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
       setTimeout(function () { cp.textContent = was; }, 1700);
     });
   });
+
+  /* The film is heavy and it is not why anyone opened the page, so it is not
+     on the critical path: no autoplay attribute, preload="none", and the
+     fetch only starts once the page has loaded and the poster is actually on
+     screen. Someone who lands at the top still sees it start by itself. */
+  var film = document.querySelector('.hero-media video');
+  if (film) {
+    var roll = function () {
+      film.preload = 'auto';
+      var p = film.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+    var watch = function () {
+      if (!('IntersectionObserver' in window)) return roll();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { io.disconnect(); roll(); }
+        });
+      }, { threshold: 0.2 });
+      io.observe(film);
+    };
+    if (document.readyState === 'complete') watch();
+    else window.addEventListener('load', watch);
+  }
+
 })();
 </script>
 </body>
