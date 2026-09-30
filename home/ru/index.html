@@ -100,7 +100,7 @@ nav.top .spacer{flex:1}
 .btn-light{background:#fff;color:var(--teal-dd);box-shadow:0 2px 0 rgba(0,0,0,.12)}
 .btn-light:hover{background:#f4faf9;color:var(--teal-dd);box-shadow:0 2px 0 rgba(0,0,0,.18)}
 
-.more{display:block;font-size:14px;color:var(--gray-l);margin-top:14px}
+.more{display:block;font-size:14px;color:var(--gray);margin-top:14px}
 
 /* "I speak X and I want to learn Y" — the one control on the page. Everything
    else follows it: the headline word, both demos and the three-up block. */
@@ -127,9 +127,9 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
   border:1px solid var(--teal-s2);color:var(--teal-d);border-radius:20px;
   font-size:14px;font-weight:700;padding:6px 15px;margin-bottom:22px}
 .free-tag i{width:7px;height:7px;border-radius:50%;background:var(--teal);display:block}
-.btn-note{display:block;color:var(--gray-l);font-size:14px;margin-top:14px}
+.btn-note{display:block;color:var(--gray);font-size:14px;margin-top:14px}
 .works-in{display:flex;justify-content:center;align-items:center;gap:9px;
-  flex-wrap:wrap;margin-top:26px;color:var(--gray-l);font-size:14px}
+  flex-wrap:wrap;margin-top:26px;color:var(--gray);font-size:14px}
 .chip{background:#fff;border:1px solid var(--line);
   border-radius:4px;padding:5px 13px;color:var(--gray);font-size:14px;font-weight:600;
   box-shadow:var(--sh-s)}
@@ -182,7 +182,9 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .kicker{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.9px;
   text-transform:uppercase;color:var(--teal);margin:0 0 9px}
 .feat h3{margin-bottom:10px;color:var(--ink-d)}
-.feat p{margin:0;color:var(--gray);font-size:17.5px}
+/* scoped to the copy column: unscoped, it beat .tq and greyed out the
+   question inside the chat mockup (2.9:1 on its dark bubble) */
+.feat .copy p{margin:0;color:var(--gray);font-size:17.5px}
 .feat .langs{margin-top:22px}
 
 /* ===== the Claude Code window =====
@@ -208,7 +210,7 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
   background:rgba(0,133,124,.11);padding:12px 14px}
 .tnote .tag{font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:1.1px;
   color:#5FC0B4;margin-bottom:7px;direction:ltr;unicode-bidi:isolate}
-.tnote .src{display:block;font-size:12.5px;color:#8A857A;margin:-2px 0 10px;
+.tnote .src{display:block;font-size:12.5px;color:#A8A294;margin:-2px 0 10px;
   padding-inline-start:9px;border-inline-start:2px solid #3B4644}
 .expr{display:inline-block;background:rgba(0,0,0,.30);border:1px solid #33514D;
   border-radius:4px;padding:3px 10px;font-size:15px;color:#7FD6C9;white-space:nowrap;
@@ -245,7 +247,7 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .xrow{display:grid;grid-template-columns:265px 1fr;gap:36px;align-items:start}
 .xsteps{list-style:none;margin:0;padding:0}
 .xsteps li{display:flex;gap:12px;align-items:center;padding:12px 0;
-  color:var(--gray-l);font-size:16.5px;transition:color .3s}
+  color:var(--gray);font-size:16.5px;transition:color .3s}
 .xsteps li i{flex:none;width:27px;height:27px;border-radius:50%;background:#fff;
   border:1px solid var(--teal-s2);color:var(--teal-l);font-style:normal;font-weight:700;
   font-size:13px;display:flex;align-items:center;justify-content:center;
@@ -394,10 +396,11 @@ code{direction:ltr;unicode-bidi:isolate;font-family:var(--mono);font-size:.88em;
 /* footer */
 footer{background:var(--ink-d);color:var(--gray-l);padding:40px 0 34px;font-size:15px}
 footer .logo{color:#fff;font-size:20px}
-footer p{margin:8px 0 0;color:var(--gray)}
+footer p{margin:8px 0 0;color:#A3A3A3}
 .fnote{border-top:1px solid #2b2b2b;margin-top:26px;padding-top:16px;
   color:var(--gray);font-size:13.5px;display:flex;gap:14px;flex-wrap:wrap}
-.fnote a{color:var(--gray-l);text-decoration:none}
+.fnote span{color:#9A9A9A}
+.fnote a{color:#B4B4B4;text-decoration:none}
 .fnote a:hover{color:#fff}
 
 @media(max-width:880px){
@@ -421,7 +424,10 @@ footer p{margin:8px 0 0;color:var(--gray)}
   nav.top .wrap{gap:8px;height:58px}
   .uilangs a{padding:4px 6px;font-size:12.5px}
   .nav-cta-link{display:none}
-  .steps{grid-template-columns:1fr;gap:22px}
+  /* three short steps fit side by side; stacked they took a whole screen */
+  .steps{grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px}
+  .steps .n{width:38px;height:38px;font-size:17px}
+  .steps p{font-size:14.5px;line-height:1.45}
   .kit{padding:44px 0}
   .feat{padding:44px 0}
   .app-body{font-size:14.3px;padding:14px}
@@ -437,6 +443,22 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .chooser{font-size:16px;gap:7px}
   .chooser select{font-size:15.5px;padding:6px 12px}
   .hero-media{margin-top:28px;border-radius:10px}
+  /* the install lines wrap instead of disappearing off the edge */
+  .cmd{font-size:12.5px;padding:13px 14px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75}
+  .filecard pre{font-size:11.5px;padding:14px}
+  .works-in{gap:6px}
+  .works-in .chip{font-size:13px;padding:5px 10px}
+  /* The comparison: on a phone each row becomes a label over three small
+     cells, so every column stays in view instead of hiding off the side. */
+  .ctab,.ctab thead,.ctab tbody{display:block;min-width:0}
+  .ctab tr{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .ctab thead td:first-child{display:none}
+  .ctab thead th{font-size:12.5px;padding:8px 6px;text-align:center;border:0}
+  .ctab tbody th{grid-column:1/-1;width:auto;padding:16px 2px 4px;border:0;font-size:15px}
+  .ctab td{padding:10px 8px;font-size:13.5px;line-height:1.45;border:0;border-radius:8px;
+    background:#F6F8F8;overflow-wrap:anywhere}
+  .ctab .me,.ctab thead .me,.ctab tbody tr:last-child .me{border-radius:8px}
+  .ctab tbody tr{padding-bottom:6px;border-bottom:1px solid var(--line)}
 }
 @media(prefers-reduced-motion:reduce){ .sw{transition:none} }
 
@@ -530,6 +552,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
     </video>
   </div>
 </div></header>
+<main>
 
 <div class="band" id="how"><div class="wrap narrow">
   <h2>Как это работает</h2>
@@ -712,7 +735,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
 <section class="cmp" id="cmp"><div class="wrap">
   <div class="ctab-wrap"><table class="ctab">
     <thead><tr>
-      <th></th>
+      <td></td>
       <th class="me">Sidenote</th>
       <th>Расширения для браузера</th>
       <th>Приложения с карточками</th>
@@ -759,6 +782,8 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
 claude plugin install sidenote@sidenote" data-done="Скопировано">Копировать</button>
   <span class="btn-note">Нужен Claude Code. Работает на macOS, Linux и Windows.</span>
 </div></div>
+
+</main>
 
 <footer><div class="wrap">
   <a href="/sidenote-en/home/ru" class="logo">Side<b>note</b></a>
