@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Sidenote share card</title>
+<!-- The 1200x630 picture a chat app shows when someone shares a phrase page.
+     og.py fills it in with draw(job) and takes one screenshot. -->
+<style>
+@font-face{font-family:Assistant;font-weight:400;src:url(fonts/assistant-hebrew-400-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Assistant;font-weight:400;src:url(fonts/assistant-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Assistant;font-weight:700;src:url(fonts/assistant-hebrew-700-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Assistant;font-weight:700;src:url(fonts/assistant-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Frank;font-weight:700;src:url(fonts/frank-ruhl-libre-hebrew-700-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Frank;font-weight:700;src:url(fonts/frank-ruhl-libre-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Lora;font-weight:700;src:url(fonts/lora-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:Lora;font-weight:600;font-style:italic;src:url(fonts/lora-latin-600-italic.woff2) format("woff2")}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{font-family:Assistant,sans-serif;color:#1F2A29;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(900px 600px at 100% 0%,#D8EEE9 0%,transparent 60%),#EDF6F4}
+.card{position:absolute;inset:0;padding:64px 76px 56px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:Frank,serif;font-weight:700;font-size:42px;direction:ltr;color:#1F2A29}
+.logo b{color:#00857C}
+.tag{font-weight:700;font-size:26px;color:#065C56;background:#fff;border:2px solid #9ACECA;border-radius:40px;padding:6px 20px}
+.ex{margin-top:58px;direction:ltr;text-align:right;font-family:Lora,serif;font-weight:700;font-size:96px;line-height:1.08;color:#04413D}
+.u{height:10px;width:180px;border-radius:5px;background:#F2C14E;margin:20px 0 0 auto}
+.mn{margin-top:30px;font-size:44px;font-weight:700;line-height:1.3;max-height:118px;overflow:hidden}
+.foot{position:absolute;left:76px;right:76px;bottom:48px;display:flex;justify-content:space-between;align-items:center;
+  font-size:26px;color:#5E6B69}
+.foot b{color:#065C56}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top"><div class="logo">Side<b>note</b></div><div class="tag" id="tag"></div></div>
+  <div class="ex" id="ex"></div>
+  <div class="u"></div>
+  <div class="mn" id="mn"></div>
+  <div class="foot"><span>ביטוי באנגלית · משמעות, דוגמה ומתי משתמשים</span><b>ביטוי אחד בכל שיחה עם Claude</b></div>
+</div>
+<script>
+window.draw = async function (j) {
+  await document.fonts.ready;
+  document.getElementById('tag').textContent = j.cat;
+  const ex = document.getElementById('ex'); ex.textContent = j.expr;
+  let s = 96;
+  while (s > 52 && ex.scrollHeight > 220) { s -= 4; ex.style.fontSize = s + 'px'; }
+  const mn = document.getElementById('mn');
+  /* English runs inside the Hebrew meaning stay left-to-right */
+  mn.innerHTML = j.meaning.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))
+    .replace(/[A-Za-z][A-Za-z'.\- ]*[A-Za-z.]|[A-Za-z]/g, m => `<bdi dir="ltr">${m}</bdi>`).replace(/;\s*/g, ' · ');
+  let m = 44;
+  while (m > 28 && mn.scrollHeight > 118) { m -= 2; mn.style.fontSize = m + 'px'; }
+  await document.fonts.ready;
+};
+</script>
+</body>
+</html>
