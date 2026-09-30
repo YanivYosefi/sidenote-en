@@ -963,12 +963,12 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
     while (tok === xtok) {
       var d = XD[(xpin === null ? xi : xpin) % XD.length];
       xframe(d); xmark(0); xcar.classList.remove('off');
-      await xsleep(420); if (tok !== xtok) return;
-      if (!await xtype(xq, d.q, 2200, tok)) return;
+      await xsleep(250); if (tok !== xtok) return;
+      if (!await xtype(xq, d.q, 900, tok)) return;
       xcar.classList.add('off');
-      await xsleep(400); if (tok !== xtok) return;
+      await xsleep(200); if (tok !== xtok) return;
       xmark(1); xaw.classList.add('on');
-      if (!await xtype(xa, d.a, 3200, tok)) return;
+      if (!await xtype(xa, d.a, 1400, tok)) return;
       await xsleep(450); if (tok !== xtok) return;
       xmark(2); xn.classList.add('on');
       await xsleep(5600); if (tok !== xtok) return;
