@@ -140,8 +140,8 @@ def samples():
         dict(pick(top3s(ex), 'top3-meetings-1'), slug='he-4-top3'),
         dict(pick(versus(ex), 'vs-imply-vs-infer'), slug='he-5-versus'),
         dict(type='pov', ui='he', slug='he-6-pov', lines=[
-            dict(t='POV:', cls='k'), dict(t='אתם מדברים עם Claude'), dict(t='6 שעות ביום'),
-            dict(t='…והוא מלמד אתכם'), dict(t='אנגלית בלי שהרגשתם', cls='g')],
+            dict(t='POV:', cls='k'), dict(t='אתם מדברים עם Claude'), dict(t='6 שעות ביום…'),
+            dict(t='והוא מלמד אתכם'), dict(t='אנגלית בלי שהרגשתם', cls='g')],
             card=dict(expr='to take the brunt of it', gloss='לספוג את עיקר העומס — החלק שחוטף הכי חזק.'), cat=''),
         dict(type='screen', mode='cli', ui='he', slug='he-7-screen-code', cat='', cwd='~/shop',
              prompt="הטסט של הצ'קאאוט נופל רק לפעמים. תבדוק למה?",
