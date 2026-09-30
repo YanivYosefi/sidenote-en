@@ -24,6 +24,8 @@
 @font-face{font-family:Frank;font-weight:700;src:url(fonts/frank-ruhl-libre-hebrew-700-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
 @font-face{font-family:Frank;font-weight:700;src:url(fonts/frank-ruhl-libre-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
 @font-face{font-family:Lora;font-weight:600;src:url(fonts/lora-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:Mono;font-weight:400;src:url(fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+2190-23FF,U+2500-257F,U+25A0-25FF,U+2700-27BF}
+@font-face{font-family:Mono;font-weight:700;src:url(fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+2190-23FF,U+2500-257F,U+25A0-25FF,U+2700-27BF}
 @font-face{font-family:Lora;font-weight:700;src:url(fonts/lora-latin-700-normal.woff2) format("woff2")}
 @font-face{font-family:Lora;font-weight:600;font-style:italic;src:url(fonts/lora-latin-600-italic.woff2) format("woff2")}
 
@@ -160,6 +162,63 @@ mark{background:linear-gradient(transparent 55%,var(--gold) 55%) no-repeat left/
 .pcard .nt{font-weight:700;font-size:28px;letter-spacing:.14em;color:#6FD3C2}
 .pcard .nx{font-family:Lora,serif;font-weight:700;font-size:70px;margin:8px 0}
 .pcard .ng{font-size:40px;line-height:1.4;color:#CFE7E2}
+
+/* ---------- screen: a laptop on a desk, then into the screen ---------- */
+.desk{position:absolute;inset:0;background:radial-gradient(1400px 1000px at 50% 30%,#F4EFE6 0%,#E3DACB 55%,#CFC3AF 100%)}
+.world{position:absolute;left:0;top:0;transform-origin:0 0}
+.lap{position:absolute;left:0;top:0;width:1480px;height:940px;background:#161616;border-radius:34px;padding:20px;
+  box-shadow:0 50px 120px rgba(60,40,10,.35),inset 0 0 0 2px #2a2a2a}
+.lap .cam{position:absolute;top:7px;left:50%;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:#333}
+.base{position:absolute;left:-120px;top:936px;width:1720px;height:46px;border-radius:0 0 40px 40px;
+  background:linear-gradient(#DADADA,#A9A9A9);box-shadow:0 30px 60px rgba(60,40,10,.3)}
+.base i{position:absolute;left:50%;top:0;width:220px;height:14px;margin-left:-110px;border-radius:0 0 14px 14px;background:#BDBDBD}
+.scr{position:relative;width:1440px;height:900px;overflow:hidden;border-radius:10px}
+/* Claude Code, dark */
+.scr.cli{background:#1F1E1D;color:#E8E6E1;font-family:Assistant,sans-serif}
+.tb{height:52px;display:flex;align-items:center;gap:10px;padding:0 20px;background:#262524;border-bottom:1px solid #333;font-size:20px;color:#9C988F}
+.tb i{width:14px;height:14px;border-radius:50%;display:inline-block}
+.tb .t{margin:0 auto;font-weight:600;color:#C9C5BC}
+.col{width:860px;margin:0 auto;padding:34px 0 0;font-size:27px;line-height:1.5}
+.wel{border:1.5px solid #D97757;border-radius:12px;padding:16px 22px;font-family:Mono,monospace;font-size:21px;color:#B8B3A9;margin-bottom:26px}
+.wel b{color:#E8E6E1}
+.wel s{text-decoration:none;color:#D97757}
+.um{background:#2E2D2B;border-radius:12px;padding:14px 20px;margin:0 0 20px;color:#F2F0EB}
+.th{font-family:Mono,monospace;font-size:22px;color:#D97757;margin:0 0 14px}
+.tl{font-family:Mono,monospace;font-size:21px;margin:0 0 4px;color:#E8E6E1;direction:ltr;text-align:left}
+.tl.r{color:#8F8A80;padding-left:28px;margin-bottom:12px}
+.tl .dot{color:#6CC08B}
+.am{margin:14px 0 0;white-space:pre-line}
+.am .dot{color:#E8E6E1;margin-inline-end:10px}
+.sn{margin-top:22px;border:2px solid #2D8C7E;background:#12302B;border-radius:14px;padding:18px 24px}
+.sn .k{font-family:Mono,monospace;font-size:17px;letter-spacing:.16em;color:#6FD3C2}
+.sn .src{font-size:20px;color:#9FB8B3;margin:6px 0 8px}
+.sn .x{font-family:Lora,serif;font-weight:700;font-size:40px;color:#fff;direction:ltr;text-align:left}
+.sn .x.rt{direction:rtl;text-align:right;font-family:Frank,serif}
+.sn .g{font-size:24px;color:#CFE7E2}
+.sn .e{font-family:Lora,serif;font-style:italic;font-size:23px;color:#8FE0D0;margin-top:4px;direction:ltr;text-align:left}
+.inp{position:absolute;left:50%;bottom:34px;width:860px;margin-left:-430px;border:1.5px solid #4A4844;border-radius:14px;
+  padding:14px 20px;font-family:Mono,monospace;font-size:22px;color:#8F8A80;background:#1F1E1D}
+/* the Claude app, light */
+.scr.app{background:#FAF9F5;color:#141413;font-family:Assistant,sans-serif;display:flex}
+.side{width:300px;background:#F0EEE6;border-inline-end:1px solid #E3E0D6;padding:70px 22px;font-size:19px;color:#6B6860}
+.side b{display:block;color:#141413;font-size:22px;margin-bottom:26px}
+.side div{padding:10px 12px;border-radius:10px;margin-bottom:4px}
+.side div.on{background:#E6E2D6;color:#141413}
+.main{flex:1;position:relative}
+.main .col{width:820px;padding-top:70px}
+.ub{margin-inline-start:auto;max-width:620px;background:#EFEBE1;border-radius:18px;padding:16px 22px;margin-bottom:26px;width:fit-content}
+.ca{font-family:Frank,serif;font-size:29px;line-height:1.55;white-space:pre-line}
+.ca .star{color:#D97757;font-size:30px;margin-inline-end:10px}
+.scr.app .sn{background:#EEF7F4;border-color:#9ACECA}
+.scr.app .sn .k{color:#00857C}.scr.app .sn .src{color:#5E6B69}.scr.app .sn .x{color:#04413D}.scr.app .sn .g{color:#1F2A29}.scr.app .sn .e{color:#065C56}
+.scr.app .inp{background:#fff;border-color:#DDD9CE;color:#9A968C;font-family:Assistant,sans-serif}
+/* captions ride above the picture, never inside it */
+.capx{position:absolute;left:90px;right:150px;top:250px;text-align:center;z-index:5}
+.capx span{display:inline-block;background:rgba(255,255,255,.94);color:var(--ink);font-family:Frank,serif;font-weight:700;
+  font-size:66px;line-height:1.2;padding:22px 36px;border-radius:28px;box-shadow:0 16px 40px rgba(0,0,0,.18)}
+.scrim{position:absolute;inset:0;background:rgba(12,20,19,.72);z-index:4}
+.close{position:absolute;left:90px;right:150px;top:760px;text-align:center;color:#fff;font-family:Frank,serif;font-weight:700;font-size:92px;line-height:1.2;z-index:6}
+.close em{font-style:normal;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -559,13 +618,102 @@ function setupPov(j) {
   };
 }
 
+
+/* ---------- reel 8: the real thing. A laptop on a desk; the camera moves
+   into the screen, the conversation plays, then it closes in on the
+   Sidenote block. The camera is three measured framings, eased between. ---------- */
+function setupScreen(j) {
+  const rt = /[֐-׿]/.test(j.note.expr);
+  const note = `<div class="sn" id="sn"><div class="k">SIDENOTE</div><div class="src" dir="auto">${esc(j.note.src)}</div>
+      <div class="x ${rt ? 'rt' : ''}">${esc(j.note.expr)}</div><div class="g" dir="auto">${esc(j.note.gloss)}</div><div class="e">${esc(j.note.ex)}</div></div>`;
+  const cli = `<div class="scr cli" id="scr">
+      <div class="tb"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i><span class="t">Claude Code — ${esc(j.cwd)}</span></div>
+      <div class="col" id="col" dir="${U === UI.en ? 'ltr' : 'rtl'}">
+        <div class="wel" dir="ltr"><s>✻</s> <b>Welcome to Claude Code!</b><br>&nbsp;&nbsp;cwd: ${esc(j.cwd)}</div>
+        <div class="um" id="um"><span id="umt"></span></div>
+        <div class="th" id="th" dir="ltr">✻ Thinking…</div>
+        ${j.tools.map((t, i) => `<div class="tl" id="tl${i}"><span class="dot">●</span> ${esc(t[0])}</div><div class="tl r" id="tr${i}">⎿&nbsp; ${esc(t[1])}</div>`).join('')}
+        <div class="am" id="am"><span class="dot">●</span><span id="amt"></span></div>
+        ${note}
+      </div>
+      <div class="inp" dir="ltr">&gt; <span id="cur">▌</span></div>
+    </div>`;
+  const app = `<div class="scr app" id="scr">
+      <div class="side" dir="${U === UI.en ? 'ltr' : 'rtl'}"><b>Claude</b>${(j.side || []).map((x, i) => `<div class="${i ? '' : 'on'}">${esc(x)}</div>`).join('')}</div>
+      <div class="main"><div class="col" id="col" dir="${U === UI.en ? 'ltr' : 'rtl'}">
+        <div class="ub" id="um"><span id="umt"></span></div>
+        <div class="th" id="th" dir="ltr" style="color:#D97757">✻</div>
+        <div class="ca" id="am"><span class="star">✻</span><span id="amt"></span></div>
+        ${note}
+      </div>
+      <div class="inp" dir="${U === UI.en ? 'ltr' : 'rtl'}">${U === UI.en ? 'Reply to Claude…' : 'השב ל-Claude…'}</div></div>
+    </div>`;
+  $('#stage').innerHTML = `
+    <div class="desk"></div>
+    <div class="world" id="world"><div class="lap"><span class="cam"></span>${j.mode === 'app' ? app : cli}</div><div class="base"><i></i></div></div>
+    <div class="scrim" id="scrim"></div>
+    <div class="capx" id="c1"><span>${j.hook1}</span></div>
+    <div class="capx" id="c2"><span>${j.hook2}</span></div>
+    <div class="close" id="cl">${j.close}</div>
+    <div class="bar" style="z-index:7"><i id="bar"></i></div>
+    ${outro()}`;
+  $('#out').style.zIndex = 8;
+  /* measure in world coordinates while the camera is at rest */
+  const world = $('#world'); world.style.transform = 'none';
+  const W = el => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; };
+  const lapR = W($('.lap')), colR = W($('#col')), snR = W($('#sn'));
+  const CX = 510, CY = 1010;
+  const frame = (r, s) => ({ s, x: CX - (r.x + r.w / 2) * s, y: CY - (r.y + r.h / 2) * s });
+  const K0 = frame({ x: lapR.x - 120, y: lapR.y, w: lapR.w + 240, h: lapR.h + 46 }, 1000 / (lapR.w + 240));
+  const convo = { x: colR.x, y: colR.y, w: colR.w, h: Math.min(colR.h, snR.y - colR.y + snR.h) };
+  const K1 = frame(convo, 1.02);
+  const K2 = frame(snR, Math.min(1.5, 900 / snR.w));
+  const mix = (a, b, k) => ({ s: a.s + (b.s - a.s) * k, x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k });
+  const T = 16;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    let c = K0;
+    if (t < 5.9) c = mix(K0, K1, inOut(prog(t, .9, 2.1)));
+    else if (t < 10.6) c = mix(K1, K2, inOut(prog(t, 5.9, 6.9)));
+    else c = mix(K2, K0, inOut(prog(t, 10.6, 11.6)));
+    world.style.transform = `translate(${c.x}px, ${c.y}px) scale(${c.s})`;
+    show($('#c1'), win(t, .1, 5.6, .4), 20);
+    show($('#c2'), win(t, 6.0, 10.5, .4), 20);
+    /* the conversation: typed fast, the time goes to the block */
+    const qp = prog(t, 1.4, 2.2);
+    $('#umt').textContent = j.prompt.slice(0, Math.round(j.prompt.length * qp));
+    $('#um').style.visibility = qp > 0 ? 'visible' : 'hidden';
+    const spin = '✢✳✶✻✽'[Math.floor(t * 8) % 5];
+    $('#th').textContent = j.mode === 'app' ? spin : `${spin} ${U === UI.en ? 'Thinking…' : 'Thinking…'}`;
+    $('#th').style.display = t > 2.3 && t < 3.0 ? 'block' : 'none';
+    (j.tools || []).forEach((_, i) => {
+      $('#tl' + i).style.visibility = t > 2.9 + i * .5 ? 'visible' : 'hidden';
+      $('#tr' + i).style.visibility = t > 3.1 + i * .5 ? 'visible' : 'hidden';
+    });
+    const a0 = j.mode === 'app' ? 3.0 : 2.9 + (j.tools || []).length * .5 + .2;
+    const ap = prog(t, a0, a0 + 1.3);
+    $('#amt').textContent = j.answer.slice(0, Math.round(j.answer.length * ap));
+    $('#am').style.visibility = ap > 0 ? 'visible' : 'hidden';
+    const n = outC(prog(t, 5.3, 5.8));
+    $('#sn').style.opacity = n; $('#sn').style.transform = `translateY(${(1 - n) * 24}px)`;
+    if ($('#cur')) $('#cur').style.opacity = Math.floor(t * 2) % 2 ? 0 : 1;
+    const sc = prog(t, 10.7, 11.3) * (1 - prog(t, 13.2, 13.6));
+    $('#scrim').style.opacity = sc;
+    const cl = outC(prog(t, 11.0, 11.6)) * (1 - prog(t, 13.2, 13.6));
+    $('#cl').style.opacity = cl; $('#cl').style.transform = `translateY(${(1 - cl) * 30}px)`;
+    const o = outC(prog(t, 13.4, 14.1));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 13.8, 14.4));
+  };
+}
+
 window.setup = async function (job) {
   await document.fonts.ready;
   U = UI[job.ui] || UI.he;
   document.documentElement.lang = job.ui || 'he';
   document.documentElement.dir = job.ui === 'en' ? 'ltr' : 'rtl';
   const SETUP = { demo: [setupDemo, 13], quiz: [setupQuiz, 12.4], top3: [setupTop3, 16.2], vs: [setupVs, 13.2],
-                  lit: [setupLit, 13.4], pov: [setupPov, 11] };
+                  lit: [setupLit, 13.4], pov: [setupPov, 11], screen: [setupScreen, 16] };
   const [fn, dur] = SETUP[job.type] || [setupExpr, 15];
   /* Built twice on purpose: the first build makes the browser fetch the
      fonts its text needs, and only the second measures real line breaks.

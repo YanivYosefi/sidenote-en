@@ -143,7 +143,32 @@ def samples():
             dict(t='POV:', cls='k'), dict(t='אתם מדברים עם Claude'), dict(t='6 שעות ביום'),
             dict(t='…והוא מלמד אתכם'), dict(t='אנגלית בלי שהרגשתם', cls='g')],
             card=dict(expr='to take the brunt of it', gloss='לספוג את עיקר העומס — החלק שחוטף הכי חזק.'), cat=''),
+        dict(type='screen', mode='cli', ui='he', slug='he-7-screen-code', cat='', cwd='~/shop',
+             prompt="הטסט של הצ'קאאוט נופל רק לפעמים. תבדוק למה?",
+             tools=[['Read(tests/checkout.test.ts)', 'Read 84 lines'], ['Bash(npm test -- checkout)', '2 passed · 1 failed']],
+             answer='מצאתי. הטסט תלוי בשעון האמיתי, אז סביב חצות התאריך מתחלף באמצע הריצה.\nהוספתי mock ל-Date, ועכשיו הוא עובר 50 פעמים ברצף.',
+             note=dict(src='מתוך התשובה: “מצאתי.”', expr='to pin it down', gloss='לאתר בדיוק את מקור הבעיה.',
+                       ex='It took an hour to pin down the flaky test.'),
+             hook1='אתם ממילא עם Claude<br>כל היום', hook2='ובסוף כל תשובה,<br>ביטוי אחד באנגלית',
+             close='אז למה שלא יצא לכם<br>מזה <em>שפה חדשה</em>?'),
+        dict(type='screen', mode='app', ui='he', slug='he-8-screen-chat', cat='', cwd='',
+             side=['מייל לבעל הבית', 'מתכון לשבת', 'טיול לרומא'],
+             prompt='תעזור לי לכתוב לבעל הבית שהדוד לא עובד כבר שבוע',
+             tools=[],
+             answer='בטח. קצר ועניני, עם תאריך:\n„הדוד לא עובד מאז ה-3 בחודש. אשמח לתיקון עד יום שישי.”\nאם לא יענה עד שישי, תכתוב לו שוב.',
+             note=dict(src='מתוך התשובה: “אם לא יענה עד שישי, תכתוב לו שוב.”', expr='to follow up',
+                       gloss='לפנות שוב כשלא קיבלת תשובה.', ex="If he doesn't reply by Friday, follow up."),
+             hook1='לא רק קוד.<br>כל שיחה עם Claude', hook2='נגמרת בביטוי אחד<br>באנגלית',
+             close='אז למה שלא יצא לכם<br>מזה <em>שפה חדשה</em>?'),
         # English speakers learning another language
+        dict(type='screen', mode='cli', ui='en', slug='en-0-screen-code', cat='', cwd='~/shop',
+             prompt='The checkout test fails only sometimes. Can you find out why?',
+             tools=[['Read(tests/checkout.test.ts)', 'Read 84 lines'], ['Bash(npm test -- checkout)', '2 passed · 1 failed']],
+             answer='Found it. The test depends on the real clock, so around midnight the date flips mid-run.\nI mocked Date, and it now passes 50 times in a row.',
+             note=dict(src='From the answer: “Found it.”', expr='dar con algo', gloss='to finally track something down.',
+                       ex='Por fin di con el error.'),
+             hook1="You're in Claude<br>all day anyway", hook2='…so every answer<br>teaches you Spanish',
+             close='Why not get a new<br>language <em>out of it</em>?'),
         dict(english_demos()[0], slug='en-1-demo'),
         dict(type='quiz', ui='en', slug='en-2-quiz', cat=q['lang'], expr=q['expr'], example=q['example'],
              options=opts, answer=1),
@@ -172,9 +197,14 @@ def caption(job):
         if t == 'quiz':
             abc = '\n'.join(f'{l}. {o}' for l, o in zip('ABC', job['options']))
             return f'What does "{job["expr"]}" mean?\n\n{abc}\n\nComment A, B or C before the video answers 👇\n\n{end_en}\n\n{tags_en}'
+        if t == 'screen':
+            return f'You are in Claude all day anyway. Why not get a new language out of it?\n\nToday: {job["note"]["expr"]}, {job["note"]["gloss"]}\n\n{end_en}\n\n{tags_en}'
         if t == 'lit':
             return f'{job["expr"]}. Literally: "{job["lit"]}". Actually: {job["meaning"]}.\n\n{job["example"]}\n{job["example_en"]}\n\n{end_en}\n\n{tags_en}'
         return f'You are in Claude for hours anyway. So after every answer, one expression from it.\n\n{end_en}\n\n{tags_en}'
+    if t == 'screen':
+        return ('אתם ממילא עם Claude כל היום. אז למה שלא יצא לכם מזה שפה חדשה?\n\n'
+                f'היום: {job["note"]["expr"]}, {job["note"]["gloss"]}\n\n' + end + '\n\n' + tags)
     if t == 'pov':
         return 'אתם ממילא מדברים עם Claude שעות. אז שילמד אתכם בדרך.\n\n' + end + '\n\n' + tags
     if t == 'demo':
@@ -224,7 +254,7 @@ def render(page, job, dest, music=None):
     cmd += ['-c:v', 'libx264', '-preset', 'slow', '-crf', '19', '-pix_fmt', 'yuv420p', '-r', str(FPS),
             '-c:a', 'aac', '-b:a', '128k', '-shortest', '-movflags', '+faststart', str(dest / 'reel.mp4')]
     enc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    cover_at = int({'expr': 2.6, 'demo': 3.9, 'quiz': 2.9, 'top3': 1.2, 'vs': 4.2, 'lit': 3.2, 'pov': 4.4}[job['type']] * FPS)
+    cover_at = int({'expr': 2.6, 'demo': 3.9, 'quiz': 2.9, 'top3': 1.2, 'vs': 4.2, 'lit': 3.2, 'pov': 4.4, 'screen': 7.5}[job['type']] * FPS)
     for f in range(frames):
         page.evaluate('t => render(t)', f / FPS)
         shot = page.screenshot(type='jpeg', quality=95)
