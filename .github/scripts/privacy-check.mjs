@@ -3,7 +3,8 @@
  * promise written as a test, so it cannot quietly stop being true.
  *
  * It fails the build if the plugin:
- *   - imports anything but the four Node built-ins it needs today,
+ *   - imports anything but the five Node built-ins it needs today (crypto only
+ *     checks a supporter key's signature; it opens nothing),
  *   - mentions a network, process or code-evaluation API anywhere,
  *   - grows a dependency (a package.json or node_modules),
  *   - ships hooks, which would let it run shell commands on its own.
@@ -14,7 +15,7 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = process.argv[2] || '.';
-const ALLOWED = new Set(['node:fs', 'node:os', 'node:path', 'node:readline']);
+const ALLOWED = new Set(['node:fs', 'node:os', 'node:path', 'node:readline', 'node:crypto']);
 const FORBIDDEN = [
   [/\bfetch\s*\(/, 'fetch()'],
   [/\bXMLHttpRequest\b/, 'XMLHttpRequest'],
