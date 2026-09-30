@@ -18,7 +18,7 @@ claude plugin install sidenote@sidenote
 
 The whole plugin is [`server/index.mjs`](server/index.mjs), about 500 lines. You can read it in a few minutes.
 
-- **Imports only Node built-ins:** `node:fs`, `node:os`, `node:path`, `node:readline`. No network module.
+- **Imports only Node built-ins:** `node:fs`, `node:os`, `node:path`, `node:readline`, and `node:crypto` to check a supporter key's signature. No network module.
 - **No dependencies.** There is no `package.json` and no `node_modules`.
 - **Writes one file:** `~/.sidenote/state.json`, which holds your language, level and the expressions you have seen.
 - **No account, no server, no telemetry.** It never contacts anything.
