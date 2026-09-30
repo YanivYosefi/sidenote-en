@@ -11,5 +11,3 @@ Show the learner their current Sidenote settings and let them change anything.
 5. Confirm in one line. Do not lecture, do not list features, do not show their saved expressions unless they ask.
 
 If they ask to see what they have saved, call `sidenote_list`. If they ask to wipe it, call `sidenote_forget` with `all` set to true, and confirm once before doing it.
-
-If they paste a supporter key (it starts with `SN1-`), call `sidenote_supporter` with it. If they ask how to turn off the sponsored line, tell them that a supporter key turns it off for good, and that it comes from the Sidenote site.

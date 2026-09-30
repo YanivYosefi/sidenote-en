@@ -24,7 +24,7 @@ claude plugin install sidenote@sidenote
 
 ## Privacy, verifiable
 - The whole plugin is one file, server/index.mjs (about 500 lines), importing
-  only Node built-ins: fs, os, path, readline, crypto. No network access, no
+  only Node built-ins: fs, os, path, readline. No network access, no
   dependencies, no hooks.
 - State lives in ~/.sidenote/state.json. Uninstall: `claude plugin uninstall
   sidenote` and delete that folder.
