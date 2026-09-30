@@ -7,10 +7,10 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: 'expr (expressions), demo (product walk-throughs), or all'
-        default: all
+        description: 'samples = one of every format for every audience; or one format; or all'
+        default: samples
         type: choice
-        options: [all, expr, demo]
+        options: [samples, all, expr, demo, quiz, top3, vs]
       id:
         description: 'One reel by name, e.g. ship-it or demo-2 (optional)'
         required: false
@@ -42,7 +42,7 @@ jobs:
           LIMIT: ${{ inputs.limit }}
         run: |
           args=()
-          [ "$ONLY" != "all" ] && args+=(--only "$ONLY")
+          if [ "$ONLY" = "samples" ]; then args+=(--samples); elif [ "$ONLY" != "all" ]; then args+=(--only "$ONLY"); fi
           [ -n "$ID" ] && args+=(--id "$ID")
           [ -n "$LIMIT" ] && args+=(--limit "$LIMIT")
           python reels/make.py "${args[@]}"

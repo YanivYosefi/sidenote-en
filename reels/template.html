@@ -96,6 +96,70 @@ mark{background:linear-gradient(transparent 55%,var(--gold) 55%) no-repeat left/
 .chips span{border:2px solid rgba(255,255,255,.35);border-radius:40px;padding:10px 30px;font-size:36px;font-weight:700}
 .out .cta{margin-top:70px;display:inline-block;background:var(--gold);color:var(--teal-dd);
   border-radius:60px;padding:22px 60px;font-weight:700;font-size:48px}
+
+/* ---------- quiz ---------- */
+.qhook{position:absolute;top:360px;left:90px;right:150px;text-align:center;font-family:Frank,serif;font-weight:700;font-size:96px;color:var(--ink)}
+.qx{position:absolute;top:500px;left:90px;right:150px;text-align:center}
+.qx .w{display:inline-block;font-family:Lora,serif;font-weight:700;font-size:120px;line-height:1.1;color:var(--teal-dd);clip-path:inset(0 100% 0 0)}
+.ring{position:absolute;top:820px;left:calc(50% - 30px - 66px);width:132px;height:132px;border-radius:50%;
+  display:grid;place-items:center;font-weight:700;font-size:64px;color:var(--teal-dd);background:#fff;box-shadow:0 10px 30px rgba(4,65,61,.12)}
+.ring:before{content:"";position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(var(--teal) var(--p,0%),rgba(0,133,124,.12) 0);
+  -webkit-mask:radial-gradient(circle,transparent 62px,#000 63px);mask:radial-gradient(circle,transparent 62px,#000 63px)}
+.opt{position:absolute;left:90px;right:150px;height:164px;background:#fff;border:3px solid var(--line);border-radius:30px;
+  display:flex;align-items:center;gap:28px;padding:0 36px;box-shadow:0 12px 36px rgba(4,65,61,.08);transition:none}
+.opt .l{flex:none;width:76px;height:76px;border-radius:50%;background:var(--wash);color:var(--teal-d);display:grid;place-items:center;font-weight:700;font-size:44px}
+.opt .t{font-weight:700;font-size:48px;line-height:1.25;max-height:124px;overflow:hidden}
+.opt.good{background:var(--teal);border-color:var(--teal);color:#fff}
+.opt.good .l{background:#fff;color:var(--teal)}
+.qex{position:absolute;left:90px;right:150px;top:1110px;background:#fff;border:2px solid var(--line);border-radius:30px;padding:40px 46px}
+.qex .lb{font-weight:700;font-size:34px;color:var(--teal);margin-bottom:14px}
+.qex .tx{font-family:Lora,serif;font-style:italic;font-weight:600;font-size:52px;line-height:1.35}
+
+/* ---------- top 3 ---------- */
+.t3hook{position:absolute;top:560px;left:90px;right:150px;text-align:center;font-family:Frank,serif;font-weight:700;font-size:100px;line-height:1.15}
+.t3hook b{display:block;font-family:Lora,serif;font-size:260px;line-height:1;color:var(--teal);margin-bottom:10px}
+.seg{position:absolute;inset:0}
+.seg .n{position:absolute;top:360px;right:150px;background:var(--teal-dd);color:#fff;border-radius:40px;padding:10px 30px;font-weight:700;font-size:40px}
+.seg .w{position:absolute;top:500px;left:90px;right:150px;text-align:center;font-family:Lora,serif;font-weight:700;font-size:130px;line-height:1.1;color:var(--teal-dd)}
+.seg .m{position:absolute;top:880px;left:90px;right:150px;text-align:center;font-weight:700;font-size:66px;line-height:1.3}
+.seg .e{position:absolute;top:1150px;left:90px;right:150px;background:#fff;border:2px solid var(--line);border-radius:30px;padding:36px 44px;
+  font-family:Lora,serif;font-style:italic;font-weight:600;font-size:50px;line-height:1.35;direction:ltr;text-align:left}
+
+/* ---------- this vs that ---------- */
+.vhook{position:absolute;top:360px;left:90px;right:150px;text-align:center;font-family:Frank,serif;font-weight:700;font-size:70px;line-height:1.2}
+.vc{position:absolute;left:90px;right:150px;height:300px;background:#fff;border:3px solid var(--line);border-radius:34px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;box-shadow:0 14px 40px rgba(4,65,61,.09)}
+.vc .w{font-family:Lora,serif;font-weight:700;font-size:100px;line-height:1.05;color:var(--teal-dd);direction:ltr}
+.vc .m{font-weight:700;font-size:56px;color:var(--ink)}
+.vc.b .w{color:#8A5A00}
+.vs{position:absolute;top:932px;left:calc(50% - 30px - 60px);width:120px;height:120px;border-radius:50%;background:var(--gold);
+  display:grid;place-items:center;font-family:Lora,serif;font-weight:700;font-style:italic;font-size:50px;color:var(--teal-dd);box-shadow:0 10px 30px rgba(0,0,0,.12);z-index:3}
+.vex{position:absolute;left:90px;right:150px;top:1320px;background:#fff;border:2px solid var(--line);border-radius:30px;padding:34px 42px;
+  font-family:Lora,serif;font-style:italic;font-weight:600;font-size:46px;line-height:1.35;direction:ltr;text-align:left}
+
+/* ---------- literally / actually ---------- */
+.lx{position:absolute;top:470px;left:90px;right:150px;text-align:center}
+.lx .w{font-family:Lora,serif;font-weight:700;font-size:130px;line-height:1.1;color:var(--teal-dd)}
+.lx .w.he{font-family:Frank,serif;direction:rtl}
+.lx .tr{margin-top:14px;font-family:Lora,serif;font-style:italic;font-weight:600;font-size:48px;color:var(--gray)}
+.lc{position:absolute;left:90px;right:150px;top:900px;background:#fff;border:2px solid var(--line);border-radius:32px;padding:40px 48px;
+  box-shadow:0 14px 40px rgba(4,65,61,.09)}
+.lc .lb{font-weight:700;font-size:34px;letter-spacing:.04em;color:var(--teal);margin-bottom:12px;text-transform:uppercase}
+.lc .tx{font-weight:700;font-size:60px;line-height:1.3}
+.lc.lit .tx{font-family:Lora,serif;font-style:italic;font-weight:600;color:var(--gray)}
+.lc.lit .tx s{text-decoration-thickness:6px;text-decoration-color:rgba(224,80,60,.8)}
+.lc .en{font-size:42px;color:var(--gray);font-weight:400;margin-top:14px}
+
+/* ---------- POV ---------- */
+.pov{position:absolute;inset:0;background:linear-gradient(165deg,#0A6B63,#04413D)}
+.plist{position:absolute;top:330px;left:90px;right:150px;display:flex;flex-direction:column;gap:22px}
+.pl{font-family:Frank,serif;font-weight:700;font-size:86px;line-height:1.12;color:#fff}
+.pl.k{font-family:Lora,serif;color:var(--gold);font-size:120px}
+.pl.g{color:var(--gold)}
+.pcard{position:absolute;left:90px;right:150px;top:1180px;background:#10352F;border:2px solid #1E6A5F;border-radius:30px;padding:34px 40px;color:#fff}
+.pcard .nt{font-weight:700;font-size:28px;letter-spacing:.14em;color:#6FD3C2}
+.pcard .nx{font-family:Lora,serif;font-weight:700;font-size:70px;margin:8px 0}
+.pcard .ng{font-size:40px;line-height:1.4;color:#CFE7E2}
 </style>
 </head>
 <body>
@@ -118,6 +182,12 @@ function show(el, v, dy = 40) {
   /* cards are centred on their top edge, so they keep that offset while moving */
   el.style.transform = `translateY(calc(${el.classList.contains('card') ? '-50%' : '0px'} + ${(1 - v) * dy}px))`;
   el.style.visibility = v <= 0.001 ? 'hidden' : 'visible';
+}
+/* Put an element a gap below another, by measured height, not a guess:
+   a heading that wraps to two lines in English must push the rest down. */
+function below(el, ref, gap) {
+  const r = ref.getBoundingClientRect();
+  el.style.top = Math.round(r.bottom + gap) + 'px';
 }
 /* Shrink a box's text until it fits. Done once in setup, never per frame. */
 function fit(el, max, min) {
@@ -158,13 +228,28 @@ const HOOKS = {
   'פועל מורכב': 'פועל אחד,<br>משמעות שלא תנחשו',
   'צירוף מקצועי': 'תשמעו את זה<br>בכל ישיבה באנגלית',
 };
-const OUTRO = `<div class="out" id="out"><div class="in">
+
+const UI = {
+  he: { english: 'אנגלית', quiz: 'חידון', whatMeans: 'מה זה אומר?', example: 'דוגמה',
+        k1: 'אתם ממילא פה<br>שעות כל יום', k2: 'אז בסוף כל תשובה,<br>ביטוי אחד מתוכה',
+        l1: 'ביטוי אחד בכל שיחה עם Claude', l2: 'מתוך התשובה שקיבלת.<br>בלי אפליקציה, בלי כרטיסיות.',
+        chips: ['חינם', 'קוד פתוח', 'בלי חשבון'], cta: 'הקישור בפרופיל',
+        literally: 'מילולית', actually: 'בפועל', vsHook: 'גם דוברי אנגלית<br>מתבלבלים ביניהן' },
+  en: { english: 'English', quiz: 'Quiz', whatMeans: 'What does it mean?', example: 'Example',
+        k1: "You're in Claude<br>for hours anyway", k2: 'So after every answer,<br>one expression from it',
+        l1: 'One expression in every Claude chat', l2: 'Taken from the answer you got.<br>No app. No flashcards.',
+        chips: ['Free', 'Open source', 'No account'], cta: 'Link in bio',
+        literally: 'Literally', actually: 'Actually', vsHook: 'Even native speakers<br>mix these up' },
+};
+let U = UI.he;
+const outro = () => `<div class="out" id="out"><div class="in">
   <div class="logo ltr">Side<b>note</b></div>
-  <div class="l1">ביטוי אחד בכל שיחה עם Claude</div>
-  <div class="l2">מתוך התשובה שקיבלת.<br>בלי אפליקציה, בלי כרטיסיות.</div>
-  <div class="chips"><span>חינם</span><span>קוד פתוח</span><span>בלי חשבון</span></div>
-  <div class="cta">הקישור בפרופיל</div>
+  <div class="l1">${U.l1}</div>
+  <div class="l2">${U.l2}</div>
+  <div class="chips">${U.chips.map(c => `<span>${c}</span>`).join('')}</div>
+  <div class="cta">${U.cta}</div>
 </div></div>`;
+
 
 let R = null;   /* the active renderer */
 
@@ -173,13 +258,13 @@ function setupExpr(j) {
   const m = markIn(j.example, j.expr);
   $('#stage').innerHTML = `
     <div class="bar"><i id="bar"></i></div>
-    <div class="tag" id="tag"><b>אנגלית</b><span>${esc(j.kind)}</span></div>
+    <div class="tag" id="tag"><b>${U.english}</b><span>${esc(j.kind)}</span></div>
     <div class="hook" id="hook">${HOOKS[j.kind] || 'ביטוי באנגלית<br>שכדאי להכיר'}</div>
     <div class="ex" id="ex"><div class="w ltr" id="w">${esc(j.expr)}</div><div class="u" id="u"></div></div>
     <div class="card" id="c1"><div class="lb">מה זה אומר</div><div class="tx" id="t1">${heb(j.meaning)}</div></div>
     <div class="card" id="c2"><div class="lb">דוגמה</div><div class="tx en ltr" id="t2">${m.html}</div></div>
     <div class="card" id="c3"><div class="lb">מתי משתמשים</div><div class="tx" id="t3">${heb(j.when)}</div></div>
-    ${OUTRO}`;
+    ${outro()}`;
   /* Big and on at most two lines. Fitting to one line made a long phrase
      like "the elephant in the room" tiny. */
   const w = $('#w'); let s = 150;
@@ -204,11 +289,11 @@ function setupExpr(j) {
     show($('#c1'), win(t, 3.4, 6.6), 60);
     show($('#c2'), win(t, 6.6, 10.4), 60);
     /* type the example, then run the highlighter over the expression */
-    const tp = prog(t, 6.9, 8.7), t2 = $('#t2');
+    const tp = prog(t, 6.8, 7.5), t2 = $('#t2');
     if (tp < 1) { t2.textContent = plain.slice(0, Math.round(plain.length * tp)); t2.dataset.full = ''; }
     else if (!t2.dataset.full) { t2.innerHTML = m.html; t2.dataset.full = '1'; }
     t2.querySelectorAll('mark').forEach((mk, i) => {
-      mk.style.backgroundSize = `${outC(prog(t, 8.8 + i * .35, 9.4 + i * .35)) * 100}% 100%`;
+      mk.style.backgroundSize = `${outC(prog(t, 7.7 + i * .35, 8.3 + i * .35)) * 100}% 100%`;
     });
     show($('#c3'), win(t, 10.4, 12.8), 60);
     const o = outC(prog(t, 12.7, 13.4));
@@ -225,8 +310,8 @@ function setupDemo(j) {
   const rtlExpr = tmp.querySelector('.expr.rtl');
   $('#stage').innerHTML = `
     <div class="bar"><i id="bar"></i></div>
-    <div class="cap" id="k1">ככה לומדים שפה<br>בלי לפתוח אפליקציה</div>
-    <div class="cap" id="k2">ובסוף התשובה,<br>ביטוי אחד מתוכה</div>
+    <div class="cap" id="k1">${U.k1}</div>
+    <div class="cap" id="k2">${U.k2}</div>
     <div class="win" id="win">
       <div class="top"><s>✳</s><span class="ltr">Claude Code</span><em dir="ltr">${esc(j.pair)}</em></div>
       <div class="body">
@@ -243,30 +328,254 @@ function setupDemo(j) {
           <div class="ng">${esc(gloss)}</div></div>
       </div>
     </div>
-    ${OUTRO}`;
-  const T = 17;
+    ${outro()}`;
+  const T = 13;
   return t => {
     $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
-    show($('#k1'), win(t, 0, 8.6, .5), 30);
-    show($('#k2'), win(t, 8.8, 13.6, .5), 30);
-    show($('#win'), outC(prog(t, .4, 1.1)) * (1 - prog(t, 13.4, 13.8)), 80);
-    const qp = prog(t, 1.2, 3.8);
+    show($('#k1'), win(t, 0, 2.9, .4), 30);
+    show($('#k2'), win(t, 3.0, 9.6, .4), 30);
+    show($('#win'), outC(prog(t, .2, .8)) * (1 - prog(t, 9.4, 9.8)), 80);
+    /* typed fast on purpose: nobody watches a reel for the typing */
+    const qp = prog(t, .7, 1.4);
     $('#qt').textContent = j.q.slice(0, Math.round(j.q.length * qp));
-    $('#car').style.opacity = (qp < 1 || Math.floor(t * 2.5) % 2 === 0) && t < 4.2 ? 1 : 0;
-    const ap = prog(t, 4.3, 8.0);
+    $('#car').style.opacity = t < 1.7 ? 1 : 0;
+    const ap = prog(t, 1.6, 2.6);
     $('#a').textContent = ap > 0 ? '✳  ' + j.a.slice(0, Math.round(j.a.length * ap)) : '';
-    show($('#n'), outC(prog(t, 8.7, 9.4)), 60);
-    const o = outC(prog(t, 13.6, 14.3));
+    /* the part worth the time: the block arrives, the expression pops, then its meaning */
+    const n = outC(prog(t, 2.8, 3.4));
+    show($('#n'), n, 60);
+    const pop = Math.sin(Math.PI * prog(t, 3.4, 3.9));
+    $('#n .nx').style.transform = `scale(${1 + .08 * pop})`;
+    $('#n .nx').style.transformOrigin = 'right center';
+    $('#n .ng').style.opacity = outC(prog(t, 4.0, 4.5));
+    const tr = $('#n .tr'); if (tr) tr.style.opacity = outC(prog(t, 3.6, 4.0));
+    const o = outC(prog(t, 9.7, 10.4));
     $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
-    $('#out .in').style.opacity = outC(prog(t, 14.0, 14.6));
+    $('#out .in').style.opacity = outC(prog(t, 10.1, 10.7));
+  };
+}
+
+
+/* ---------- reel 3: a quiz. make.py picks the wrong answers and where the
+   right one sits, so the same job is always the same quiz. ---------- */
+function setupQuiz(j) {
+  const L = U === UI.en ? ['A', 'B', 'C'] : ['א', 'ב', 'ג'];
+  $('#stage').innerHTML = `
+    <div class="bar"><i id="bar"></i></div>
+    <div class="tag" id="tag"><b>${U.quiz}</b><span>${esc(j.cat)}</span></div>
+    <div class="qhook" id="qh">${U.whatMeans}</div>
+    <div class="qx"><div class="w ltr" id="w">${esc(j.expr)}</div></div>
+    <div class="ring" id="ring"><span id="rn">3</span></div>
+    ${j.options.map((o, i) => `<div class="opt" id="o${i}" style="top:${1000 + i * 190}px"><span class="l">${L[i]}</span><span class="t" id="ot${i}">${heb(o)}</span></div>`).join('')}
+    <div class="qex" id="qe"><div class="lb">${U.example}</div><div class="tx ltr" id="qet">${markIn(j.example, j.expr).html}</div></div>
+    ${outro()}`;
+  const w = $('#w'); let s = 120; w.style.fontSize = s + 'px';
+  while (s > 64 && w.getBoundingClientRect().height > s * 1.1 * 2 + 4) { s -= 4; w.style.fontSize = s + 'px'; }
+  below($('.qx'), $('#qh'), 40);
+  j.options.forEach((_, i) => fit($('#ot' + i), 48, 30));
+  fit($('#qet'), 52, 32);
+  const T = 12.4;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    show($('#tag'), win(t, 0, 9.6, .5), 20);
+    show($('#qh'), win(t, .1, 9.6, .5), 30);
+    w.style.clipPath = `inset(0 ${100 - outC(prog(t, .7, 1.6)) * 100}% 0 0)`;
+    $('#w').parentElement.style.opacity = 1 - prog(t, 9.3, 9.6);
+    /* countdown: three seconds, a ring filling around the number */
+    const c = prog(t, 3.0, 6.0);
+    show($('#ring'), win(t, 2.7, 6.4, .3), 10);
+    $('#ring').style.setProperty('--p', `${c * 100}%`);
+    $('#rn').textContent = t < 6 ? String(3 - Math.min(2, Math.floor(c * 3))) : '✓';
+    j.options.forEach((_, i) => {
+      const o = $('#o' + i), good = i === j.answer;
+      const inV = outC(prog(t, 1.7 + i * .25, 2.2 + i * .25));
+      const rev = t >= 6.0;
+      o.classList.toggle('good', rev && good);
+      let op = inV, dy = (1 - inV) * 60;
+      if (rev && !good) op = inV * (1 - .65 * outC(prog(t, 6.0, 6.3))) * (1 - prog(t, 7.0, 7.4));
+      if (good) { dy -= (1000 + i * 190 - 910) * inOut(prog(t, 7.0, 7.6)); op *= 1 - prog(t, 9.3, 9.6); }
+      o.style.opacity = op; o.style.transform = `translateY(${dy}px) scale(${rev && good ? 1 + .04 * Math.sin(Math.PI * prog(t, 6.0, 6.5)) : 1})`;
+    });
+    show($('#qe'), win(t, 7.5, 9.6), 50);
+    const mk = $('#qet').querySelectorAll('mark');
+    mk.forEach((m, i) => m.style.backgroundSize = `${outC(prog(t, 8.0 + i * .3, 8.6 + i * .3)) * 100}% 100%`);
+    const o = outC(prog(t, 9.5, 10.2));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 9.9, 10.5));
+  };
+}
+
+/* ---------- reel 4: three of a kind, back to back ---------- */
+function setupTop3(j) {
+  const segs = j.items.map((it, k) => `
+    <div class="seg" id="s${k}">
+      <div class="n">${k + 1}/3</div>
+      <div class="w ltr" id="sw${k}">${esc(it.expr)}</div>
+      <div class="m" id="sm${k}">${heb(it.meaning)}</div>
+      <div class="e" id="se${k}">${markIn(it.example, it.expr).html}</div>
+    </div>`).join('');
+  $('#stage').innerHTML = `
+    <div class="bar"><i id="bar"></i></div>
+    <div class="tag" id="tag"><b>${U.english}</b><span>${esc(j.cat)}</span></div>
+    <div class="t3hook" id="h"><b class="ltr">3</b>${j.title}</div>
+    ${segs}
+    ${outro()}`;
+  j.items.forEach((_, k) => {
+    const w = $('#sw' + k); let s = 130; w.style.fontSize = s + 'px';
+    while (s > 64 && w.getBoundingClientRect().height > s * 1.1 * 2 + 4) { s -= 4; w.style.fontSize = s + 'px'; }
+    const m = $('#sm' + k); let f = 66; m.style.fontSize = f + 'px';
+    while (f > 40 && m.getBoundingClientRect().height > 250) { f -= 2; m.style.fontSize = f + 'px'; }
+    const e = $('#se' + k); let g = 50; e.style.fontSize = g + 'px';
+    while (g > 32 && e.getBoundingClientRect().height > 330) { g -= 2; e.style.fontSize = g + 'px'; }
+  });
+  const T = 16.2, S0 = 2.4, D = 3.9;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    show($('#tag'), win(t, 0, 14.1, .5), 20);
+    const h = win(t, 0, S0, .4);
+    $('#h').style.opacity = h;
+    $('#h').style.transform = `scale(${.9 + .1 * outC(prog(t, 0, .6))})`;
+    j.items.forEach((_, k) => {
+      const a = S0 + k * D, b = a + D, el = $('#s' + k);
+      el.style.visibility = t >= a - .05 && t <= b + .05 ? 'visible' : 'hidden';
+      /* in from the right, out to the left: reads as "next" */
+      const i = outC(prog(t, a, a + .45)), o = inOut(prog(t, b - .35, b));
+      el.style.opacity = Math.min(i, 1 - o);
+      el.style.transform = `translateX(${(1 - i) * -140 + o * 140}px)`;
+      $('#sm' + k).style.opacity = outC(prog(t, a + .5, a + .9));
+      $('#se' + k).style.opacity = outC(prog(t, a + 1.1, a + 1.5));
+      $('#se' + k).querySelectorAll('mark').forEach(m => m.style.backgroundSize = `${outC(prog(t, a + 1.6, a + 2.1)) * 100}% 100%`);
+    });
+    const o = outC(prog(t, 14.0, 14.7));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 14.4, 15.0));
+  };
+}
+
+/* ---------- reel 5: two words people mix up ---------- */
+function setupVs(j) {
+  const [A, B] = j.pair;
+  $('#stage').innerHTML = `
+    <div class="bar"><i id="bar"></i></div>
+    <div class="tag" id="tag"><b>${U.english}</b><span>${esc(j.cat)}</span></div>
+    <div class="vhook" id="h">${U.vsHook}</div>
+    <div class="vc a" id="va" style="top:600px"><div class="w" id="vaw">${esc(A.w)}</div><div class="m" id="vam">${heb(A.m)}</div></div>
+    <div class="vs" id="vs">vs</div>
+    <div class="vc b" id="vb" style="top:990px"><div class="w" id="vbw">${esc(B.w)}</div><div class="m" id="vbm">${heb(B.m)}</div></div>
+    <div class="vex" id="ve">${markIn(j.example, j.expr).html}</div>
+    ${outro()}`;
+  for (const id of ['vaw', 'vbw']) { const w = $('#' + id); let s = 100; while (s > 56 && w.scrollWidth > 760) { s -= 4; w.style.fontSize = s + 'px'; } }
+  for (const id of ['vam', 'vbm']) { const m = $('#' + id); let s = 56; while (s > 34 && m.scrollWidth > 760) { s -= 2; m.style.fontSize = s + 'px'; } }
+  fit($('#ve'), 46, 30);
+  const T = 13.2;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    show($('#tag'), win(t, 0, 10.8, .5), 20);
+    show($('#h'), win(t, 0, 10.8, .5), 30);
+    const a = outC(prog(t, .8, 1.4)), b = outC(prog(t, 1.4, 2.0));
+    $('#va').style.opacity = a; $('#va').style.transform = `translateX(${(1 - a) * 200}px)`;
+    $('#vb').style.opacity = b; $('#vb').style.transform = `translateX(${(1 - b) * -200}px)`;
+    const v = outC(prog(t, 2.0, 2.4));
+    $('#vs').style.opacity = v; $('#vs').style.transform = `scale(${.4 + .6 * v}) rotate(${(1 - v) * -30}deg)`;
+    /* meanings come in a beat after the words, so the eye reads the pair first */
+    $('#vam').style.opacity = outC(prog(t, 2.6, 3.1));
+    $('#vbm').style.opacity = outC(prog(t, 3.3, 3.8));
+    show($('#ve'), outC(prog(t, 5.4, 6.0)), 50);
+    $('#ve').querySelectorAll('mark').forEach((m, i) => m.style.backgroundSize = `${outC(prog(t, 6.4 + i * .5, 7.0 + i * .5)) * 100}% 100%`);
+    const fade = 1 - prog(t, 10.4, 10.8);
+    for (const id of ['va', 'vb', 'vs', 've']) $('#' + id).style.opacity *= fade;
+    const o = outC(prog(t, 10.7, 11.4));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 11.1, 11.7));
+  };
+}
+
+
+/* ---------- reel 6: literally / actually. The gap between the two is the
+   hook; works for any script, with a transliteration under non-Latin. ---------- */
+function setupLit(j) {
+  const heScript = /[֐-׿]/.test(j.expr);
+  $('#stage').innerHTML = `
+    <div class="bar"><i id="bar"></i></div>
+    <div class="tag" id="tag"><b>${esc(j.lang)}</b><span>${esc(j.cat || '')}</span></div>
+    <div class="hook" id="hook" style="top:360px;font-size:84px">${j.hook}</div>
+    <div class="lx" id="lx"><div class="w ${heScript ? 'he' : 'ltr'}" id="w">${esc(j.expr)}</div>${j.tr ? `<div class="tr ltr">${esc(j.tr)}</div>` : ''}</div>
+    <div class="lc lit" id="c1"><div class="lb">${U.literally}</div><div class="tx ltr" id="t1"><s>“${esc(j.lit)}”</s></div></div>
+    <div class="lc" id="c2"><div class="lb">${U.actually}</div><div class="tx" id="t2">${esc(j.meaning)}</div></div>
+    <div class="lc" id="c3"><div class="lb">${U.example}</div><div class="tx" id="t3" dir="${heScript ? 'rtl' : 'ltr'}" style="font-family:${heScript ? 'Frank' : 'Lora'},serif;font-style:${heScript ? 'normal' : 'italic'}">${esc(j.example)}</div><div class="en" dir="ltr">${esc(j.example_en)}</div></div>
+    ${outro()}`;
+  const w = $('#w'); let s = 130; w.style.fontSize = s + 'px';
+  while (s > 64 && w.getBoundingClientRect().height > s * 1.1 * 2 + 4) { s -= 4; w.style.fontSize = s + 'px'; }
+  below($('#lx'), $('#hook'), 50);
+  for (const id of ['c1', 'c2', 'c3']) below($('#' + id), $('#lx'), 70);
+  for (const id of ['t2', 't3']) { const e = $('#' + id); let f = 60; e.style.fontSize = f + 'px'; while (f > 34 && e.getBoundingClientRect().height > 330) { f -= 2; e.style.fontSize = f + 'px'; } }
+  const T = 13.4;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    show($('#tag'), win(t, 0, 11, .5), 20);
+    show($('#hook'), win(t, .1, 11, .5), 30);
+    show($('#lx'), outC(prog(t, .8, 1.4)) * (1 - prog(t, 10.6, 11)), 40);
+    show($('#c1'), win(t, 2.0, 4.6), 50);
+    /* the literal reading is struck through the moment the real meaning lands */
+    const strike = outC(prog(t, 3.6, 4.1));
+    $('#t1 s').style.textDecorationLine = strike > 0 ? 'line-through' : 'none';
+    $('#t1 s').style.textDecorationColor = `rgba(224,80,60,${strike * .85})`;
+    show($('#c2'), win(t, 4.5, 7.6), 50);
+    show($('#c3'), win(t, 7.6, 11.0), 50);
+    const o = outC(prog(t, 10.9, 11.6));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 11.3, 11.9));
+  };
+}
+
+/* ---------- reel 7: POV. Meme pacing: one line at a time, then the proof. ---------- */
+function setupPov(j) {
+  const side = U === UI.en ? 'left' : 'right';
+  const lines = '<div class="plist">' + j.lines.map((l, i) => `<div class="pl ${l.cls || ''}" id="p${i}" dir="auto" style="text-align:${side}">${l.t}</div>`).join('') + '</div>';
+  const rtl = /[֐-׿]/.test(j.card.expr);
+  $('#stage').innerHTML = `
+    <div class="pov"></div>
+    <div class="bar" style="background:rgba(255,255,255,.2)"><i id="bar" style="background:var(--gold)"></i></div>
+    ${lines}
+    <div class="pcard" id="pc" style="top:0"><div class="nt ltr">SIDENOTE</div>
+      <div class="nx" dir="${rtl ? 'rtl' : 'ltr'}">${esc(j.card.expr)}</div><div class="ng">${esc(j.card.gloss)}</div></div>
+    ${outro()}`;
+  below($('#pc'), $('.plist'), 70);
+  const T = 11;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    j.lines.forEach((_, i) => {
+      const a = .2 + i * .75;
+      const v = outC(prog(t, a, a + .3));
+      const el = $('#p' + i);
+      el.style.opacity = v * (1 - prog(t, 8.4, 8.8));
+      el.style.transform = `translateY(${(1 - v) * 30}px) scale(${1 + .12 * (1 - v)})`;
+    });
+    const c = outC(prog(t, .2 + j.lines.length * .75 + .3, .2 + j.lines.length * .75 + .8));
+    show($('#pc'), c * (1 - prog(t, 8.4, 8.8)), 80);
+    const o = outC(prog(t, 8.6, 9.3));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 9.0, 9.6));
   };
 }
 
 window.setup = async function (job) {
   await document.fonts.ready;
-  R = job.kind === 'demo' ? setupDemo(job) : setupExpr(job);
+  U = UI[job.ui] || UI.he;
+  document.documentElement.lang = job.ui || 'he';
+  document.documentElement.dir = job.ui === 'en' ? 'ltr' : 'rtl';
+  const SETUP = { demo: [setupDemo, 13], quiz: [setupQuiz, 12.4], top3: [setupTop3, 16.2], vs: [setupVs, 13.2],
+                  lit: [setupLit, 13.4], pov: [setupPov, 11] };
+  const [fn, dur] = SETUP[job.type] || [setupExpr, 15];
+  /* Built twice on purpose: the first build makes the browser fetch the
+     fonts its text needs, and only the second measures real line breaks.
+     Measuring in the fallback font let wrapped headings overlap. */
+  R = fn(job);
   await document.fonts.ready;
-  return job.kind === 'demo' ? 17 : 15;
+  await new Promise(r => setTimeout(r, 50));
+  R = fn(job);
+  await document.fonts.ready;
+  return dur;
 };
 window.render = function (t) { R(t); };
 </script>
