@@ -244,6 +244,141 @@ def _render_chunk(args):
     return done
 
 
+# ---------------------------------------------------------------- stock footage
+# Clips are named by what they show; fetch_broll.py downloads each from Pexels
+# (portrait, by the query below) into reels/broll/<name>.mp4. A clip that is
+# not there yet renders as a moving colour field, so every reel can be laid
+# out and timed before any footage exists.
+BROLL_DIR = HERE / 'broll'
+BROLL = {
+    'street-question': 'woman asking question street interview',
+    'typing-night': 'person typing laptop night',
+    'coffee-desk': 'coffee cup desk morning laptop',
+    'desk-morning': 'working at desk morning light',
+    'screen-closeup': 'laptop screen code closeup',
+    'city-evening': 'city street evening walking',
+    'shrug': 'man shrugging smiling',
+}
+FIELD = {  # fallback colour pairs, one per clip, so cuts are still visible
+    'street-question': ('0x2B4C7E', '0x0E1F33'), 'typing-night': ('0x1B1F3A', '0x3A2B55'),
+    'coffee-desk': ('0x6B4A2F', '0x2A1B12'), 'desk-morning': ('0xC9A26B', '0x5C4326'),
+    'screen-closeup': ('0x0A6B63', '0x04413D'), 'city-evening': ('0x5A2E4F', '0x1D1330'),
+    'shrug': ('0x3E5C3A', '0x1A2A19'),
+}
+
+
+def broll_jobs():
+    """Trend formats over stock footage, in Hebrew and English."""
+    def where(ui, q1, a1, q2, a2, card, slug):
+        return dict(type='broll', ui=ui, slug=slug, cat='', dur=12.6, outro=10.2,
+                    scenes=[('street-question', 4.2), ('typing-night', 4.0), ('coffee-desk', 4.4)],
+                    items=[dict(kind='them', text=q1, t0=.4, t1=10.2), dict(kind='me', text=a1, t0=1.6, t1=10.2),
+                           dict(kind='them', text=q2, t0=2.8, t1=10.2), dict(kind='me', text=a2, t0=4.0, t1=10.2),
+                           dict(kind='card', t0=5.6, t1=10.2, top=1180, **card)])
+    def learned(ui, title, items, slug):
+        return dict(type='broll', ui=ui, slug=slug, cat='', dur=13, outro=10.6,
+                    scenes=[('desk-morning', 13)],
+                    items=[dict(kind='meme', text=title, t0=.2, t1=10.6)] +
+                          [dict(kind='li', expr=e, gloss=g, t0=1.6 + i * 1.5, t1=10.6) for i, (e, g) in enumerate(items)])
+    def day(ui, beats, card, slug):
+        items, scenes = [], []
+        for i, (clip, time, text) in enumerate(beats):
+            a = i * 2.3
+            scenes.append((clip, 2.3))
+            items += [dict(kind='label', text=time, t0=a + .1, t1=a + 2.3), dict(kind='meme', text=text, t0=a + .25, t1=a + 2.3, top=410)]
+        items.append(dict(kind='card', t0=2 * 2.3 + .5, t1=3 * 2.3, top=1150, **card))
+        n = len(beats) * 2.3
+        scenes.append((beats[-1][0], 13 - n))
+        return dict(type='broll', ui=ui, slug=slug, cat='', dur=13, outro=n + .3, scenes=scenes, items=items)
+    def nobody(ui, top, reply, card, slug):
+        return dict(type='broll', ui=ui, slug=slug, cat='', dur=10.5, outro=8.2, chatTop=720,
+                    scenes=[('typing-night', 5), ('screen-closeup', 5.5)],
+                    items=[dict(kind='meme', text=top, t0=.2, t1=8.2),
+                           dict(kind='claude', text=reply, t0=2.6, t1=8.2),
+                           dict(kind='card', t0=4.2, t1=8.2, top=1180, **card)])
+    pin = dict(expr='to pin it down', gloss='לאתר בדיוק את מקור הבעיה', ex='It took an hour to pin down the flaky test.')
+    dar = dict(expr='dar con algo', gloss='to finally track something down', ex='Por fin di con el error.')
+    return [
+        where('he', 'איפה למדת אנגלית ככה?', 'מ-Claude.', 'מה? זה צ׳אט לקוד', 'בדיוק. בסוף כל תשובה הוא זורק לי ביטוי אחד', pin, 'broll-where-he'),
+        where('en', 'wait, where did you learn Spanish??', 'Claude.', 'the coding thing??', 'yep. one expression at the end of every answer', dar, 'broll-where-en'),
+        learned('en', 'Things Claude taught me\nthis week without me asking', [
+            ('to pin it down', 'to find the exact cause'), ('to get it out of the way', 'to do the annoying thing first'),
+            ('to take the brunt of it', 'to take the hardest hit'), ('to follow up', 'to write again when nobody answers')], 'broll-learned-en'),
+        learned('he', 'דברים ש-Claude לימד אותי\nהשבוע בלי שביקשתי', [
+            ('to pin it down', 'לאתר בדיוק את מקור הבעיה'), ('to get it out of the way', 'לסגור את המעיק קודם'),
+            ('to take the brunt of it', 'לספוג את עיקר המכה'), ('to follow up', 'לכתוב שוב כשלא ענו')], 'broll-learned-he'),
+        day('en', [('coffee-desk', '9:00', 'coffee'), ('typing-night', '9:15', 'ask Claude why the test is flaky'),
+                   ('screen-closeup', '9:16', 'accidentally learn Spanish'), ('city-evening', '18:00', "still haven't opened Duolingo")],
+            dar, 'broll-day-en'),
+        day('he', [('coffee-desk', '9:00', 'קפה'), ('typing-night', '9:15', 'שואל את Claude למה הטסט נופל'),
+                   ('screen-closeup', '9:16', 'לומד אנגלית בלי לשים לב'), ('city-evening', '18:00', 'עדיין לא פתחתי דואולינגו')],
+            pin, 'broll-day-he'),
+        nobody('en', 'Nobody:\n\nClaude, after fixing my bug:', 'Done, tests pass. <b>Also</b> — in Spanish you’d say…', dar, 'broll-nobody-en'),
+        nobody('he', 'אף אחד:\n\nClaude, אחרי שתיקן לי באג:', 'תוקן, הטסטים עוברים. <b>ודרך אגב</b>, באנגלית אומרים…', pin, 'broll-nobody-he'),
+    ]
+
+
+def background(job, out_mp4):
+    """The picture under the text: the named clips cut to length, or colour."""
+    ins, parts = [], []
+    for i, (clip, dur) in enumerate(job['scenes']):
+        f = BROLL_DIR / f'{clip}.mp4'
+        if f.exists():
+            ins += ['-stream_loop', '-1', '-t', f'{dur}', '-i', str(f)]
+            parts.append(f'[{i}:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps={FPS},'
+                         f'eq=brightness=-0.04:saturation=1.05,trim=0:{dur},setpts=PTS-STARTPTS[s{i}]')
+        else:
+            c0, c1 = FIELD.get(clip, ('0x0A6B63', '0x04413D'))
+            ins += ['-f', 'lavfi', '-t', f'{dur}', '-i', f'gradients=s=1080x1920:c0={c0}ff:c1={c1}ff:speed=0.012:r={FPS}']
+            parts.append(f'[{i}:v]setsar=1,trim=0:{dur},setpts=PTS-STARTPTS[s{i}]')
+    n = len(job['scenes'])
+    graph = ';'.join(parts) + ';' + ''.join(f'[s{i}]' for i in range(n)) + f'concat=n={n}:v=1:a=0[v]'
+    subprocess.run([ffmpeg(), '-y', '-loglevel', 'error', *ins, '-filter_complex', graph, '-map', '[v]',
+                    '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', '-pix_fmt', 'yuv420p', str(out_mp4)], check=True)
+
+
+def render_broll(page, job, dest, music=None):
+    dest.mkdir(parents=True, exist_ok=True)
+    bg = dest / '_bg.mp4'
+    background(job, bg)
+    page.goto((HERE / 'template.html').as_uri())
+    dur = page.evaluate('j => setup(j)', dict(job, kind=''))
+    frames = int(dur * FPS)
+    cmd = [ffmpeg(), '-y', '-loglevel', 'error', '-i', str(bg), '-f', 'image2pipe', '-framerate', str(FPS), '-c:v', 'png', '-i', '-']
+    if music:
+        cmd += ['-i', str(music), '-filter_complex',
+                f'[0:v][1:v]overlay=format=auto,format=yuv420p[v];[2:a]atrim=0:{dur},afade=t=in:d=0.6,afade=t=out:st={dur - 1.2}:d=1.2[a]',
+                '-map', '[v]', '-map', '[a]']
+    else:
+        cmd += ['-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo', '-filter_complex',
+                '[0:v][1:v]overlay=format=auto,format=yuv420p[v]', '-map', '[v]', '-map', '2:a']
+    cmd += ['-c:v', 'libx264', '-preset', 'slow', '-crf', '19', '-r', str(FPS), '-c:a', 'aac', '-b:a', '128k',
+            '-t', f'{dur}', '-movflags', '+faststart', str(dest / 'reel.mp4')]
+    enc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    cover_at = int(job.get('cover', job['outro'] - 1.5) * FPS)
+    for f in range(frames):
+        page.evaluate('t => render(t)', f / FPS)
+        shot = page.screenshot(type='png', omit_background=True)
+        enc.stdin.write(shot)
+        if f == cover_at:
+            (dest / '_cover.png').write_bytes(shot)
+    enc.stdin.close()
+    if enc.wait():
+        sys.exit(f'ffmpeg failed on {job["slug"]}')
+    # the cover is the finished picture at that moment, footage included
+    subprocess.run([ffmpeg(), '-y', '-loglevel', 'error', '-ss', f'{cover_at / FPS}', '-i', str(dest / 'reel.mp4'),
+                    '-frames:v', '1', '-q:v', '3', str(dest / 'cover.jpg')], check=True)
+    (dest / '_cover.png').unlink(missing_ok=True)
+    bg.unlink(missing_ok=True)
+    have = [c for c, _ in job['scenes'] if (BROLL_DIR / f'{c}.mp4').exists()]
+    credits = ''
+    cf = BROLL_DIR / 'credits.json'
+    if have and cf.exists():
+        cr = json.load(open(cf, encoding='utf-8'))
+        credits = '\n\nFootage: ' + ', '.join(sorted({cr[c] for c in have if c in cr})) + ' (Pexels)'
+    (dest / 'caption.txt').write_text(caption(job) + credits, encoding='utf-8')
+
+
 def caption(job):
     tags = '#אנגלית #לימודאנגלית #ביטוייםבאנגלית #Claude #AI #Sidenote'
     end = 'Sidenote מלמד ביטוי אחד בכל שיחה עם Claude, מתוך התשובה שקיבלת. חינם, קוד פתוח. הקישור בפרופיל.'
@@ -254,11 +389,15 @@ def caption(job):
         if t == 'quiz':
             abc = '\n'.join(f'{l}. {o}' for l, o in zip('ABC', job['options']))
             return f'What does "{job["expr"]}" mean?\n\n{abc}\n\nComment A, B or C before the video answers 👇\n\n{end_en}\n\n{tags_en}'
+        if t == 'broll':
+            return f'You are in Claude all day anyway. Might as well pick up a language.\n\n{end_en}\n\n{tags_en}'
         if t == 'screen':
             return f'You are in Claude all day anyway. Why not get a new language out of it?\n\nToday: {job["note"]["expr"]}, {job["note"]["gloss"]}\n\n{end_en}\n\n{tags_en}'
         if t == 'lit':
             return f'{job["expr"]}. Literally: "{job["lit"]}". Actually: {job["meaning"]}.\n\n{job["example"]}\n{job["example_en"]}\n\n{end_en}\n\n{tags_en}'
         return f'You are in Claude for hours anyway. So after every answer, one expression from it.\n\n{end_en}\n\n{tags_en}'
+    if t == 'broll':
+        return 'אתם ממילא עם Claude כל היום. אז שייצא לכם מזה גם שפה.\n\n' + end + '\n\n' + tags
     if t == 'screen':
         return ('אתם ממילא עם Claude כל היום. אז למה שלא יצא לכם מזה שפה חדשה?\n\n'
                 f'היום: {job["note"]["expr"]}, {job["note"]["gloss"]}\n\n' + end + '\n\n' + tags)
@@ -295,6 +434,8 @@ def ffmpeg():
 
 
 def render(page, job, dest, music=None):
+    if job.get('type') == 'broll':
+        return render_broll(page, job, dest, music)
     dest.mkdir(parents=True, exist_ok=True)
     page.goto((HERE / 'template.html').as_uri())
     payload = dict(job, kind=job.get('cat', ''))
@@ -332,12 +473,13 @@ def main():
     ap.add_argument('--music')
     ap.add_argument('--samples', action='store_true', help='one reel of every format, for every audience')
     ap.add_argument('--library', action='store_true', help='everything, filed by audience and format')
+    ap.add_argument('--broll', action='store_true', help='the stock-footage trend formats')
     ap.add_argument('--workers', type=int, default=1, help='render in parallel, one browser each')
     ap.add_argument('--out', default=str(HERE / 'out'))
     a = ap.parse_args()
 
     ex = expressions()
-    jobs = library() if a.library else samples() if a.samples else ex + demos() + quizzes(ex) + top3s(ex) + versus(ex)
+    jobs = broll_jobs() if a.broll else library() if a.library else samples() if a.samples else ex + demos() + quizzes(ex) + top3s(ex) + versus(ex)
     if a.only:
         jobs = [j for j in jobs if j['type'] == a.only]
     if a.id:
