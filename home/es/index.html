@@ -497,6 +497,17 @@ footer p{margin:8px 0 0;color:#A3A3A3}
   .tfacts b{font-size:14.5px}
   .tfacts span{display:none}
 }
+
+/* Phone visitors — most of them, arriving from a reel — cannot install a
+   Claude Code plugin where they are. This hands the two lines to the phone's
+   own share sheet so they arrive on the computer. Shown on touch screens only. */
+.sendme{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--teal-d);
+  border:1.5px solid var(--teal-s);box-shadow:none}
+.sendme[hidden]{display:none}
+.sendme:hover{background:var(--teal-wash);color:var(--teal-dd)}
+.sendme svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.final .sendme{background:transparent;color:#fff;border-color:rgba(255,255,255,.45);margin-top:12px}
+.final .sendme:hover{background:rgba(255,255,255,.08);color:#fff}
 </style>
 </head>
 <body>
@@ -528,6 +539,7 @@ footer p{margin:8px 0 0;color:#A3A3A3}
     <div class="copyrow">
       <button class="btn btn-sm" id="cp2" data-copy="claude plugin marketplace add YanivYosefi/sidenote-en
 claude plugin install sidenote@sidenote" data-done="Copiado">Copia y empieza</button>
+      <button class="btn btn-sm sendme" type="button" hidden data-intro="Para instalarlo en tu ordenador, pégalo en una terminal:"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5h14v-5"/></svg>Enviar a mi ordenador</button>
       <span class="btn-note" style="margin:0">Dos líneas, una sola vez. Funciona con la suscripción que ya pagas.</span>
     </div>
   </div>
@@ -782,6 +794,7 @@ Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div
 <span class="p">$</span> claude plugin install sidenote@sidenote</div>
   <button class="btn btn-light" id="cp" data-copy="claude plugin marketplace add YanivYosefi/sidenote-en
 claude plugin install sidenote@sidenote" data-done="Copiado">Copiar</button>
+  <button class="btn btn-sm sendme" type="button" hidden data-intro="Para instalarlo en tu ordenador, pégalo en una terminal:"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5h14v-5"/></svg>Enviar a mi ordenador</button>
   <span class="btn-note">Requiere Claude Code. Funciona en macOS, Linux y Windows.</span>
 </div></div>
 
@@ -1061,6 +1074,24 @@ claude plugin install sidenote@sidenote" data-done="Copiado">Copiar</button>
       if (gdone) gdone.classList.toggle('on', !!document.querySelector('.goal[aria-pressed="true"]'));
     });
   });
+
+
+  /* "Send to my computer": the share sheet where there is one, e-mail where
+     there is not. Only shown on touch screens, where installing is not an option. */
+  if (matchMedia('(pointer: coarse)').matches) {
+    document.querySelectorAll('.sendme').forEach(function (b) {
+      b.hidden = false;
+      b.addEventListener('click', function () {
+        var text = b.dataset.intro + '\n\nclaude plugin marketplace add YanivYosefi/sidenote-en\nclaude plugin install sidenote@sidenote\n';
+        var url = location.origin + location.pathname;
+        if (navigator.share) {
+          navigator.share({ title: 'Sidenote', text: text, url: url }).catch(function () {});
+        } else {
+          location.href = 'mailto:?subject=Sidenote&body=' + encodeURIComponent(text + '\n' + url);
+        }
+      });
+    });
+  }
 
 })();
 </script>
