@@ -15,7 +15,7 @@ whose largest file is closest to 1080x1920 without going under it (sharp enough,
 not a 4K download for a phone screen). The other good candidates are listed in
 reels/broll/candidates.json, to swap with --pick.
 """
-import argparse, json, os, sys, urllib.parse, urllib.request
+import argparse, json, os, shutil, sys, urllib.parse, urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -36,6 +36,14 @@ def get(url, k):
     req = urllib.request.Request(url, headers={'Authorization': k, 'User-Agent': 'sidenote-reels'})
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)
+
+
+def download(url, dest):
+    # Pexels' CDN (as opposed to its API) 403s urlretrieve's default
+    # Python-urllib/x.y user agent; a browser-like one gets a plain 200.
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(req, timeout=60) as r, open(dest, 'wb') as f:
+        shutil.copyfileobj(r, f)
 
 
 def best_file(video):
@@ -78,7 +86,7 @@ def main():
             continue
         cands[name] = found[:8]
         c = found[min(picks.get(name, 1), len(found)) - 1]
-        urllib.request.urlretrieve(c['link'], dest)
+        download(c['link'], dest)
         credits[name] = c['by']
         print(f'  got   {name}: {c["width"]}x{c["height"]}, {c["seconds"]}s, by {c["by"]}')
     json.dump(credits, open(cf, 'w'), ensure_ascii=False, indent=2)
