@@ -25,9 +25,12 @@
 <link rel="icon" href="/sidenote-en/media/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/sidenote-en/media/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/sidenote-en/media/icon-180.png" sizes="180x180">
+<link rel="preload" as="image" href="/sidenote-en/media/film2-poster-en.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap"></noscript>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Sidenote","description":"Sidenote — إضافة لـ Claude تعلّمك أي لغة أثناء عملك. تعبير واحد في نهاية الإجابة، مرتبط بما كنت تفعله للتو. يُحفَظ على جهازك، بلا حساب وبلا خادم.","applicationCategory":"EducationalApplication","operatingSystem":"Claude Code (macOS, Linux, Windows)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://yanivyosefi.github.io/sidenote-en/home/ar","inLanguage":["he","en","es","ru","ar"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل يبطئ عملي؟","acceptedAnswer":{"@type":"Answer","text":"لا. الإجابة التي طلبتها تبقى كاملة وتأتي أولًا. التعبير يأتي بعدها في سطر واحد."}},{"@type":"Question","name":"هل أحتاج حسابًا؟","acceptedAnswer":{"@type":"Answer","text":"لا. بلا تسجيل وبلا بريد وبلا عنوان شخصي."}},{"@type":"Question","name":"كم يكلّف؟","acceptedAnswer":{"@type":"Answer","text":"لا شيء. الإضافة تعمل على اشتراك Claude الذي لديك."}},{"@type":"Question","name":"أين يُحفَظ تقدّمي؟","acceptedAnswer":{"@type":"Answer","text":"في ملف واحد على جهازك، في `~/.sidenote/state.json`. لا شيء يخرج منه."}},{"@type":"Question","name":"أي اللغات؟","acceptedAnswer":{"@type":"Answer","text":"أي لغة يعرفها Claude. الإنجليزية والإسبانية والفرنسية والإيطالية والألمانية واليابانية والعبرية والروسية وغيرها."}},{"@type":"Question","name":"كيف أحذف كل شيء؟","acceptedAnswer":{"@type":"Answer","text":"`claude plugin uninstall sidenote` ثم تحذف المجلد. هذا كل شيء."}},{"@type":"Question","name":"توقّفت شهرًا. ماذا يحدث؟","acceptedAnswer":{"@type":"Answer","text":"لا يضيع شيء. الملف يبقى في مكانه والتعبيرات تنتظر. لا تتراكم لتصبح دَينًا من مئتي مراجعة تنتظرك يوم عودتك. تتابع من حيث توقّفت."}}]}</script>
 <style>
@@ -140,6 +143,8 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .cmd.light .p{color:var(--teal-l)}
 .copyrow{display:flex;justify-content:center;align-items:center;gap:12px;
   flex-wrap:wrap;margin-top:14px}
+.installs{margin:10px 0 0;font-size:14px;color:var(--gray);text-align:center}
+.installs b{color:var(--teal-d);font-weight:700}
 
 /* hero film — a person, not a screenshot */
 .hero-media{position:relative;max-width:880px;margin:40px auto 0;
@@ -166,6 +171,10 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 /* feature rows */
 .feat{padding:64px 0;border-bottom:1px solid var(--line)}
 .feat .row{display:grid;grid-template-columns:1fr 1.1fr;gap:52px;align-items:center}
+/* Grid items default to min-width:auto, so the widest line of the JSON card set
+   the column width and pushed the row 50px off a phone screen. */
+.feat .row>*{min-width:0}
+.filecard pre{overflow-x:auto}
 /* The second row puts the picture first. Ordering, not direction — flipping
    direction on the row leaks into the prose and reverses RTL sentences. */
 .feat.flip .row{grid-template-columns:1.1fr 1fr}
@@ -273,30 +282,30 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .xnote{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
 .xnote.on{opacity:1;transform:none}
 
-/* does this actually work — the objection, answered in prose. Narrow measure
-   on purpose: this is the one place on the page meant to be read, not scanned. */
-.works{background:var(--teal-wash);padding:64px 0;border-bottom:1px solid var(--line)}
-.works h2{text-align:center;color:var(--ink-d);margin-bottom:22px}
-.works .wk{max-width:620px;margin:0 auto}
-.works p{font-size:17.5px;line-height:1.75;color:var(--ink);margin-bottom:16px}
-.works p:last-child{margin-bottom:0}
-
-/* what you are actually after */
-.who{padding:60px 0;border-bottom:1px solid var(--line)}
-.who h2{text-align:center;color:var(--ink-d);margin-bottom:14px}
-.wsub{max-width:640px;margin:0 auto 34px;text-align:center;color:var(--gray);
-  font-size:16.5px;line-height:1.7}
-.wnote{max-width:620px;margin:32px auto 0;text-align:center;color:var(--gray);
-  font-size:15.5px;line-height:1.7;padding-top:22px;border-top:1px solid var(--line)}
-.wgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-/* height:auto is load-bearing — the width/height attributes are there to reserve
-   space before the file lands, and without it the attribute height wins over
-   aspect-ratio and the portrait stretches into a column. */
-.wcard img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:10px;
-  display:block;box-shadow:var(--sh-s);object-position:50% 30%}
-.wcard b{display:block;font-family:var(--serif);font-size:19px;color:var(--ink-d);
-  margin:15px 0 3px;line-height:1.35}
-.wcard span{display:block;color:var(--gray);font-size:16px;line-height:1.6}
+/* goals — tap what you are after. Pure CSS/JS, no images: the photo grid it
+   replaces weighed more than the rest of the page's pictures together. */
+.goals{padding:56px 0;border-bottom:1px solid var(--line);text-align:center}
+.goals h2{color:var(--ink-d);margin-bottom:6px}
+.gsub{color:var(--gray);font-size:16.5px;margin:0}
+.glist{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:780px;
+  margin:26px auto 0;padding:0;list-style:none}
+.goal{display:flex;align-items:center;gap:12px;width:100%;text-align:start;
+  background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;
+  font:inherit;font-size:16px;line-height:1.45;color:var(--ink);cursor:pointer;
+  transition:border-color .15s,background .15s,transform .1s}
+.goal:hover{border-color:var(--teal-s)}
+.goal:active{transform:scale(.985)}
+.goal i{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--teal-s);
+  display:grid;place-items:center;transition:background .15s,border-color .15s}
+.goal svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:3;
+  stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .15s}
+.goal[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-wash)}
+.goal[aria-pressed="true"] i{background:var(--teal);border-color:var(--teal)}
+.goal[aria-pressed="true"] svg{opacity:1}
+.gdone{margin:22px 0 0;font-size:17px;color:var(--teal-dd);font-weight:600;
+  opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
+.gdone.on{opacity:1;transform:none}
+.gdone a{color:var(--teal);margin-inline-start:6px;white-space:nowrap;text-decoration:none;border-bottom:1.5px solid}
 
 /* the same answer in three languages at once */
 .trio{background:var(--teal-dd);padding:60px 0;color:#fff}
@@ -317,19 +326,22 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 
 /* what's inside */
 .kit{background:var(--soft);padding:54px 0;border-bottom:1px solid var(--line)}
-.kit h2{text-align:center;color:var(--ink-d);font-size:30px;margin-bottom:30px}
-.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 34px}
-.kgrid div{border-top:2px solid var(--teal-s2);padding-top:11px}
-.kgrid b{display:block;font-size:16px;color:var(--ink-d);margin-bottom:1px}
-.kgrid span{display:block;color:var(--gray);font-size:15px;line-height:1.55}
+.kit h2{text-align:center;color:var(--ink-d);font-size:30px;margin-bottom:28px}
+.kgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;list-style:none;padding:0;margin:0}
+.kgrid li{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 14px 18px;
+  text-align:center;box-shadow:var(--sh-s)}
+.kgrid i{width:40px;height:40px;border-radius:50%;background:var(--teal-wash);
+  display:grid;place-items:center;margin:0 auto 12px}
+.kgrid svg{width:20px;height:20px;fill:none;stroke:var(--teal);stroke-width:2.6;
+  stroke-linecap:round;stroke-linejoin:round}
+.kgrid b{display:block;font-size:16px;color:var(--ink-d);line-height:1.35;margin-bottom:4px}
+.kgrid span{display:block;color:var(--gray);font-size:14.5px;line-height:1.45}
 
 /* how it differs.
    Every product on this shelf charges a subscription, keeps your progress on
    its server, and asks you to open one more thing. Those are the rows, so the
    table argues the point instead of asserting it. */
 .cmp{background:#fff;padding:58px 0;border-bottom:1px solid var(--line)}
-.cmp h2{text-align:center;color:var(--ink-d);margin-bottom:8px}
-.cmp .csub{text-align:center;color:var(--gray);font-size:17px;margin:0 auto 30px;max-width:580px}
 /* Four columns will not honestly fit a phone. Rather than shrink the text to
    unreadable, the table keeps a floor width and the narrow screen scrolls it. */
 .ctab-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -386,8 +398,7 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .feat .row,.feat.flip .row{grid-template-columns:1fr;gap:28px}
   .feat.flip .art{order:0}
   .qgrid{grid-template-columns:1fr}
-  .kgrid{grid-template-columns:1fr 1fr;gap:18px 26px}
-  .wgrid{grid-template-columns:1fr 1fr}
+  .kgrid{grid-template-columns:repeat(3,1fr)}
   .tgrid{grid-template-columns:1fr}
   .xrow{grid-template-columns:1fr;gap:22px}
   .xsteps{display:flex;flex-wrap:wrap;gap:4px 22px}
@@ -405,13 +416,18 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .uilangs a{padding:4px 6px;font-size:12.5px}
   .nav-cta-link{display:none}
   .steps{grid-template-columns:1fr;gap:22px}
-  .kgrid{grid-template-columns:1fr;gap:16px}
   .kit{padding:44px 0}
   .feat{padding:44px 0}
   .app-body{font-size:14.3px;padding:14px}
   .cmd{font-size:11.6px}
   .btn:not(.btn-sm){display:block;width:100%;text-align:center}
-  .wgrid{grid-template-columns:1fr;gap:22px}
+  .glist{grid-template-columns:1fr}
+  /* five cards never split evenly on a phone, so they become a compact list */
+  .kgrid{grid-template-columns:1fr;gap:10px}
+  .kgrid li{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center;
+    text-align:start;padding:14px 16px}
+  .kgrid i{grid-row:span 2;margin:0}
+  .kgrid b{margin:0}
   .chooser{font-size:16px;gap:7px}
   .chooser select{font-size:15.5px;padding:6px 12px}
   .hero-media{margin-top:28px;border-radius:10px}
@@ -451,6 +467,7 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ و
       <span class="btn-note" style="margin:0">سطران، مرة واحدة. يعمل على الاشتراك الذي تدفعه أصلًا.</span>
     </div>
   </div>
+  <p class="installs" id="installs" hidden></p>
   <div class="works-in">
     <span>يعمل في</span>
     <span class="chip ltr">Claude Code</span>
@@ -466,7 +483,7 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ و
        Filenames are versioned: the media is served immutable, so replacing a
        clip under its old name shows the old one for days. -->
   <div class="hero-media">
-    <video autoplay muted playsinline controls preload="metadata"
+    <video muted playsinline controls preload="none"
            poster="/sidenote-en/media/film2-poster-en.jpg">
       <source src="/sidenote-en/media/film2-en.mp4" type="video/mp4">
     </video>
@@ -501,44 +518,25 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ و
   </div>
 </div></section>
 
-<!-- The objection nobody on this page has answered yet. It sits right after
-     the demo because that is the moment someone has just watched the thing
-     happen and is deciding whether it amounts to anything. There are no users
-     to quote, so the mechanism is the argument, and the ladder numbers show
-     up here for the first time. -->
-<section class="works"><div class="wrap">
-  <h2>هل هذا ينجح فعلًا؟</h2>
-  <div class="wk"><p>تتعلّم تعبيرًا، وبعد يومين يختفي. هذه ليست مشكلة فيك، هكذا تعمل الذاكرة. لذلك لا يعطيك Sidenote قائمة لتحفظها. التعبير الذي تحصل عليه مأخوذ من سطر كتبه Claude لك قبل لحظات، داخل سياق تفهمه أصلًا، ولهذا يجد ما يتعلّق به.</p><p>ثم يعود. بعد يوم، بعد ثلاثة، بعد أسبوع، ثم في اليوم 16 و35 و90. كل عودة تأتي في اللحظة التي تسبق نسيانه، وكل مرة تتذكّره فيها يصمد أطول. بعد ست مرات يصبح لك، لا لأنك اجتهدت، بل لأنه ظهر في الوقت المناسب.</p></div>
-</div></section>
-
-<!-- Four photographs of what someone is actually after. The caption is the
-     goal, not a description of the picture, and the note under them says out
-     loud that this supplements practice rather than replacing it — which is
-     the only promise in this category that survives contact with reality. -->
-<section class="who"><div class="wrap">
-  <h2>ما تريده في النهاية</h2>
-  <p class="wsub">لن تتقن لغة لأنك ثبّتت إضافة. الحديث الحقيقي والتدريب الحقيقي هما ما يفعل ذلك، ولا طريق مختصر حوله. لكن ما يحدث فعلًا: تصادف تعبيرات كما ينطقها الناس، لا مقتطعة من قائمة، وشيء يذكّرك بالتعلّم حتى في الأيام التي لم تنوِ فيها ذلك. وهذا يتراكم.</p>
-  <div class="wgrid"><div class="wcard">
-      <img src="/sidenote-en/media/goal-1-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>أن تُنهي مساء عمل وقد بقي معك تعبير إضافي</b><span>بلا تطبيق تفتحه وبلا وقت تخصّصه.</span></div><div class="wcard">
-      <img src="/sidenote-en/media/goal-2-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>أن تطلب في مقهى في روما فتحصل على ما قصدته</b><span>دون أن تشير إلى القائمة ودون أن تنتقل إلى الإنجليزية.</span></div><div class="wcard">
-      <img src="/sidenote-en/media/goal-3-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>أن تتحدّث مع أحد بالإسبانية وتبقى في الإسبانية</b><span>لأن العبارة المناسبة تأتي في وقتها.</span></div><div class="wcard">
-      <img src="/sidenote-en/media/goal-4-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>أن تصعد الحافلة فتفهم ما يُقال حولك</b><span>ليس كل كلمة. ما يكفي لتشعر أنك في الداخل.</span></div></div>
-  <p class="wnote">Sidenote إضافة إلى تدريبك، لا بديل عنه. هو لا يعلّمك الكلام. هو يجعلك تواصل، ويحرص على أن يكون ما تصادفه هو ما يقوله الناس فعلًا.</p>
+<section class="goals"><div class="wrap">
+  <h2>لماذا تتعلم؟</h2>
+  <p class="gsub">اختر ما يناسبك.</p>
+  <ul class="glist">
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>أن أطلب عشاءً كاملًا في روما بالإيطالية</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>أن أكتب بريدًا بالإنجليزية دون التحقق من كل كلمة</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>أن أفهم ما يقال حولي في الحافلة بالعبرية</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>أن أتحدث الإسبانية في السفر دون التحول إلى الإنجليزية</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>أن أشاهد مسلسلًا بالفرنسية دون ترجمة</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>أن أتحدث مع عائلة شريكي بلغتهم</span></button></li>
+  </ul>
+  <p class="gdone" id="gdone" aria-live="polite">كل هذا يبدأ بتعبير واحد.<a href="#install">ابدأ ←</a></p>
 </div></section>
 
 <section class="feat"><div class="wrap"><div class="row">
   <div class="copy">
     <p class="kicker">داخل المحادثة</p>
-    <h3>التعبير يخرج من الإجابة التي حصلت عليها</h3>
-    <p>تسأل سؤالًا عاديًا، فيخرج من الإجابة نفسها تعبير واحد. ليست قائمة كلمات ولا بطاقة، بل جملة قرأتها للتو.</p>
+    <h3>لا حفظ من بطاقات مملة</h3>
+    <p>تتعلم من السياق، بالطريقة الطبيعية للمحادثة.</p>
     <span class="more">وأي لغة أخرى يعرفها Claude.</span>
   </div>
   <div class="art" data-group="a">
@@ -635,108 +633,6 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ و
   </div>
 </div></div></section>
 
-<section class="feat flip"><div class="wrap"><div class="row">
-  <div class="art" data-group="b">
-    <div class="pane on" data-pane="en">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">العربية → English</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">غدًا يومي مزدحم. من أين أبدأ؟</p>
-      <div class="ta"><s>✳</s><span>من المكالمة مع المورّد.
-ما دامت معلّقة، كل شيء آخر يتأجّل.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">من الإجابة: “ما دامت معلّقة، كل شيء آخر يتأجّل”</span>
-      <span class="expr" dir="ltr">to get it out of the way</span>
-      <span class="gloss">أن تُنهي أمرًا مزعجًا وتُريح رأسك.</span>
-      <span class="ex" dir="ltr">Make that call first and get it out of the way.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="fr">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">العربية → Français</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">غدًا يومي مزدحم. من أين أبدأ؟</p>
-      <div class="ta"><s>✳</s><span>من المكالمة مع المورّد.
-ما دامت معلّقة، كل شيء آخر يتأجّل.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">من الإجابة: “ما دامت معلّقة، كل شيء آخر يتأجّل”</span>
-      <span class="expr" dir="ltr">s’en débarrasser</span>
-      <span class="gloss">أن تنتهي منه ولا تجرّه معك.</span>
-      <span class="ex" dir="ltr">Passe cet appel et débarrasse-t’en.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="es">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">العربية → Español</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">غدًا يومي مزدحم. من أين أبدأ؟</p>
-      <div class="ta"><s>✳</s><span>من المكالمة مع المورّد.
-ما دامت معلّقة، كل شيء آخر يتأجّل.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">من الإجابة: “ما دامت معلّقة، كل شيء آخر يتأجّل”</span>
-      <span class="expr" dir="ltr">quitárselo de encima</span>
-      <span class="gloss">أن تُزيحه عن كاهلك وتمضي.</span>
-      <span class="ex" dir="ltr">Haz esa llamada y quítatelo de encima.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="de">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">العربية → Deutsch</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">غدًا يومي مزدحم. من أين أبدأ؟</p>
-      <div class="ta"><s>✳</s><span>من المكالمة مع المورّد.
-ما دامت معلّقة، كل شيء آخر يتأجّل.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">من الإجابة: “ما دامت معلّقة، كل شيء آخر يتأجّل”</span>
-      <span class="expr" dir="ltr">etwas vom Tisch haben</span>
-      <span class="gloss">أن يُغلق الأمر نهائيًا.</span>
-      <span class="ex" dir="ltr">Mach den Anruf zuerst, dann hast du es vom Tisch.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="he">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">العربية → עברית</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">غدًا يومي مزدحم. من أين أبدأ؟</p>
-      <div class="ta"><s>✳</s><span>من المكالمة مع المورّد.
-ما دامت معلّقة، كل شيء آخر يتأجّل.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">من الإجابة: “ما دامت معلّقة، كل شيء آخر يتأجّل”</span>
-      <span class="expr rtl" dir="rtl">לסגור עניין  ·  lisgór inyán</span>
-      <span class="gloss">أن تُغلق الموضوع وتُريح بالك.</span>
-      <span class="ex rtl" dir="rtl">תעשה את השיחה הזאת ותסגור עניין.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="it">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">العربية → Italiano</span></div>
-    <div class="app-body" dir="rtl">
-      <p class="tq">غدًا يومي مزدحم. من أين أبدأ؟</p>
-      <div class="ta"><s>✳</s><span>من المكالمة مع المورّد.
-ما دامت معلّقة، كل شيء آخر يتأجّل.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">من الإجابة: “ما دامت معلّقة، كل شيء آخر يتأجّل”</span>
-      <span class="expr" dir="ltr">togliersi il pensiero</span>
-      <span class="gloss">أن تُنجزه أولًا وتتخلّص منه.</span>
-      <span class="ex" dir="ltr">Fai quella chiamata e togliti il pensiero.</span></div>
-    </div>
-  </div>
-</div>
-  </div>
-  <div class="copy">
-    <p class="kicker">ليست البرمجة فقط</p>
-    <h3>كل محادثة درس قصير</h3>
-    <p>رسالة لزبونة، خطة الغد، وصفة، بريد لمورّد. التعبير يخرج من عملك أنت، لا من قائمة جاهزة أعدّها أحد.</p>
-  </div>
-</div></div></section>
-
-
-
 <section class="feat"><div class="wrap"><div class="row">
   <div class="copy">
     <p class="kicker">بلا حساب، بلا خادم</p>
@@ -761,13 +657,17 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ و
 </div></div></section>
 
 <div class="kit"><div class="wrap">
-  <h2>ماذا يوجد بالداخل</h2>
-  <div class="kgrid"><div><b>تعبير واحد لكل محادثة</b><span>ليست قائمة ولا درسًا. عنصر واحد مرتبط بما كنت تفعله.</span></div><div><b>أي لغة</b><span>الإنجليزية والإسبانية والفرنسية والألمانية والإيطالية واليابانية والعبرية وغيرها.</span></div><div><b>لا يتكرر أبدًا</b><span>ما تعلّمته لا يعود كأنه جديد.</span></div><div><b>مستواك</b><span>من A2 إلى C1. غيّره متى شئت بالأمر <code dir="ltr">/sidenote</code>.</span></div><div><b>بلا تكلفة</b><span>يعمل على اشتراك Claude الذي لديك. بلا مفتاح API وبلا فواتير.</span></div><div><b>ملف واحد</b><span>كل شيء في <code dir="ltr">state.json</code> على قرصك. حذفه يحذف كل شيء.</span></div></div>
+  <h2>ما الذي تحصل عليه</h2>
+  <ul class="kgrid">
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>تعبير واحد في كل محادثة</b><span>مرتبط بما فعلته للتو</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>أي لغة</b><span>الإنجليزية والفرنسية والعبرية وغيرها</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>بمستواك</b><span>من A2 إلى C1</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>مجانًا</b><span>على اشتراك Claude الذي لديك</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>يبقى عندك</b><span>ملف واحد، بلا حساب</span></li>
+  </ul>
 </div></div>
 
 <section class="cmp" id="cmp"><div class="wrap">
-  <h2>بماذا يختلف عن الأدوات المعتادة</h2>
-  <p class="csub">الأدوات الأخرى ليست سيئة. لكنها تطلب منك تطبيقًا إضافيًا، واشتراكًا إضافيًا، وقائمة كلمات كتبها شخص آخر.</p>
   <div class="ctab-wrap"><table class="ctab">
     <thead><tr>
       <th></th>
@@ -885,11 +785,15 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
     location.href = to;
   });
 
-  /* Restore a target chosen on an earlier visit, if this page teaches it. */
+  /* A target chosen on an earlier visit is where the page starts, not where it
+     stops. Freezing on it made a returning visitor see one example forever,
+     which reads as a broken page; picking a language in this visit still pins. */
+  var savedAt = -1;
   try {
     var saved = localStorage.getItem('sn.target');
-    if (saved && TARGETS.indexOf(saved) > -1) {
-      if (spin) { clearInterval(spin); spin = null; }
+    savedAt = TARGETS.indexOf(saved);
+    if (savedAt > -1) {
+      wi = ti = savedAt;
       if (TGT) TGT.value = saved;
       showTarget(saved);
       if (SW) SW.textContent = TGT.options[TGT.selectedIndex].textContent;
@@ -910,7 +814,20 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
   /* If an earlier visit already pinned a target, the cycling above was stopped
      before we got here, and the walk-through starts pinned to the same one. */
   var xtok = 0, xi = 0, xpin = null;
-  if (!spin && TGT && TARGETS.indexOf(TGT.value) > -1) xpin = TARGETS.indexOf(TGT.value);
+
+  /* The walk-throughs are not in the chooser's order, so a target is matched to
+     its demo by the language name in the pair, never by position. A target with
+     no demo of its own leaves the walk-through rotating. */
+  function xfor(code) {
+    if (!TGT) return null;
+    var opt = [].filter.call(TGT.options, function (o) { return o.value === code; })[0];
+    if (!opt) return null;
+    for (var i = 0; i < XD.length; i++) {
+      if (XD[i].pair.slice(-opt.textContent.length) === opt.textContent) return i;
+    }
+    return null;
+  }
+  if (savedAt > -1) { var sx = xfor(TARGETS[savedAt]); if (sx !== null) xi = sx; }
 
   function xmark(n) { xli.forEach(function (li, i) { li.classList.toggle('on', i === n); }); }
   function xsleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
@@ -982,9 +899,7 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
   /* Choosing a target pins the walk-through to it too, so the whole page is
      talking about one language at a time. */
   if (TGT) TGT.addEventListener('change', function () {
-    var n = TARGETS.indexOf(TGT.value);
-    if (n < 0) return;
-    xpin = n;
+    xpin = xfor(TGT.value);
     still ? xfinal() : xstart();
   });
 
@@ -998,6 +913,63 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
       setTimeout(function () { cp.textContent = was; }, 1700);
     });
   });
+
+  /* The film is heavy and it is not why anyone opened the page, so it is not
+     on the critical path: no autoplay attribute, preload="none", and the
+     fetch only starts once the page has loaded and the poster is actually on
+     screen. Someone who lands at the top still sees it start by itself. */
+  var film = document.querySelector('.hero-media video');
+  if (film) {
+    var roll = function () {
+      film.preload = 'auto';
+      var p = film.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+    var watch = function () {
+      if (!('IntersectionObserver' in window)) return roll();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { io.disconnect(); roll(); }
+        });
+      }, { threshold: 0.2 });
+      io.observe(film);
+    };
+    if (document.readyState === 'complete') watch();
+    else window.addEventListener('load', watch);
+  }
+
+
+  /* Live download count. The number is written daily by a GitHub Action into
+     data/installs.json — it is unique git cloners from GitHub's own traffic
+     API, which is the only install signal that exists, since the plugin
+     never phones home and never will.
+
+     It stays hidden below MIN. A launch-day "3 downloads" argues against the
+     product better than silence does. Raise or lower MIN to taste; set it to
+     0 to always show. Any failure leaves the line hidden — a counter is not
+     worth a broken page. */
+  var MIN = 25;
+  var slot = document.getElementById('installs');
+  if (slot) fetch('/sidenote-en/data/installs.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !(d.installs >= MIN)) return;
+      slot.innerHTML = "{n} عملية تنزيل حتى الآن".replace('{n}', '<b>' + d.installs.toLocaleString("ar") + '</b>');
+      slot.hidden = false;
+    })
+    .catch(function () {});
+
+
+  /* Goals: a tap toggles one, and the first tick brings up the line that
+     points back to the install box. Nothing is stored or sent. */
+  var gdone = document.getElementById('gdone');
+  document.querySelectorAll('.goal').forEach(function (g) {
+    g.addEventListener('click', function () {
+      g.setAttribute('aria-pressed', g.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      if (gdone) gdone.classList.toggle('on', !!document.querySelector('.goal[aria-pressed="true"]'));
+    });
+  });
+
 })();
 </script>
 </body>

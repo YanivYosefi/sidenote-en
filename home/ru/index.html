@@ -25,9 +25,12 @@
 <link rel="icon" href="/sidenote-en/media/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/sidenote-en/media/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/sidenote-en/media/icon-180.png" sizes="180x180">
+<link rel="preload" as="image" href="/sidenote-en/media/film2-poster-en.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap"></noscript>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Sidenote","description":"Sidenote — плагин для Claude, который учит вас любому языку прямо во время работы. Одно выражение в конце ответа, связанное с тем, что вы только что делали. Хранится у вас, без аккаунта и без сервера.","applicationCategory":"EducationalApplication","operatingSystem":"Claude Code (macOS, Linux, Windows)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://yanivyosefi.github.io/sidenote-en/home/ru","inLanguage":["he","en","es","ru","ar"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Это меня замедлит?","acceptedAnswer":{"@type":"Answer","text":"Нет. Нужный ответ остаётся полным и идёт первым. Выражение приходит после него, одной строкой."}},{"@type":"Question","name":"Нужен аккаунт?","acceptedAnswer":{"@type":"Answer","text":"Нет. Ни регистрации, ни почты, ни личного адреса."}},{"@type":"Question","name":"Сколько стоит?","acceptedAnswer":{"@type":"Answer","text":"Ничего. Плагин работает на подписке Claude, которая у вас уже есть."}},{"@type":"Question","name":"Где хранится прогресс?","acceptedAnswer":{"@type":"Answer","text":"В одном файле на вашем компьютере, в `~/.sidenote/state.json`. Наружу ничего не уходит."}},{"@type":"Question","name":"Какие языки?","acceptedAnswer":{"@type":"Answer","text":"Любой, который знает Claude. Английский, испанский, французский, итальянский, немецкий, японский, иврит, арабский и другие."}},{"@type":"Question","name":"Как удалить всё?","acceptedAnswer":{"@type":"Answer","text":"`claude plugin uninstall sidenote` и удалить папку. Всё."}},{"@type":"Question","name":"Я не заходил месяц. Что будет?","acceptedAnswer":{"@type":"Answer","text":"Ничего не теряется. Файл остаётся на месте, а выражения ждут. Они не накапливаются в долг из двухсот повторов, который свалится на вас в день возвращения. Вы продолжите с того места, где остановились."}}]}</script>
 <style>
@@ -140,6 +143,8 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .cmd.light .p{color:var(--teal-l)}
 .copyrow{display:flex;justify-content:center;align-items:center;gap:12px;
   flex-wrap:wrap;margin-top:14px}
+.installs{margin:10px 0 0;font-size:14px;color:var(--gray);text-align:center}
+.installs b{color:var(--teal-d);font-weight:700}
 
 /* hero film — a person, not a screenshot */
 .hero-media{position:relative;max-width:880px;margin:40px auto 0;
@@ -166,6 +171,10 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 /* feature rows */
 .feat{padding:64px 0;border-bottom:1px solid var(--line)}
 .feat .row{display:grid;grid-template-columns:1fr 1.1fr;gap:52px;align-items:center}
+/* Grid items default to min-width:auto, so the widest line of the JSON card set
+   the column width and pushed the row 50px off a phone screen. */
+.feat .row>*{min-width:0}
+.filecard pre{overflow-x:auto}
 /* The second row puts the picture first. Ordering, not direction — flipping
    direction on the row leaks into the prose and reverses RTL sentences. */
 .feat.flip .row{grid-template-columns:1.1fr 1fr}
@@ -273,30 +282,30 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .xnote{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
 .xnote.on{opacity:1;transform:none}
 
-/* does this actually work — the objection, answered in prose. Narrow measure
-   on purpose: this is the one place on the page meant to be read, not scanned. */
-.works{background:var(--teal-wash);padding:64px 0;border-bottom:1px solid var(--line)}
-.works h2{text-align:center;color:var(--ink-d);margin-bottom:22px}
-.works .wk{max-width:620px;margin:0 auto}
-.works p{font-size:17.5px;line-height:1.75;color:var(--ink);margin-bottom:16px}
-.works p:last-child{margin-bottom:0}
-
-/* what you are actually after */
-.who{padding:60px 0;border-bottom:1px solid var(--line)}
-.who h2{text-align:center;color:var(--ink-d);margin-bottom:14px}
-.wsub{max-width:640px;margin:0 auto 34px;text-align:center;color:var(--gray);
-  font-size:16.5px;line-height:1.7}
-.wnote{max-width:620px;margin:32px auto 0;text-align:center;color:var(--gray);
-  font-size:15.5px;line-height:1.7;padding-top:22px;border-top:1px solid var(--line)}
-.wgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-/* height:auto is load-bearing — the width/height attributes are there to reserve
-   space before the file lands, and without it the attribute height wins over
-   aspect-ratio and the portrait stretches into a column. */
-.wcard img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:10px;
-  display:block;box-shadow:var(--sh-s);object-position:50% 30%}
-.wcard b{display:block;font-family:var(--serif);font-size:19px;color:var(--ink-d);
-  margin:15px 0 3px;line-height:1.35}
-.wcard span{display:block;color:var(--gray);font-size:16px;line-height:1.6}
+/* goals — tap what you are after. Pure CSS/JS, no images: the photo grid it
+   replaces weighed more than the rest of the page's pictures together. */
+.goals{padding:56px 0;border-bottom:1px solid var(--line);text-align:center}
+.goals h2{color:var(--ink-d);margin-bottom:6px}
+.gsub{color:var(--gray);font-size:16.5px;margin:0}
+.glist{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:780px;
+  margin:26px auto 0;padding:0;list-style:none}
+.goal{display:flex;align-items:center;gap:12px;width:100%;text-align:start;
+  background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;
+  font:inherit;font-size:16px;line-height:1.45;color:var(--ink);cursor:pointer;
+  transition:border-color .15s,background .15s,transform .1s}
+.goal:hover{border-color:var(--teal-s)}
+.goal:active{transform:scale(.985)}
+.goal i{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--teal-s);
+  display:grid;place-items:center;transition:background .15s,border-color .15s}
+.goal svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:3;
+  stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .15s}
+.goal[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-wash)}
+.goal[aria-pressed="true"] i{background:var(--teal);border-color:var(--teal)}
+.goal[aria-pressed="true"] svg{opacity:1}
+.gdone{margin:22px 0 0;font-size:17px;color:var(--teal-dd);font-weight:600;
+  opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
+.gdone.on{opacity:1;transform:none}
+.gdone a{color:var(--teal);margin-inline-start:6px;white-space:nowrap;text-decoration:none;border-bottom:1.5px solid}
 
 /* the same answer in three languages at once */
 .trio{background:var(--teal-dd);padding:60px 0;color:#fff}
@@ -317,19 +326,22 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 
 /* what's inside */
 .kit{background:var(--soft);padding:54px 0;border-bottom:1px solid var(--line)}
-.kit h2{text-align:center;color:var(--ink-d);font-size:30px;margin-bottom:30px}
-.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 34px}
-.kgrid div{border-top:2px solid var(--teal-s2);padding-top:11px}
-.kgrid b{display:block;font-size:16px;color:var(--ink-d);margin-bottom:1px}
-.kgrid span{display:block;color:var(--gray);font-size:15px;line-height:1.55}
+.kit h2{text-align:center;color:var(--ink-d);font-size:30px;margin-bottom:28px}
+.kgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;list-style:none;padding:0;margin:0}
+.kgrid li{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 14px 18px;
+  text-align:center;box-shadow:var(--sh-s)}
+.kgrid i{width:40px;height:40px;border-radius:50%;background:var(--teal-wash);
+  display:grid;place-items:center;margin:0 auto 12px}
+.kgrid svg{width:20px;height:20px;fill:none;stroke:var(--teal);stroke-width:2.6;
+  stroke-linecap:round;stroke-linejoin:round}
+.kgrid b{display:block;font-size:16px;color:var(--ink-d);line-height:1.35;margin-bottom:4px}
+.kgrid span{display:block;color:var(--gray);font-size:14.5px;line-height:1.45}
 
 /* how it differs.
    Every product on this shelf charges a subscription, keeps your progress on
    its server, and asks you to open one more thing. Those are the rows, so the
    table argues the point instead of asserting it. */
 .cmp{background:#fff;padding:58px 0;border-bottom:1px solid var(--line)}
-.cmp h2{text-align:center;color:var(--ink-d);margin-bottom:8px}
-.cmp .csub{text-align:center;color:var(--gray);font-size:17px;margin:0 auto 30px;max-width:580px}
 /* Four columns will not honestly fit a phone. Rather than shrink the text to
    unreadable, the table keeps a floor width and the narrow screen scrolls it. */
 .ctab-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -386,8 +398,7 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .feat .row,.feat.flip .row{grid-template-columns:1fr;gap:28px}
   .feat.flip .art{order:0}
   .qgrid{grid-template-columns:1fr}
-  .kgrid{grid-template-columns:1fr 1fr;gap:18px 26px}
-  .wgrid{grid-template-columns:1fr 1fr}
+  .kgrid{grid-template-columns:repeat(3,1fr)}
   .tgrid{grid-template-columns:1fr}
   .xrow{grid-template-columns:1fr;gap:22px}
   .xsteps{display:flex;flex-wrap:wrap;gap:4px 22px}
@@ -405,13 +416,18 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .uilangs a{padding:4px 6px;font-size:12.5px}
   .nav-cta-link{display:none}
   .steps{grid-template-columns:1fr;gap:22px}
-  .kgrid{grid-template-columns:1fr;gap:16px}
   .kit{padding:44px 0}
   .feat{padding:44px 0}
   .app-body{font-size:14.3px;padding:14px}
   .cmd{font-size:11.6px}
   .btn:not(.btn-sm){display:block;width:100%;text-align:center}
-  .wgrid{grid-template-columns:1fr;gap:22px}
+  .glist{grid-template-columns:1fr}
+  /* five cards never split evenly on a phone, so they become a compact list */
+  .kgrid{grid-template-columns:1fr;gap:10px}
+  .kgrid li{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center;
+    text-align:start;padding:14px 16px}
+  .kgrid i{grid-row:span 2;margin:0}
+  .kgrid b{margin:0}
   .chooser{font-size:16px;gap:7px}
   .chooser select{font-size:15.5px;padding:6px 12px}
   .hero-media{margin-top:28px;border-radius:10px}
@@ -451,6 +467,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
       <span class="btn-note" style="margin:0">Две строки, один раз. Работает на подписке, которая у вас уже есть.</span>
     </div>
   </div>
+  <p class="installs" id="installs" hidden></p>
   <div class="works-in">
     <span>Работает в</span>
     <span class="chip ltr">Claude Code</span>
@@ -466,7 +483,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
        Filenames are versioned: the media is served immutable, so replacing a
        clip under its old name shows the old one for days. -->
   <div class="hero-media">
-    <video autoplay muted playsinline controls preload="metadata"
+    <video muted playsinline controls preload="none"
            poster="/sidenote-en/media/film2-poster-en.jpg">
       <source src="/sidenote-en/media/film2-en.mp4" type="video/mp4">
     </video>
@@ -501,44 +518,25 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
   </div>
 </div></section>
 
-<!-- The objection nobody on this page has answered yet. It sits right after
-     the demo because that is the moment someone has just watched the thing
-     happen and is deciding whether it amounts to anything. There are no users
-     to quote, so the mechanism is the argument, and the ladder numbers show
-     up here for the first time. -->
-<section class="works"><div class="wrap">
-  <h2>А это правда работает?</h2>
-  <div class="wk"><p>Вы узнаёте выражение, и через два дня его нет. Это не ваша вина, так устроена память. Поэтому Sidenote не даёт вам список для заучивания. Выражение приходит из строки, которую Claude только что вам написал, внутри контекста, который вы уже понимаете, и поэтому ему есть за что зацепиться.</p><p>А потом оно возвращается. Через день, через три, через неделю, а затем на 16-й, 35-й и 90-й день. Каждый повтор приходит ровно за мгновение до того, как вы бы его забыли, и каждый раз, когда вы его вспоминаете, оно держится дольше. После шести раз оно ваше, и не потому, что вы старались, а потому, что оно появилось вовремя.</p></div>
-</div></section>
-
-<!-- Four photographs of what someone is actually after. The caption is the
-     goal, not a description of the picture, and the note under them says out
-     loud that this supplements practice rather than replacing it — which is
-     the only promise in this category that survives contact with reality. -->
-<section class="who"><div class="wrap">
-  <h2>Чего вы хотите на самом деле</h2>
-  <p class="wsub">Вы не освоите язык потому, что поставили плагин. Это делают настоящие разговоры и настоящая практика, и обходного пути тут нет. Что действительно происходит: вы встречаете выражения такими, какими их говорят, а не вырванными из списка, и что-то напоминает вам учиться даже в те дни, когда вы не собирались. Это накапливается.</p>
-  <div class="wgrid"><div class="wcard">
-      <img src="/sidenote-en/media/goal-1-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>Закончить рабочий вечер с ещё одним выражением, которое осталось</b><span>Не открывая приложение и не выделяя время.</span></div><div class="wcard">
-      <img src="/sidenote-en/media/goal-2-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>Заказать в кафе в Риме и получить то, что имели в виду</b><span>Не показывая пальцем в меню и не переходя на английский.</span></div><div class="wcard">
-      <img src="/sidenote-en/media/goal-3-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>Заговорить с кем-то по-испански и остаться в испанском</b><span>Потому что нужная фраза приходит вовремя.</span></div><div class="wcard">
-      <img src="/sidenote-en/media/goal-4-square.jpg" width="900" height="900"
-           loading="lazy" decoding="async" alt="">
-      <b>Сесть в автобус и понимать, о чём говорят вокруг</b><span>Не каждое слово. Достаточно, чтобы быть внутри.</span></div></div>
-  <p class="wnote">Sidenote дополняет вашу практику, а не заменяет её. Он не учит вас говорить. Он не даёт вам остановиться и следит за тем, чтобы вы встречали то, что люди действительно говорят.</p>
+<section class="goals"><div class="wrap">
+  <h2>Зачем вам язык?</h2>
+  <p class="gsub">Отметьте, что подходит.</p>
+  <ul class="glist">
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>Заказать ужин в Риме целиком по-итальянски</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>Написать письмо на английском, не проверяя каждое слово</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>Понимать, что говорят вокруг в автобусе в Тель-Авиве</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>Говорить по-испански в поездке, не переходя на английский</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>Смотреть сериал на английском без субтитров</span></button></li>
+    <li><button type="button" class="goal" aria-pressed="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><span>Говорить с семьёй партнёра на их языке</span></button></li>
+  </ul>
+  <p class="gdone" id="gdone" aria-live="polite">Всё это начинается с одного выражения.<a href="#install">Начать →</a></p>
 </div></section>
 
 <section class="feat"><div class="wrap"><div class="row">
   <div class="copy">
     <p class="kicker">Внутри разговора</p>
-    <h3>Выражение приходит из ответа, который вы получили</h3>
-    <p>Вы задаёте обычный вопрос, и из того же ответа выпадает одно выражение. Не список слов и не карточка — фраза, которую вы уже прочитали.</p>
+    <h3>Никакой зубрёжки по скучным карточкам</h3>
+    <p>Учитесь из контекста — так, как это естественно происходит в разговоре.</p>
     <span class="more">И любой другой язык, который знает Claude.</span>
   </div>
   <div class="art" data-group="a">
@@ -635,108 +633,6 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
   </div>
 </div></div></section>
 
-<section class="feat flip"><div class="wrap"><div class="row">
-  <div class="art" data-group="b">
-    <div class="pane on" data-pane="en">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Русский → English</span></div>
-    <div class="app-body" dir="ltr">
-      <p class="tq">Завтра день забит. С чего начать?</p>
-      <div class="ta"><s>✳</s><span>Со звонка поставщику.
-Пока он висит, всё остальное сдвигается.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">Из ответа: “пока он висит, всё остальное сдвигается”</span>
-      <span class="expr" dir="ltr">to get it out of the way</span>
-      <span class="gloss">закрыть дело и освободить голову.</span>
-      <span class="ex" dir="ltr">Make that call first and get it out of the way.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="de">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Русский → Deutsch</span></div>
-    <div class="app-body" dir="ltr">
-      <p class="tq">Завтра день забит. С чего начать?</p>
-      <div class="ta"><s>✳</s><span>Со звонка поставщику.
-Пока он висит, всё остальное сдвигается.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">Из ответа: “пока он висит, всё остальное сдвигается”</span>
-      <span class="expr" dir="ltr">etwas vom Tisch haben</span>
-      <span class="gloss">снять вопрос с повестки окончательно.</span>
-      <span class="ex" dir="ltr">Mach den Anruf zuerst, dann hast du es vom Tisch.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="es">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Русский → Español</span></div>
-    <div class="app-body" dir="ltr">
-      <p class="tq">Завтра день забит. С чего начать?</p>
-      <div class="ta"><s>✳</s><span>Со звонка поставщику.
-Пока он висит, всё остальное сдвигается.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">Из ответа: “пока он висит, всё остальное сдвигается”</span>
-      <span class="expr" dir="ltr">quitárselo de encima</span>
-      <span class="gloss">скинуть с себя и идти дальше.</span>
-      <span class="ex" dir="ltr">Haz esa llamada y quítatelo de encima.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="he">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Русский → עברית</span></div>
-    <div class="app-body" dir="ltr">
-      <p class="tq">Завтра день забит. С чего начать?</p>
-      <div class="ta"><s>✳</s><span>Со звонка поставщику.
-Пока он висит, всё остальное сдвигается.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">Из ответа: “пока он висит, всё остальное сдвигается”</span>
-      <span class="expr rtl" dir="rtl">לסגור עניין  ·  lisgór inyán</span>
-      <span class="gloss">закрыть вопрос и больше о нём не думать.</span>
-      <span class="ex rtl" dir="rtl">תעשה את השיחה הזאת ותסגור עניין.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="fr">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Русский → Français</span></div>
-    <div class="app-body" dir="ltr">
-      <p class="tq">Завтра день забит. С чего начать?</p>
-      <div class="ta"><s>✳</s><span>Со звонка поставщику.
-Пока он висит, всё остальное сдвигается.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">Из ответа: “пока он висит, всё остальное сдвигается”</span>
-      <span class="expr" dir="ltr">s’en débarrasser</span>
-      <span class="gloss">покончить с этим и не тащить дальше.</span>
-      <span class="ex" dir="ltr">Passe cet appel et débarrasse-t’en.</span></div>
-    </div>
-  </div>
-</div>
-<div class="pane" data-pane="it">
-  <div class="app">
-    <div class="app-bar"><span class="ic">✳</span><span class="nm">Claude Code</span><span class="t">Русский → Italiano</span></div>
-    <div class="app-body" dir="ltr">
-      <p class="tq">Завтра день забит. С чего начать?</p>
-      <div class="ta"><s>✳</s><span>Со звонка поставщику.
-Пока он висит, всё остальное сдвигается.</span></div>
-      <div class="tnote"><div class="tag">SIDENOTE</div>
-      <span class="src">Из ответа: “пока он висит, всё остальное сдвигается”</span>
-      <span class="expr" dir="ltr">togliersi il pensiero</span>
-      <span class="gloss">разобраться с этим и не держать в голове.</span>
-      <span class="ex" dir="ltr">Fai quella chiamata e togliti il pensiero.</span></div>
-    </div>
-  </div>
-</div>
-  </div>
-  <div class="copy">
-    <p class="kicker">Не только код</p>
-    <h3>Каждый разговор — короткий урок</h3>
-    <p>Сообщение клиентке, план на завтра, рецепт, письмо поставщику. Выражение выходит из вашей работы, а не из заранее составленного списка.</p>
-  </div>
-</div></div></section>
-
-
-
 <section class="feat"><div class="wrap"><div class="row">
   <div class="copy">
     <p class="kicker">Без аккаунта, без сервера</p>
@@ -761,13 +657,17 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
 </div></div></section>
 
 <div class="kit"><div class="wrap">
-  <h2>Что внутри</h2>
-  <div class="kgrid"><div><b>Одно выражение за разговор</b><span>Не список и не урок. Один пункт, связанный с тем, что вы делали.</span></div><div><b>Любой язык</b><span>Английский, испанский, французский, немецкий, итальянский, японский, арабский и другие.</span></div><div><b>Никогда дважды</b><span>То, что уже пройдено, не вернётся как новое.</span></div><div><b>Ваш уровень</b><span>От A2 до C1. Меняется в любой момент командой <code dir="ltr">/sidenote</code>.</span></div><div><b>Нулевая стоимость</b><span>Работает на подписке Claude, которая у вас есть. Без API-ключа и без счетов.</span></div><div><b>Один файл</b><span>Всё в <code dir="ltr">state.json</code> на вашем диске. Удалили файл — удалили всё.</span></div></div>
+  <h2>Что вы получаете</h2>
+  <ul class="kgrid">
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>Одно выражение за разговор</b><span>Из того, что вы только что делали</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>Любой язык</b><span>Английский, немецкий, иврит и другие</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>Под ваш уровень</b><span>От A2 до C1</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>Бесплатно</b><span>На подписке Claude, которая уже есть</span></li>
+    <li><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></i><b>Остаётся у вас</b><span>Один файл, без аккаунта</span></li>
+  </ul>
 </div></div>
 
 <section class="cmp" id="cmp"><div class="wrap">
-  <h2>Чем это отличается от привычных инструментов</h2>
-  <p class="csub">Другие инструменты неплохие. Они просто просят ещё одно приложение, ещё одну подписку и ещё один список слов, который составил кто-то другой.</p>
   <div class="ctab-wrap"><table class="ctab">
     <thead><tr>
       <th></th>
@@ -885,11 +785,15 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
     location.href = to;
   });
 
-  /* Restore a target chosen on an earlier visit, if this page teaches it. */
+  /* A target chosen on an earlier visit is where the page starts, not where it
+     stops. Freezing on it made a returning visitor see one example forever,
+     which reads as a broken page; picking a language in this visit still pins. */
+  var savedAt = -1;
   try {
     var saved = localStorage.getItem('sn.target');
-    if (saved && TARGETS.indexOf(saved) > -1) {
-      if (spin) { clearInterval(spin); spin = null; }
+    savedAt = TARGETS.indexOf(saved);
+    if (savedAt > -1) {
+      wi = ti = savedAt;
       if (TGT) TGT.value = saved;
       showTarget(saved);
       if (SW) SW.textContent = TGT.options[TGT.selectedIndex].textContent;
@@ -910,7 +814,20 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
   /* If an earlier visit already pinned a target, the cycling above was stopped
      before we got here, and the walk-through starts pinned to the same one. */
   var xtok = 0, xi = 0, xpin = null;
-  if (!spin && TGT && TARGETS.indexOf(TGT.value) > -1) xpin = TARGETS.indexOf(TGT.value);
+
+  /* The walk-throughs are not in the chooser's order, so a target is matched to
+     its demo by the language name in the pair, never by position. A target with
+     no demo of its own leaves the walk-through rotating. */
+  function xfor(code) {
+    if (!TGT) return null;
+    var opt = [].filter.call(TGT.options, function (o) { return o.value === code; })[0];
+    if (!opt) return null;
+    for (var i = 0; i < XD.length; i++) {
+      if (XD[i].pair.slice(-opt.textContent.length) === opt.textContent) return i;
+    }
+    return null;
+  }
+  if (savedAt > -1) { var sx = xfor(TARGETS[savedAt]); if (sx !== null) xi = sx; }
 
   function xmark(n) { xli.forEach(function (li, i) { li.classList.toggle('on', i === n); }); }
   function xsleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
@@ -982,9 +899,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
   /* Choosing a target pins the walk-through to it too, so the whole page is
      talking about one language at a time. */
   if (TGT) TGT.addEventListener('change', function () {
-    var n = TARGETS.indexOf(TGT.value);
-    if (n < 0) return;
-    xpin = n;
+    xpin = xfor(TGT.value);
     still ? xfinal() : xstart();
   });
 
@@ -998,6 +913,63 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
       setTimeout(function () { cp.textContent = was; }, 1700);
     });
   });
+
+  /* The film is heavy and it is not why anyone opened the page, so it is not
+     on the critical path: no autoplay attribute, preload="none", and the
+     fetch only starts once the page has loaded and the poster is actually on
+     screen. Someone who lands at the top still sees it start by itself. */
+  var film = document.querySelector('.hero-media video');
+  if (film) {
+    var roll = function () {
+      film.preload = 'auto';
+      var p = film.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+    var watch = function () {
+      if (!('IntersectionObserver' in window)) return roll();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { io.disconnect(); roll(); }
+        });
+      }, { threshold: 0.2 });
+      io.observe(film);
+    };
+    if (document.readyState === 'complete') watch();
+    else window.addEventListener('load', watch);
+  }
+
+
+  /* Live download count. The number is written daily by a GitHub Action into
+     data/installs.json — it is unique git cloners from GitHub's own traffic
+     API, which is the only install signal that exists, since the plugin
+     never phones home and never will.
+
+     It stays hidden below MIN. A launch-day "3 downloads" argues against the
+     product better than silence does. Raise or lower MIN to taste; set it to
+     0 to always show. Any failure leaves the line hidden — a counter is not
+     worth a broken page. */
+  var MIN = 25;
+  var slot = document.getElementById('installs');
+  if (slot) fetch('/sidenote-en/data/installs.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !(d.installs >= MIN)) return;
+      slot.innerHTML = "{n} загрузок на сегодня".replace('{n}', '<b>' + d.installs.toLocaleString("ru") + '</b>');
+      slot.hidden = false;
+    })
+    .catch(function () {});
+
+
+  /* Goals: a tap toggles one, and the first tick brings up the line that
+     points back to the install box. Nothing is stored or sent. */
+  var gdone = document.getElementById('gdone');
+  document.querySelectorAll('.goal').forEach(function (g) {
+    g.addEventListener('click', function () {
+      g.setAttribute('aria-pressed', g.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      if (gdone) gdone.classList.toggle('on', !!document.querySelector('.goal[aria-pressed="true"]'));
+    });
+  });
+
 })();
 </script>
 </body>
