@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Sidenote reel</title>
+<!--
+  One vertical reel, drawn as a pure function of time.
+
+  make.py calls setup(job) once, then render(t) for every frame and takes a
+  screenshot. Nothing here runs on a clock of its own, so the same job always
+  renders the same frames: no dropped frames, no timing drift, and a slow
+  machine produces the same video as a fast one, only later.
+
+  1080x1920. Instagram and TikTok cover roughly the top 220px and the bottom
+  420px with their own UI, and a column of buttons down the right; everything
+  that has to be read sits inside the safe box below.
+-->
+<style>
+@font-face{font-family:Assistant;font-weight:400;src:url(fonts/assistant-hebrew-400-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Assistant;font-weight:400;src:url(fonts/assistant-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2190-21FF}
+@font-face{font-family:Assistant;font-weight:700;src:url(fonts/assistant-hebrew-700-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Assistant;font-weight:700;src:url(fonts/assistant-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2190-21FF}
+@font-face{font-family:Frank;font-weight:500;src:url(fonts/frank-ruhl-libre-hebrew-500-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Frank;font-weight:700;src:url(fonts/frank-ruhl-libre-hebrew-700-normal.woff2) format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Frank;font-weight:700;src:url(fonts/frank-ruhl-libre-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:Lora;font-weight:600;src:url(fonts/lora-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:Lora;font-weight:700;src:url(fonts/lora-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:Lora;font-weight:600;font-style:italic;src:url(fonts/lora-latin-600-italic.woff2) format("woff2")}
+
+:root{--teal:#00857C;--teal-d:#065C56;--teal-dd:#04413D;--teal-s:#9ACECA;--wash:#EDF6F4;
+  --ink:#1F2A29;--gray:#5E6B69;--line:#D9E7E4;--gold:#F2C14E}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--wash)}
+body{font-family:Assistant,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.stage{position:relative;width:1080px;height:1920px;overflow:hidden;
+  background:radial-gradient(1200px 900px at 85% -10%,#DDF0EC 0%,transparent 60%),
+             radial-gradient(900px 700px at -10% 110%,#E4F3EF 0%,transparent 60%),var(--wash)}
+.ltr{direction:ltr;unicode-bidi:isolate}
+.abs{position:absolute;left:0;right:0}
+.safe{left:90px;right:150px}
+
+/* progress, just under the platform's own top bar */
+.bar{position:absolute;top:236px;left:90px;right:150px;height:6px;border-radius:3px;background:rgba(0,133,124,.14)}
+.bar i{display:block;height:100%;border-radius:3px;background:var(--teal);transform-origin:right center}
+
+.tag{position:absolute;top:276px;right:150px;display:flex;gap:12px;align-items:center;
+  font-weight:700;font-size:34px;color:var(--teal-d)}
+.tag b{background:#fff;border:2px solid var(--teal-s);border-radius:40px;padding:8px 24px}
+
+.hook{position:absolute;top:600px;left:90px;right:150px;text-align:center;font-family:Frank,serif;
+  font-weight:700;font-size:94px;line-height:1.2;color:var(--ink)}
+
+/* the expression */
+.ex{position:absolute;left:90px;right:150px;top:880px;text-align:center;transform-origin:center top}
+.ex .w{display:inline-block;font-family:Lora,serif;font-weight:700;font-size:150px;line-height:1.1;
+  color:var(--teal-dd);clip-path:inset(0 100% 0 0)}
+.ex .u{height:12px;margin:18px auto 0;border-radius:6px;background:var(--gold);width:0}
+
+/* the three beats under it */
+.card{position:absolute;left:90px;right:150px;top:1060px;max-height:760px;background:#fff;
+  border:2px solid var(--line);border-radius:36px;padding:52px 56px;box-shadow:0 20px 60px rgba(4,65,61,.10)}
+.card .lb{font-weight:700;font-size:36px;color:var(--teal);letter-spacing:.02em;margin-bottom:22px}
+.card .tx{font-size:62px;line-height:1.35;font-weight:700;color:var(--ink);max-height:600px;overflow:hidden}
+.card .en{font-family:Lora,serif;font-style:italic;font-weight:600;color:var(--ink)}
+mark{background:linear-gradient(transparent 55%,var(--gold) 55%) no-repeat left/0% 100%;color:inherit}
+
+/* the chat, for the demo reels */
+.win{position:absolute;left:70px;right:130px;top:560px;background:#1B1F1E;border-radius:34px;
+  box-shadow:0 30px 90px rgba(4,65,61,.28);overflow:hidden;color:#E8ECEB}
+.win .top{display:flex;align-items:center;gap:14px;padding:26px 32px;background:#232826;font-size:30px;color:#9AA8A5}
+.win .top s{text-decoration:none;color:#E07A4F;font-size:34px}
+.win .top em{font-style:normal;margin-inline-start:auto;font-size:28px}
+.win .body{padding:34px 40px 44px;min-height:880px}
+.q{font-size:46px;line-height:1.45;color:#fff;padding-inline-start:44px;position:relative}
+.q:before{content:">";position:absolute;inset-inline-start:0;color:#E07A4F;font-family:monospace}
+.car{display:inline-block;width:4px;height:44px;background:#E07A4F;vertical-align:-8px;margin-inline-start:4px}
+.a{margin-top:40px;font-size:41px;line-height:1.55;color:#C9D2D0;white-space:pre-line}
+.note{margin-top:40px;border-radius:26px;background:#10352F;border:2px solid #1E6A5F;padding:32px 36px}
+.note .nt{font-weight:700;font-size:26px;letter-spacing:.14em;color:#6FD3C2}
+.note .nx{font-family:Lora,serif;font-weight:700;font-size:62px;color:#fff;margin:10px 0 8px}
+.note .ng{font-size:36px;line-height:1.45;color:#CFE7E2}
+
+.cap{position:absolute;left:90px;right:150px;top:300px;text-align:center;font-family:Frank,serif;
+  font-weight:700;font-size:66px;line-height:1.2;color:var(--ink)}
+
+/* the end card */
+.out{position:absolute;inset:0;background:linear-gradient(170deg,#0A6B63 0%,var(--teal-dd) 100%);
+  color:#fff;text-align:center;padding:0 150px 0 90px}
+.out .in{position:absolute;left:90px;right:150px;top:560px}
+.logo{font-family:Frank,serif;font-weight:700;font-size:150px;letter-spacing:-.01em}
+.logo b{color:var(--gold)}
+.out .l1{font-weight:700;font-size:60px;line-height:1.3;margin-top:36px}
+.out .l2{font-size:42px;line-height:1.45;color:#CFE7E2;margin-top:22px}
+.chips{display:flex;justify-content:center;gap:16px;margin-top:54px;flex-wrap:wrap}
+.chips span{border:2px solid rgba(255,255,255,.35);border-radius:40px;padding:10px 30px;font-size:36px;font-weight:700}
+.out .cta{margin-top:70px;display:inline-block;background:var(--gold);color:var(--teal-dd);
+  border-radius:60px;padding:22px 60px;font-weight:700;font-size:48px}
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+<script>
+/* ---------- time helpers ---------- */
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const outC = x => 1 - Math.pow(1 - x, 3);
+const inOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+/* in over [a,a+d], hold, out over [b-d,b]; returns 0..1 */
+const win = (t, a, b, d = .4) => Math.min(outC(prog(t, a, a + d)), 1 - inOut(prog(t, b - d, b)));
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* Hebrew with English inside it: isolate each English run so right-to-left
+   layout cannot reorder it, and give each ';'-separated clause its own line. */
+const heb = s => esc(s).replace(/[A-Za-z][A-Za-z'.\- ]*[A-Za-z.]|[A-Za-z]/g, m => `<bdi dir="ltr">${m}</bdi>`).replace(/;\s*/g, '<br>');
+function show(el, v, dy = 40) {
+  el.style.opacity = v;
+  /* cards are centred on their top edge, so they keep that offset while moving */
+  el.style.transform = `translateY(calc(${el.classList.contains('card') ? '-50%' : '0px'} + ${(1 - v) * dy}px))`;
+  el.style.visibility = v <= 0.001 ? 'hidden' : 'visible';
+}
+/* Shrink a box's text until it fits. Done once in setup, never per frame. */
+function fit(el, max, min) {
+  let s = max;
+  el.style.fontSize = s + 'px';
+  while (s > min && (el.scrollHeight > el.clientHeight + 2 || el.scrollWidth > el.clientWidth + 2)) {
+    s -= 2; el.style.fontSize = s + 'px';
+  }
+  return s;
+}
+
+/* The expression inside its example sentence. Tries the exact words first,
+   then each word's stem, so "to gloss over" still finds "glossed over". */
+function markIn(sentence, expr) {
+  const parts = expr.split(/\s+vs\.?\s+/i);
+  let html = esc(sentence), hit = false;
+  for (const p of parts) {
+    const words = p.replace(/^(to|the|a)\s+/i, '').split(/\s+/).filter(Boolean);
+    if (!words.length) continue;
+    /* whole words: "imply" should light up all of "implying", not most of it */
+    const exact = new RegExp('\\b' + words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\W+') + "[\\w']*", 'i');
+    const stems = new RegExp(words.map(w => {
+      const k = w.replace(/[^a-z']/gi, '');
+      return (k.length > 4 ? k.slice(0, k.length - 2) : k).replace(/'/g, "'?") + "[\\w']*";
+    }).join("\\W+(?:\\w+\\W+)?"), 'i');
+    for (const re of [exact, stems]) {
+      const m = html.match(re);
+      if (m) { html = html.replace(m[0], `<mark>${m[0]}</mark>`); hit = true; break; }
+    }
+  }
+  return { html, hit };
+}
+
+const HOOKS = {
+  'ביטוי': 'ביטוי באנגלית<br>שכדאי להכיר',
+  'הבחנה עדינה': 'גם דוברי אנגלית<br>מתבלבלים פה',
+  'סלנג מקצועי': 'תשמעו את זה<br>בכל חברת הייטק',
+  'פועל מורכב': 'פועל אחד,<br>משמעות שלא תנחשו',
+  'צירוף מקצועי': 'תשמעו את זה<br>בכל ישיבה באנגלית',
+};
+const OUTRO = `<div class="out" id="out"><div class="in">
+  <div class="logo ltr">Side<b>note</b></div>
+  <div class="l1">ביטוי אחד בכל שיחה עם Claude</div>
+  <div class="l2">מתוך התשובה שקיבלת.<br>בלי אפליקציה, בלי כרטיסיות.</div>
+  <div class="chips"><span>חינם</span><span>קוד פתוח</span><span>בלי חשבון</span></div>
+  <div class="cta">הקישור בפרופיל</div>
+</div></div>`;
+
+let R = null;   /* the active renderer */
+
+/* ---------- reel 1: one expression ---------- */
+function setupExpr(j) {
+  const m = markIn(j.example, j.expr);
+  $('#stage').innerHTML = `
+    <div class="bar"><i id="bar"></i></div>
+    <div class="tag" id="tag"><b>אנגלית</b><span>${esc(j.kind)}</span></div>
+    <div class="hook" id="hook">${HOOKS[j.kind] || 'ביטוי באנגלית<br>שכדאי להכיר'}</div>
+    <div class="ex" id="ex"><div class="w ltr" id="w">${esc(j.expr)}</div><div class="u" id="u"></div></div>
+    <div class="card" id="c1"><div class="lb">מה זה אומר</div><div class="tx" id="t1">${heb(j.meaning)}</div></div>
+    <div class="card" id="c2"><div class="lb">דוגמה</div><div class="tx en ltr" id="t2">${m.html}</div></div>
+    <div class="card" id="c3"><div class="lb">מתי משתמשים</div><div class="tx" id="t3">${heb(j.when)}</div></div>
+    ${OUTRO}`;
+  const w = $('#w'); let s = 150;
+  while (s > 70 && w.getBoundingClientRect().width > 820) { s -= 4; w.style.fontSize = s + 'px'; }
+  fit($('#t1'), 80, 40); fit($('#t2'), 70, 36); fit($('#t3'), 64, 34);
+  const plain = $('#t2').textContent;
+  const T = 15;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    show($('#tag'), win(t, 0, 12.8, .5), 20);
+    show($('#hook'), win(t, .2, 3.0, .6), 50);
+    /* the expression wipes in, underlines, then rises to make room */
+    const r = outC(prog(t, 1.1, 2.1));
+    w.style.clipPath = `inset(0 ${100 - r * 100}% 0 0)`;
+    $('#u').style.width = `${outC(prog(t, 2.0, 2.6)) * 60}%`;
+    const up = inOut(prog(t, 2.8, 3.5));
+    const ex = $('#ex');
+    ex.style.top = `${880 - up * (880 - 420)}px`;
+    ex.style.transform = `scale(${1 - up * .22})`;
+    ex.style.opacity = 1 - prog(t, 12.4, 12.8);
+    show($('#c1'), win(t, 3.4, 6.6), 60);
+    show($('#c2'), win(t, 6.6, 10.4), 60);
+    /* type the example, then run the highlighter over the expression */
+    const tp = prog(t, 6.9, 8.7), t2 = $('#t2');
+    if (tp < 1) { t2.textContent = plain.slice(0, Math.round(plain.length * tp)); t2.dataset.full = ''; }
+    else if (!t2.dataset.full) { t2.innerHTML = m.html; t2.dataset.full = '1'; }
+    t2.querySelectorAll('mark').forEach((mk, i) => {
+      mk.style.backgroundSize = `${outC(prog(t, 8.8 + i * .35, 9.4 + i * .35)) * 100}% 100%`;
+    });
+    show($('#c3'), win(t, 10.4, 12.8), 60);
+    const o = outC(prog(t, 12.7, 13.4));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 13.1, 13.7));
+  };
+}
+
+/* ---------- reel 2: the product, one real walk-through ---------- */
+function setupDemo(j) {
+  const tmp = document.createElement('div'); tmp.innerHTML = j.note;
+  const expr = (tmp.querySelector('.expr') || {}).textContent || '';
+  const gloss = (tmp.querySelector('.gloss') || {}).textContent || '';
+  const rtlExpr = tmp.querySelector('.expr.rtl');
+  $('#stage').innerHTML = `
+    <div class="bar"><i id="bar"></i></div>
+    <div class="cap" id="k1">ככה לומדים שפה<br>בלי לפתוח אפליקציה</div>
+    <div class="cap" id="k2">ובסוף התשובה,<br>ביטוי אחד מתוכה</div>
+    <div class="win" id="win">
+      <div class="top"><s>✳</s><span class="ltr">Claude Code</span><em>${esc(j.pair)}</em></div>
+      <div class="body">
+        <p class="q" id="q"><span id="qt"></span><i class="car" id="car"></i></p>
+        <div class="a" id="a"></div>
+        <div class="note" id="n"><div class="nt ltr">SIDENOTE</div>
+          <div class="nx ${rtlExpr ? '' : 'ltr'}" dir="${rtlExpr ? 'rtl' : 'ltr'}">${esc(expr)}</div>
+          <div class="ng">${esc(gloss)}</div></div>
+      </div>
+    </div>
+    ${OUTRO}`;
+  const T = 17;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    show($('#k1'), win(t, 0, 8.6, .5), 30);
+    show($('#k2'), win(t, 8.8, 13.6, .5), 30);
+    show($('#win'), outC(prog(t, .4, 1.1)) * (1 - prog(t, 13.4, 13.8)), 80);
+    const qp = prog(t, 1.2, 3.8);
+    $('#qt').textContent = j.q.slice(0, Math.round(j.q.length * qp));
+    $('#car').style.opacity = (qp < 1 || Math.floor(t * 2.5) % 2 === 0) && t < 4.2 ? 1 : 0;
+    const ap = prog(t, 4.3, 8.0);
+    $('#a').textContent = ap > 0 ? '✳  ' + j.a.slice(0, Math.round(j.a.length * ap)) : '';
+    show($('#n'), outC(prog(t, 8.7, 9.4)), 60);
+    const o = outC(prog(t, 13.6, 14.3));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, 14.0, 14.6));
+  };
+}
+
+window.setup = async function (job) {
+  await document.fonts.ready;
+  R = job.kind === 'demo' ? setupDemo(job) : setupExpr(job);
+  await document.fonts.ready;
+  return job.kind === 'demo' ? 17 : 15;
+};
+window.render = function (t) { R(t); };
+</script>
+</body>
+</html>

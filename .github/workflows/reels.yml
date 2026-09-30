@@ -1,0 +1,53 @@
+# Renders reels on GitHub's machines, free for a public repository.
+# From a phone: Actions -> reels -> Run workflow, pick what to render, then
+# download the zip from the finished run. Nothing is published anywhere.
+name: reels
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'expr (expressions), demo (product walk-throughs), or all'
+        default: all
+        type: choice
+        options: [all, expr, demo]
+      id:
+        description: 'One reel by name, e.g. ship-it or demo-2 (optional)'
+        required: false
+      limit:
+        description: 'At most this many (optional)'
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the renderer
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -q playwright
+          python -m playwright install --with-deps chromium
+      - name: Render
+        env:
+          ONLY: ${{ inputs.only }}
+          ID: ${{ inputs.id }}
+          LIMIT: ${{ inputs.limit }}
+        run: |
+          args=()
+          [ "$ONLY" != "all" ] && args+=(--only "$ONLY")
+          [ -n "$ID" ] && args+=(--id "$ID")
+          [ -n "$LIMIT" ] && args+=(--limit "$LIMIT")
+          python reels/make.py "${args[@]}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reels
+          path: reels/out/
+          retention-days: 14
