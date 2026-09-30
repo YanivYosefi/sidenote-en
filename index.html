@@ -421,7 +421,10 @@ footer p{margin:8px 0 0;color:#A3A3A3}
   header{padding:40px 0 44px}
   header .lede{font-size:18px}
   nav.top .wrap{gap:8px;height:58px}
-  .uilangs a{padding:4px 6px;font-size:12.5px}
+  /* Five language names do not fit beside the logo on a 360px phone. The
+     one you are already reading is the one you never need to tap. */
+  .uilangs a{padding:4px 5px;font-size:12.5px}
+  .uilangs a[aria-current]{display:none}
   .nav-cta-link{display:none}
   /* three short steps fit side by side; stacked they took a whole screen */
   .steps{grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px}
