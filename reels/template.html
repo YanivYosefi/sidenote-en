@@ -78,6 +78,7 @@ mark{background:linear-gradient(transparent 55%,var(--gold) 55%) no-repeat left/
 .note{margin-top:40px;border-radius:26px;background:#10352F;border:2px solid #1E6A5F;padding:32px 36px}
 .note .nt{font-weight:700;font-size:26px;letter-spacing:.14em;color:#6FD3C2}
 .note .nx{font-family:Lora,serif;font-weight:700;font-size:62px;color:#fff;margin:10px 0 8px}
+.note .tr{font-size:34px;color:#9FD9CE;margin:-4px 0 10px;font-style:italic}
 .note .ng{font-size:36px;line-height:1.45;color:#CFE7E2}
 
 .cap{position:absolute;left:90px;right:150px;top:300px;text-align:center;font-family:Frank,serif;
@@ -179,8 +180,11 @@ function setupExpr(j) {
     <div class="card" id="c2"><div class="lb">דוגמה</div><div class="tx en ltr" id="t2">${m.html}</div></div>
     <div class="card" id="c3"><div class="lb">מתי משתמשים</div><div class="tx" id="t3">${heb(j.when)}</div></div>
     ${OUTRO}`;
+  /* Big and on at most two lines. Fitting to one line made a long phrase
+     like "the elephant in the room" tiny. */
   const w = $('#w'); let s = 150;
-  while (s > 70 && w.getBoundingClientRect().width > 820) { s -= 4; w.style.fontSize = s + 'px'; }
+  w.style.fontSize = s + 'px';
+  while (s > 64 && w.getBoundingClientRect().height > s * 1.1 * 2 + 4) { s -= 4; w.style.fontSize = s + 'px'; }
   fit($('#t1'), 80, 40); fit($('#t2'), 70, 36); fit($('#t3'), 64, 34);
   const plain = $('#t2').textContent;
   const T = 15;
@@ -229,7 +233,13 @@ function setupDemo(j) {
         <p class="q" id="q"><span id="qt"></span><i class="car" id="car"></i></p>
         <div class="a" id="a"></div>
         <div class="note" id="n"><div class="nt ltr">SIDENOTE</div>
-          <div class="nx ${rtlExpr ? '' : 'ltr'}" dir="${rtlExpr ? 'rtl' : 'ltr'}">${esc(expr)}</div>
+          ${(() => {
+            /* "اِنْسى الموضوع · insa el-mawdouʿ": the script on one line, its
+               transliteration under it, so the two directions never interleave */
+            const [main, tr] = expr.split(/\s+·\s+/);
+            return `<div class="nx ${rtlExpr ? '' : 'ltr'}" dir="${rtlExpr ? 'rtl' : 'ltr'}">${esc(main)}</div>` +
+                   (tr ? `<div class="tr ltr" dir="ltr">${esc(tr)}</div>` : '');
+          })()}
           <div class="ng">${esc(gloss)}</div></div>
       </div>
     </div>
