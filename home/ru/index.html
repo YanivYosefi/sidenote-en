@@ -433,6 +433,40 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .hero-media{margin-top:28px;border-radius:10px}
 }
 @media(prefers-reduced-motion:reduce){ .sw{transition:none} }
+
+/* open source — the page's answer to "is this safe to install?". The badges are
+   GitHub's own, live: if the privacy check ever fails, this section says so. */
+.srcline{margin:8px 0 0;text-align:center;font-size:14px}
+.srcline a{color:var(--gray);text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  border-bottom:1px solid var(--line);padding-bottom:1px}
+.srcline a:hover{color:var(--ink-d)}
+.ghm{width:15px;height:15px;fill:currentColor;flex:none}
+.trust{background:var(--teal-wash);padding:58px 0;border-bottom:1px solid var(--line);text-align:center}
+.trust h2{color:var(--ink-d);margin-bottom:8px}
+.tsub{color:var(--gray);font-size:16.5px;max-width:620px;margin:0 auto}
+.tfacts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:28px auto 0;
+  padding:0;list-style:none}
+.tfacts li{background:#fff;border:1px solid var(--teal-s);border-radius:12px;padding:16px 12px}
+.tfacts b{display:block;color:var(--teal-dd);font-size:17px}
+.tfacts span{display:block;color:var(--gray);font-size:14.5px;margin-top:2px}
+.tbadges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px 0 0}
+.tbadges img{height:20px;display:block}
+.tbtns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.tbtns .btn{display:inline-flex;align-items:center;gap:8px}
+.tbtns .btn.ghost{background:#fff;color:var(--teal-d);box-shadow:none;border:1.5px solid var(--teal-s)}
+.tbtns .btn .ghm{width:17px;height:17px}
+.task{margin:30px auto 0;max-width:640px}
+.task p{color:var(--ink);font-size:16px;margin:0 0 10px;font-weight:600}
+.tprompt{background:#fff;border:1px solid var(--teal-s);border-radius:10px;padding:14px 16px;
+  font-size:15px;line-height:1.6;color:var(--ink);text-align:start;overflow-wrap:anywhere}
+.task .btn{margin-top:10px}
+@media(max-width:640px){
+  /* three short chips in a row: the long version was a full screen of scrolling */
+  .tfacts{gap:8px;margin-top:22px}
+  .tfacts li{padding:12px 6px}
+  .tfacts b{font-size:14.5px}
+  .tfacts span{display:none}
+}
 </style>
 </head>
 <body>
@@ -468,6 +502,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
     </div>
   </div>
   <p class="installs" id="installs" hidden></p>
+  <p class="srcline"><a href="https://github.com/YanivYosefi/sidenote-en" target="_blank" rel="noopener"><svg class="ghm" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Открытый код на GitHub ↗</a></p>
   <div class="works-in">
     <span>Работает в</span>
     <span class="chip ltr">Claude Code</span>
@@ -677,6 +712,29 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
     </tr></thead>
     <tbody><tr><th>Откуда берутся слова</th><td class="me">Из ответа, который вы только что прочли</td><td>Случайные слова со страницы, которую вы открыли</td><td>Из списка, который составил кто-то другой</td></tr><tr><th>Что нужно открывать</th><td class="me">Ничего. Это уже внутри Claude Code</td><td>Браузер, с включённым расширением</td><td>Приложение, каждый день</td></tr><tr><th>Где хранится прогресс</th><td class="me">В одном файле у вас: <code dir="ltr">~/.sidenote/state.json</code></td><td>На их сервере, за аккаунтом</td><td>На их сервере, за аккаунтом</td></tr><tr><th>Сколько стоит</th><td class="me">Ничего. Работает на подписке Claude, которую вы уже оплачиваете</td><td>Бесплатно, потом подписка</td><td>Несколько долларов в месяц</td></tr></tbody>
   </table></div>
+</div></section>
+
+<section class="trust" id="trust"><div class="wrap">
+  <h2>Не нужно нам верить. Можно проверить.</h2>
+  <p class="tsub">Весь код открыт на GitHub. Автоматическая проверка запускается при каждом изменении и следит, чтобы ничего не уходило с вашего компьютера.</p>
+  <ul class="tfacts">
+    <li><b>Один файл</b><span>Около 400 строк, которые можно прочитать</span></li>
+    <li><b>Ноль зависимостей</b><span>Никаких чужих библиотек</span></li>
+    <li><b>Без сети</b><span>Код не обращается ни к одному серверу</span></li>
+  </ul>
+  <div class="tbadges">
+    <a href="https://github.com/YanivYosefi/sidenote-en/actions/workflows/privacy.yml" target="_blank" rel="noopener"><img src="https://github.com/YanivYosefi/sidenote-en/actions/workflows/privacy.yml/badge.svg" alt="Проверка приватности" loading="lazy" height="20" onerror="this.parentNode.hidden=true"></a>
+    <a href="https://github.com/YanivYosefi/sidenote-en/actions/workflows/codeql.yml" target="_blank" rel="noopener"><img src="https://github.com/YanivYosefi/sidenote-en/actions/workflows/codeql.yml/badge.svg" alt="Проверка безопасности CodeQL" loading="lazy" height="20" onerror="this.parentNode.hidden=true"></a>
+  </div>
+  <div class="tbtns">
+    <a class="btn btn-sm" href="https://github.com/YanivYosefi/sidenote-en" target="_blank" rel="noopener"><svg class="ghm" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Код на GitHub</a>
+    <a class="btn btn-sm ghost" href="https://github.com/YanivYosefi/sidenote-en/blob/main/server/index.mjs" target="_blank" rel="noopener">Прочитать файл</a>
+  </div>
+  <div class="task">
+    <p>Или попросите Claude проверить за вас:</p>
+    <div class="tprompt" dir="auto">Прочитай <bdi dir="ltr">https://github.com/YanivYosefi/sidenote-en/blob/main/server/index.mjs</bdi> и скажи, отправляет ли он что-нибудь с моего компьютера.</div>
+    <button class="btn btn-sm ghost" id="cp3" type="button" data-copy="Прочитай https://github.com/YanivYosefi/sidenote-en/blob/main/server/index.mjs и скажи, отправляет ли он что-нибудь с моего компьютера." data-done="Скопировано">Копировать</button>
+  </div>
 </div></section>
 
 <div class="qs" id="qs"><div class="wrap">
@@ -903,7 +961,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
     still ? xfinal() : xstart();
   });
 
-  ['cp', 'cp2'].forEach(function (id) {
+  ['cp', 'cp2', 'cp3'].forEach(function (id) {
     var cp = document.getElementById(id);
     if (!cp) return;
     cp.addEventListener('click', function () {

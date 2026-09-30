@@ -1,0 +1,24 @@
+# The page promises nothing leaves your machine. This checks that promise on
+# every change, and weekly in case the rules above it ever change. Its badge
+# is on the landing page, so a failure here is visible to everyone.
+name: privacy
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '41 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node .github/scripts/privacy-check.mjs

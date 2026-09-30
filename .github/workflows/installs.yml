@@ -29,13 +29,24 @@ jobs:
         with:
           node-version: '20'
 
-      - run: node .github/scripts/installs.mjs
+      # Without the secret there is nothing to read. Skip quietly instead of
+      # failing — a red run every morning would email the owner daily.
+      - name: Check for the token
+        id: token
+        run: echo "present=${{ secrets.TRAFFIC_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+
+      - if: steps.token.outputs.present != 'true'
+        run: echo "::notice::TRAFFIC_TOKEN is not set yet, so there is nothing to count. Skipping."
+
+      - if: steps.token.outputs.present == 'true'
+        run: node .github/scripts/installs.mjs
         env:
           TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
 
       # A no-op day should not produce a commit — every push here rebuilds
       # the Pages site.
       - name: Commit if the numbers moved
+        if: steps.token.outputs.present == 'true'
         run: |
           git config user.name  'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
