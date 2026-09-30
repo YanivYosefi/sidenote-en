@@ -365,11 +365,18 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 /* questions */
 .qs{background:#fff;padding:60px 0;border-bottom:1px solid var(--line)}
 .qs h2{text-align:center;color:var(--ink-d);margin-bottom:34px}
-.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.q{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px 22px;
-  box-shadow:var(--sh-s)}
-.q b{display:block;font-family:var(--serif);font-size:18px;color:var(--ink-d);margin-bottom:7px}
-.q p{margin:0;color:var(--gray);font-size:16px}
+.qlist{max-width:760px;margin:0 auto}
+/* Collapsed by default: seven answers open at once was a wall of text. Native
+   <details>, so it opens without script and a screen reader announces it. */
+.q{border-bottom:1px solid var(--line)}
+.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;gap:16px;padding:18px 4px;font-family:var(--serif);font-size:18px;color:var(--ink-d)}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;
+  background:var(--teal-wash);color:var(--teal);display:grid;place-items:center;
+  font-family:var(--sans);font-size:20px;line-height:1;transition:transform .2s}
+.q[open] summary::after{transform:rotate(45deg)}
+.q p{margin:0;padding:0 4px 18px;color:var(--gray);font-size:16.5px}
 code{direction:ltr;unicode-bidi:isolate;font-family:var(--mono);font-size:.88em;
   background:var(--teal-wash);color:var(--teal-d);border-radius:3px;padding:1px 5px}
 
@@ -397,7 +404,6 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .nav-links{display:none}
   .feat .row,.feat.flip .row{grid-template-columns:1fr;gap:28px}
   .feat.flip .art{order:0}
-  .qgrid{grid-template-columns:1fr}
   .kgrid{grid-template-columns:repeat(3,1fr)}
   .tgrid{grid-template-columns:1fr}
   .xrow{grid-template-columns:1fr;gap:22px}
@@ -739,7 +745,7 @@ claude plugin install sidenote@sidenote" data-done="הועתק">העתק ותת�
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>שאלות הוגנות</h2>
-  <div class="qgrid"><div class="q"><b>זה מאט לי את העבודה?</b><p>לא. התשובה שביקשת נשארת מלאה ובאה ראשונה. הביטוי מגיע אחריה, בשורה אחת.</p></div><div class="q"><b>צריך חשבון?</b><p>אין. אין הרשמה, אין מייל, אין כתובת אישית. מתקינים ומתחילים.</p></div><div class="q"><b>כמה זה עולה?</b><p>כלום. הפלאגין רץ על המנוי של Claude שכבר יש לך.</p></div><div class="q"><b>איפה נשמר מה שלמדתי?</b><p>בקובץ אחד במחשב שלך, ב-<code dir="ltr">~/.sidenote/state.json</code>. שום דבר לא יוצא החוצה.</p></div><div class="q"><b>אילו שפות?</b><p>כל שפה ש-Claude יודע. אנגלית, ספרדית, צרפתית, איטלקית, גרמנית, פורטוגזית, יפנית, ערבית, רוסית ועוד.</p></div><div class="q"><b>איך מוחקים הכל?</b><p><code dir="ltr">claude plugin uninstall sidenote</code>, ומוחקים את התיקייה. זהו.</p></div><div class="q"><b>עצרתי לחודש. מה קורה?</b><p>כלום לא הולך לאיבוד. הקובץ נשאר איפה שהוא והביטויים ממתינים. הם לא מצטברים לחוב של מאתיים חזרות שקופצות עליך ביום שחזרת. אתה ממשיך מאיפה שהפסקת.</p></div></div>
+  <div class="qlist"><details class="q"><summary>זה מאט לי את העבודה?</summary><p>לא. התשובה שביקשת נשארת מלאה ובאה ראשונה. הביטוי מגיע אחריה, בשורה אחת.</p></details><details class="q"><summary>צריך חשבון?</summary><p>אין. אין הרשמה, אין מייל, אין כתובת אישית. מתקינים ומתחילים.</p></details><details class="q"><summary>כמה זה עולה?</summary><p>כלום. הפלאגין רץ על המנוי של Claude שכבר יש לך.</p></details><details class="q"><summary>איפה נשמר מה שלמדתי?</summary><p>בקובץ אחד במחשב שלך, ב-<code dir="ltr">~/.sidenote/state.json</code>. שום דבר לא יוצא החוצה.</p></details><details class="q"><summary>אילו שפות?</summary><p>כל שפה ש-Claude יודע. אנגלית, ספרדית, צרפתית, איטלקית, גרמנית, פורטוגזית, יפנית, ערבית, רוסית ועוד.</p></details><details class="q"><summary>איך מוחקים הכל?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code>, ומוחקים את התיקייה. זהו.</p></details><details class="q"><summary>עצרתי לחודש. מה קורה?</summary><p>כלום לא הולך לאיבוד. הקובץ נשאר איפה שהוא והביטויים ממתינים. הם לא מצטברים לחוב של מאתיים חזרות שקופצות עליך ביום שחזרת. אתה ממשיך מאיפה שהפסקת.</p></details></div></div>
 </div></div>
 
 

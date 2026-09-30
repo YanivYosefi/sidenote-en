@@ -365,11 +365,18 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 /* questions */
 .qs{background:#fff;padding:60px 0;border-bottom:1px solid var(--line)}
 .qs h2{text-align:center;color:var(--ink-d);margin-bottom:34px}
-.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.q{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px 22px;
-  box-shadow:var(--sh-s)}
-.q b{display:block;font-family:var(--serif);font-size:18px;color:var(--ink-d);margin-bottom:7px}
-.q p{margin:0;color:var(--gray);font-size:16px}
+.qlist{max-width:760px;margin:0 auto}
+/* Collapsed by default: seven answers open at once was a wall of text. Native
+   <details>, so it opens without script and a screen reader announces it. */
+.q{border-bottom:1px solid var(--line)}
+.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;gap:16px;padding:18px 4px;font-family:var(--serif);font-size:18px;color:var(--ink-d)}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;
+  background:var(--teal-wash);color:var(--teal);display:grid;place-items:center;
+  font-family:var(--sans);font-size:20px;line-height:1;transition:transform .2s}
+.q[open] summary::after{transform:rotate(45deg)}
+.q p{margin:0;padding:0 4px 18px;color:var(--gray);font-size:16.5px}
 code{direction:ltr;unicode-bidi:isolate;font-family:var(--mono);font-size:.88em;
   background:var(--teal-wash);color:var(--teal-d);border-radius:3px;padding:1px 5px}
 
@@ -397,7 +404,6 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .nav-links{display:none}
   .feat .row,.feat.flip .row{grid-template-columns:1fr;gap:28px}
   .feat.flip .art{order:0}
-  .qgrid{grid-template-columns:1fr}
   .kgrid{grid-template-columns:repeat(3,1fr)}
   .tgrid{grid-template-columns:1fr}
   .xrow{grid-template-columns:1fr;gap:22px}
@@ -739,7 +745,7 @@ One line on the delay, a new date, and no long apology.</span></div>
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>Fair questions</h2>
-  <div class="qgrid"><div class="q"><b>Does it slow me down?</b><p>No. The answer you asked for stays complete and comes first. The expression follows it, in one line.</p></div><div class="q"><b>Do I need an account?</b><p>None. No signup, no email, no personal URL. Install and start.</p></div><div class="q"><b>What does it cost?</b><p>Nothing. The plugin runs on the Claude subscription you already have.</p></div><div class="q"><b>Where is my progress stored?</b><p>In one file on your own machine, at <code dir="ltr">~/.sidenote/state.json</code>. Nothing leaves it.</p></div><div class="q"><b>Which languages?</b><p>Any language Claude knows. Spanish, French, Italian, German, Portuguese, Japanese, Hebrew, Arabic, Russian and more.</p></div><div class="q"><b>How do I remove it completely?</b><p><code dir="ltr">claude plugin uninstall sidenote</code>, then delete the folder. That is all.</p></div><div class="q"><b>I stopped for a month. What happens?</b><p>Nothing is lost. The file stays where it is and the expressions wait. They do not pile up into a debt of two hundred reviews waiting for you on the day you come back. You pick up where you left off.</p></div></div>
+  <div class="qlist"><details class="q"><summary>Does it slow me down?</summary><p>No. The answer you asked for stays complete and comes first. The expression follows it, in one line.</p></details><details class="q"><summary>Do I need an account?</summary><p>None. No signup, no email, no personal URL. Install and start.</p></details><details class="q"><summary>What does it cost?</summary><p>Nothing. The plugin runs on the Claude subscription you already have.</p></details><details class="q"><summary>Where is my progress stored?</summary><p>In one file on your own machine, at <code dir="ltr">~/.sidenote/state.json</code>. Nothing leaves it.</p></details><details class="q"><summary>Which languages?</summary><p>Any language Claude knows. Spanish, French, Italian, German, Portuguese, Japanese, Hebrew, Arabic, Russian and more.</p></details><details class="q"><summary>How do I remove it completely?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code>, then delete the folder. That is all.</p></details><details class="q"><summary>I stopped for a month. What happens?</summary><p>Nothing is lost. The file stays where it is and the expressions wait. They do not pile up into a debt of two hundred reviews waiting for you on the day you come back. You pick up where you left off.</p></details></div></div>
 </div></div>
 
 

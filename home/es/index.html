@@ -365,11 +365,18 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 /* questions */
 .qs{background:#fff;padding:60px 0;border-bottom:1px solid var(--line)}
 .qs h2{text-align:center;color:var(--ink-d);margin-bottom:34px}
-.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.q{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px 22px;
-  box-shadow:var(--sh-s)}
-.q b{display:block;font-family:var(--serif);font-size:18px;color:var(--ink-d);margin-bottom:7px}
-.q p{margin:0;color:var(--gray);font-size:16px}
+.qlist{max-width:760px;margin:0 auto}
+/* Collapsed by default: seven answers open at once was a wall of text. Native
+   <details>, so it opens without script and a screen reader announces it. */
+.q{border-bottom:1px solid var(--line)}
+.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;gap:16px;padding:18px 4px;font-family:var(--serif);font-size:18px;color:var(--ink-d)}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;
+  background:var(--teal-wash);color:var(--teal);display:grid;place-items:center;
+  font-family:var(--sans);font-size:20px;line-height:1;transition:transform .2s}
+.q[open] summary::after{transform:rotate(45deg)}
+.q p{margin:0;padding:0 4px 18px;color:var(--gray);font-size:16.5px}
 code{direction:ltr;unicode-bidi:isolate;font-family:var(--mono);font-size:.88em;
   background:var(--teal-wash);color:var(--teal-d);border-radius:3px;padding:1px 5px}
 
@@ -397,7 +404,6 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .nav-links{display:none}
   .feat .row,.feat.flip .row{grid-template-columns:1fr;gap:28px}
   .feat.flip .art{order:0}
-  .qgrid{grid-template-columns:1fr}
   .kgrid{grid-template-columns:repeat(3,1fr)}
   .tgrid{grid-template-columns:1fr}
   .xrow{grid-template-columns:1fr;gap:22px}
@@ -739,7 +745,7 @@ Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>Preguntas justas</h2>
-  <div class="qgrid"><div class="q"><b>¿Me ralentiza?</b><p>No. La respuesta que pediste sigue completa y va primero. La expresión llega después, en una línea.</p></div><div class="q"><b>¿Necesito cuenta?</b><p>Ninguna. Sin registro, sin correo, sin dirección personal.</p></div><div class="q"><b>¿Cuánto cuesta?</b><p>Nada. El plugin funciona con la suscripción de Claude que ya tienes.</p></div><div class="q"><b>¿Dónde se guarda mi progreso?</b><p>En un archivo de tu equipo, en <code dir="ltr">~/.sidenote/state.json</code>. Nada sale de ahí.</p></div><div class="q"><b>¿Qué idiomas?</b><p>Cualquiera que Claude conozca. Inglés, francés, italiano, alemán, portugués, japonés, hebreo, árabe, ruso y más.</p></div><div class="q"><b>¿Cómo lo borro todo?</b><p><code dir="ltr">claude plugin uninstall sidenote</code> y borras la carpeta. Ya está.</p></div><div class="q"><b>He parado un mes. ¿Qué pasa?</b><p>No se pierde nada. El archivo sigue donde estaba y las expresiones esperan. No se acumulan en una deuda de doscientos repasos que te caen encima el día que vuelves. Sigues donde lo dejaste.</p></div></div>
+  <div class="qlist"><details class="q"><summary>¿Me ralentiza?</summary><p>No. La respuesta que pediste sigue completa y va primero. La expresión llega después, en una línea.</p></details><details class="q"><summary>¿Necesito cuenta?</summary><p>Ninguna. Sin registro, sin correo, sin dirección personal.</p></details><details class="q"><summary>¿Cuánto cuesta?</summary><p>Nada. El plugin funciona con la suscripción de Claude que ya tienes.</p></details><details class="q"><summary>¿Dónde se guarda mi progreso?</summary><p>En un archivo de tu equipo, en <code dir="ltr">~/.sidenote/state.json</code>. Nada sale de ahí.</p></details><details class="q"><summary>¿Qué idiomas?</summary><p>Cualquiera que Claude conozca. Inglés, francés, italiano, alemán, portugués, japonés, hebreo, árabe, ruso y más.</p></details><details class="q"><summary>¿Cómo lo borro todo?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code> y borras la carpeta. Ya está.</p></details><details class="q"><summary>He parado un mes. ¿Qué pasa?</summary><p>No se pierde nada. El archivo sigue donde estaba y las expresiones esperan. No se acumulan en una deuda de doscientos repasos que te caen encima el día que vuelves. Sigues donde lo dejaste.</p></details></div></div>
 </div></div>
 
 

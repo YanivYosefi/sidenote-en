@@ -365,11 +365,18 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 /* questions */
 .qs{background:#fff;padding:60px 0;border-bottom:1px solid var(--line)}
 .qs h2{text-align:center;color:var(--ink-d);margin-bottom:34px}
-.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.q{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px 22px;
-  box-shadow:var(--sh-s)}
-.q b{display:block;font-family:var(--serif);font-size:18px;color:var(--ink-d);margin-bottom:7px}
-.q p{margin:0;color:var(--gray);font-size:16px}
+.qlist{max-width:760px;margin:0 auto}
+/* Collapsed by default: seven answers open at once was a wall of text. Native
+   <details>, so it opens without script and a screen reader announces it. */
+.q{border-bottom:1px solid var(--line)}
+.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;gap:16px;padding:18px 4px;font-family:var(--serif);font-size:18px;color:var(--ink-d)}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;
+  background:var(--teal-wash);color:var(--teal);display:grid;place-items:center;
+  font-family:var(--sans);font-size:20px;line-height:1;transition:transform .2s}
+.q[open] summary::after{transform:rotate(45deg)}
+.q p{margin:0;padding:0 4px 18px;color:var(--gray);font-size:16.5px}
 code{direction:ltr;unicode-bidi:isolate;font-family:var(--mono);font-size:.88em;
   background:var(--teal-wash);color:var(--teal-d);border-radius:3px;padding:1px 5px}
 
@@ -397,7 +404,6 @@ footer p{margin:8px 0 0;color:var(--gray)}
   .nav-links{display:none}
   .feat .row,.feat.flip .row{grid-template-columns:1fr;gap:28px}
   .feat.flip .art{order:0}
-  .qgrid{grid-template-columns:1fr}
   .kgrid{grid-template-columns:repeat(3,1fr)}
   .tgrid{grid-template-columns:1fr}
   .xrow{grid-template-columns:1fr;gap:22px}
@@ -739,7 +745,7 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ و
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>أسئلة منصفة</h2>
-  <div class="qgrid"><div class="q"><b>هل يبطئ عملي؟</b><p>لا. الإجابة التي طلبتها تبقى كاملة وتأتي أولًا. التعبير يأتي بعدها في سطر واحد.</p></div><div class="q"><b>هل أحتاج حسابًا؟</b><p>لا. بلا تسجيل وبلا بريد وبلا عنوان شخصي.</p></div><div class="q"><b>كم يكلّف؟</b><p>لا شيء. الإضافة تعمل على اشتراك Claude الذي لديك.</p></div><div class="q"><b>أين يُحفَظ تقدّمي؟</b><p>في ملف واحد على جهازك، في <code dir="ltr">~/.sidenote/state.json</code>. لا شيء يخرج منه.</p></div><div class="q"><b>أي اللغات؟</b><p>أي لغة يعرفها Claude. الإنجليزية والإسبانية والفرنسية والإيطالية والألمانية واليابانية والعبرية والروسية وغيرها.</p></div><div class="q"><b>كيف أحذف كل شيء؟</b><p><code dir="ltr">claude plugin uninstall sidenote</code> ثم تحذف المجلد. هذا كل شيء.</p></div><div class="q"><b>توقّفت شهرًا. ماذا يحدث؟</b><p>لا يضيع شيء. الملف يبقى في مكانه والتعبيرات تنتظر. لا تتراكم لتصبح دَينًا من مئتي مراجعة تنتظرك يوم عودتك. تتابع من حيث توقّفت.</p></div></div>
+  <div class="qlist"><details class="q"><summary>هل يبطئ عملي؟</summary><p>لا. الإجابة التي طلبتها تبقى كاملة وتأتي أولًا. التعبير يأتي بعدها في سطر واحد.</p></details><details class="q"><summary>هل أحتاج حسابًا؟</summary><p>لا. بلا تسجيل وبلا بريد وبلا عنوان شخصي.</p></details><details class="q"><summary>كم يكلّف؟</summary><p>لا شيء. الإضافة تعمل على اشتراك Claude الذي لديك.</p></details><details class="q"><summary>أين يُحفَظ تقدّمي؟</summary><p>في ملف واحد على جهازك، في <code dir="ltr">~/.sidenote/state.json</code>. لا شيء يخرج منه.</p></details><details class="q"><summary>أي اللغات؟</summary><p>أي لغة يعرفها Claude. الإنجليزية والإسبانية والفرنسية والإيطالية والألمانية واليابانية والعبرية والروسية وغيرها.</p></details><details class="q"><summary>كيف أحذف كل شيء؟</summary><p><code dir="ltr">claude plugin uninstall sidenote</code> ثم تحذف المجلد. هذا كل شيء.</p></details><details class="q"><summary>توقّفت شهرًا. ماذا يحدث؟</summary><p>لا يضيع شيء. الملف يبقى في مكانه والتعبيرات تنتظر. لا تتراكم لتصبح دَينًا من مئتي مراجعة تنتظرك يوم عودتك. تتابع من حيث توقّفت.</p></details></div></div>
 </div></div>
 
 
