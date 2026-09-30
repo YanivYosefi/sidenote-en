@@ -431,6 +431,12 @@ function setupQuiz(j) {
   const w = $('#w'); let s = 120; w.style.fontSize = s + 'px';
   while (s > 64 && w.getBoundingClientRect().height > s * 1.1 * 2 + 4) { s -= 4; w.style.fontSize = s + 'px'; }
   below($('.qx'), $('#qh'), 40);
+  /* the ring and the answers go under the expression, however many lines it took */
+  below($('#ring'), $('.qx'), 36);
+  const rb = $('#ring').getBoundingClientRect().bottom;
+  const base = Math.max(1000, Math.round(rb + 40));
+  j.options.forEach((_, i) => { $('#o' + i).style.top = (base + i * 190) + 'px'; });
+  $('#qe').style.top = (base + 190 + 110) + 'px';
   j.options.forEach((_, i) => fit($('#ot' + i), 48, 30));
   fit($('#qet'), 52, 32);
   const T = 12.4;
@@ -452,7 +458,7 @@ function setupQuiz(j) {
       o.classList.toggle('good', rev && good);
       let op = inV, dy = (1 - inV) * 60;
       if (rev && !good) op = inV * (1 - .65 * outC(prog(t, 6.0, 6.3))) * (1 - prog(t, 7.0, 7.4));
-      if (good) { dy -= (1000 + i * 190 - 910) * inOut(prog(t, 7.0, 7.6)); op *= 1 - prog(t, 9.3, 9.6); }
+      if (good) { dy -= (i * 190 + (base - 1000) * 0 + 90) * inOut(prog(t, 7.0, 7.6)); op *= 1 - prog(t, 9.3, 9.6); }
       o.style.opacity = op; o.style.transform = `translateY(${dy}px) scale(${rev && good ? 1 + .04 * Math.sin(Math.PI * prog(t, 6.0, 6.5)) : 1})`;
     });
     show($('#qe'), win(t, 7.5, 9.6), 50);
