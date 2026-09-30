@@ -1,0 +1,23 @@
+{
+  "_note": "Sample content for English-speaking audiences, written to try the English formats before any volume. Review before publishing.",
+  "foreign": [
+    {"slug": "in-bocca-al-lupo", "lang": "Italian", "expr": "in bocca al lupo", "lit": "into the wolf's mouth",
+     "meaning": "good luck — and you answer \"crepi!\"", "example": "Domani hai l'esame? In bocca al lupo!", "example_en": "Exam tomorrow? Good luck!"},
+    {"slug": "ponerse-las-pilas", "lang": "Spanish", "expr": "ponerse las pilas", "lit": "to put your batteries in",
+     "meaning": "to get your act together, to step it up", "example": "Si quieres terminar hoy, ponte las pilas.", "example_en": "If you want to finish today, step it up."},
+    {"slug": "avoir-la-flemme", "lang": "French", "expr": "avoir la flemme", "lit": "to have the phlegm",
+     "meaning": "to not be bothered, too lazy to do it", "example": "J'ai la flemme de cuisiner ce soir.", "example_en": "I can't be bothered to cook tonight."},
+    {"slug": "estar-en-las-nubes", "lang": "Spanish", "expr": "estar en las nubes", "lit": "to be in the clouds",
+     "meaning": "to be daydreaming, not paying attention", "example": "Perdón, estaba en las nubes.", "example_en": "Sorry, I was miles away."}
+  ],
+  "hebrew": [
+    {"slug": "chaval-al-hazman", "expr": "חבל על הזמן", "tr": "chaval al ha-zman", "lit": "a pity about the time",
+     "meaning": "amazing — or a total waste of time. Only the tone tells you which.", "example": "ההופעה אתמול הייתה חבל על הזמן!", "example_en": "Last night's show was amazing!"},
+    {"slug": "al-hapanim", "expr": "על הפנים", "tr": "al ha-panim", "lit": "on the face",
+     "meaning": "awful, terrible", "example": "היום הזה היה על הפנים.", "example_en": "Today was awful."},
+    {"slug": "lishbor-et-harosh", "expr": "לשבור את הראש", "tr": "lishbor et ha-rosh", "lit": "to break the head",
+     "meaning": "to rack your brain", "example": "שברתי את הראש על הבאג הזה כל הבוקר.", "example_en": "I racked my brain over this bug all morning."},
+    {"slug": "sagur", "expr": "סגור", "tr": "sagur", "lit": "closed",
+     "meaning": "deal — it's settled", "example": "— ניפגש בשמונה? — סגור.", "example_en": "— Meet at eight? — Deal."}
+  ]
+}
