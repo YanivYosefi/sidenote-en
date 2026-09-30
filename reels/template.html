@@ -219,6 +219,33 @@ mark{background:linear-gradient(transparent 55%,var(--gold) 55%) no-repeat left/
 .scrim{position:absolute;inset:0;background:rgba(12,20,19,.72);z-index:4}
 .close{position:absolute;left:90px;right:150px;top:760px;text-align:center;color:#fff;font-family:Frank,serif;font-weight:700;font-size:92px;line-height:1.2;z-index:6}
 .close em{font-style:normal;color:var(--gold)}
+
+/* ---------- b-roll: text drawn on a transparent frame, laid over stock
+   footage by ffmpeg. Everything must read on any picture underneath. ---------- */
+body.clear, body.clear .stage{background:transparent !important}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 38%,rgba(0,0,0,0) 62%,rgba(0,0,0,.5) 100%)}
+.meme{position:absolute;left:90px;right:150px;top:330px;text-align:center;font-family:Assistant,sans-serif;font-weight:700;
+  font-size:74px;line-height:1.18;color:#fff;white-space:pre-line;
+  text-shadow:0 0 2px #000,0 0 2px #000,0 3px 0 #000,0 -3px 0 #000,3px 0 0 #000,-3px 0 0 #000,0 8px 24px rgba(0,0,0,.55)}
+.lbl{position:absolute;left:90px;right:150px;top:300px;text-align:center}
+.lbl span{display:inline-block;background:var(--gold);color:#1a1a1a;font-weight:700;font-size:46px;border-radius:40px;padding:8px 30px}
+.chat{position:absolute;left:80px;right:140px;top:330px;display:flex;flex-direction:column;gap:18px}
+.bub{max-width:78%;font-family:Assistant,sans-serif;font-size:50px;line-height:1.3;padding:22px 30px;border-radius:38px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.bub.them{align-self:flex-start;background:#fff;color:#111;border-bottom-left-radius:10px}
+.bub.me{align-self:flex-end;background:#1DAA61;color:#fff;border-bottom-right-radius:10px}
+.bub.claude{align-self:flex-start;background:#262624;color:#F2F0EB;border-bottom-left-radius:10px}
+.bub.claude b{color:#D97757}
+.lst{position:absolute;left:90px;right:150px;top:640px;display:flex;flex-direction:column;gap:22px}
+.li{background:rgba(255,255,255,.95);border-radius:26px;padding:20px 28px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.li b{display:block;font-family:Lora,serif;font-weight:700;font-size:54px;color:var(--teal-dd);direction:ltr}
+.li span{display:block;font-size:36px;color:#333}
+.bcard{position:absolute;left:90px;right:150px;background:#10352F;border:2px solid #2D8C7E;border-radius:30px;padding:30px 38px;color:#fff;
+  box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.bcard .k{font-weight:700;font-size:26px;letter-spacing:.16em;color:#6FD3C2}
+.bcard .x{font-family:Lora,serif;font-weight:700;font-size:72px;margin:6px 0;direction:ltr}
+.bcard .g{font-size:40px;line-height:1.35;color:#CFE7E2}
+.bcard .e{font-family:Lora,serif;font-style:italic;font-size:36px;color:#8FE0D0;margin-top:6px;direction:ltr}
 </style>
 </head>
 <body>
@@ -722,13 +749,55 @@ function setupScreen(j) {
   };
 }
 
+
+/* ---------- reel 9: over stock footage. A list of timed items (meme text,
+   time labels, chat bubbles, a list, the Sidenote card) on a transparent
+   frame; make.py lays the frames over the clips. ---------- */
+function setupBroll(j) {
+  /* the page itself must be see-through, or the footage never shows */
+  document.body.classList.add('clear');
+  document.documentElement.style.background = 'transparent';
+  const parts = [];
+  let chat = '', list = '';
+  j.items.forEach((it, i) => {
+    const id = 'i' + i, d = `dir="auto"`;
+    if (it.kind === 'meme') parts.push(`<div class="meme" id="${id}" ${d} style="top:${it.top || 330}px">${it.text}</div>`);
+    else if (it.kind === 'label') parts.push(`<div class="lbl" id="${id}"><span>${it.text}</span></div>`);
+    else if (it.kind === 'them' || it.kind === 'me' || it.kind === 'claude') chat += `<div class="bub ${it.kind}" id="${id}" ${d}>${it.text}</div>`;
+    else if (it.kind === 'li') list += `<div class="li" id="${id}"><b>${esc(it.expr)}</b><span ${d}>${esc(it.gloss)}</span></div>`;
+    else if (it.kind === 'card') parts.push(`<div class="bcard" id="${id}" style="top:${it.top || 1120}px"><div class="k">SIDENOTE</div>
+        <div class="x">${esc(it.expr)}</div><div class="g" ${d}>${esc(it.gloss)}</div><div class="e">${esc(it.ex)}</div></div>`);
+  });
+  $('#stage').innerHTML = `<div class="shade"></div>
+    ${chat ? `<div class="chat" style="top:${j.chatTop || 330}px">${chat}</div>` : ''}${list ? `<div class="lst">${list}</div>` : ''}
+    ${parts.join('')}
+    <div class="bar"><i id="bar"></i></div>
+    ${outro()}`;
+  const T = j.dur;
+  return t => {
+    $('#bar').style.transform = `scaleX(${clamp(t / T)})`;
+    j.items.forEach((it, i) => {
+      const el = $('#i' + i);
+      const v = win(t, it.t0, it.t1, .3);
+      el.style.opacity = v;
+      const pop = it.kind === 'me' || it.kind === 'them' || it.kind === 'claude' || it.kind === 'li';
+      el.style.transform = pop ? `translateY(${(1 - v) * 24}px) scale(${.92 + .08 * v})` : `translateY(${(1 - v) * 30}px)`;
+    });
+    $('.shade').style.opacity = 1 - prog(t, j.outro - .2, j.outro + .4);
+    const o = outC(prog(t, j.outro, j.outro + .7));
+    $('#out').style.transform = `translateY(${(1 - o) * 1920}px)`;
+    $('#out .in').style.opacity = outC(prog(t, j.outro + .4, j.outro + 1.0));
+  };
+}
+
 window.setup = async function (job) {
   await document.fonts.ready;
   U = UI[job.ui] || UI.he;
   document.documentElement.lang = job.ui || 'he';
   document.documentElement.dir = job.ui === 'en' ? 'ltr' : 'rtl';
   const SETUP = { demo: [setupDemo, 13], quiz: [setupQuiz, 12.4], top3: [setupTop3, 16.2], vs: [setupVs, 13.2],
-                  lit: [setupLit, 13.4], pov: [setupPov, 11], screen: [setupScreen, 16] };
+                  lit: [setupLit, 13.4], pov: [setupPov, 11], screen: [setupScreen, 16],
+                  broll: [setupBroll, job.dur] };
   const [fn, dur] = SETUP[job.type] || [setupExpr, 15];
   /* Built twice on purpose: the first build makes the browser fetch the
      fonts its text needs, and only the second measures real line breaks.
