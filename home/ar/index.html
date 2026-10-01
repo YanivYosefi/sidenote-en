@@ -530,6 +530,12 @@ footer p{margin:8px 0 0;color:var(--faint)}
 .sendme svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .final .sendme{background:transparent;color:var(--deep-text);border-color:rgba(255,246,230,.45);margin-top:12px}
 .final .sendme:hover{background:rgba(255,246,230,.08);color:var(--deep-text)}
+.keep{background:var(--bg);padding:64px 0}
+.keep .wrap{text-align:center}
+.keep h2{margin:0 0 10px}
+.keep p{margin:0 auto 22px;max-width:46ch;color:var(--muted);font-size:17.5px}
+.keep .row{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap}
+.keep .tip{color:var(--muted);font-size:15.5px;text-decoration:underline;text-underline-offset:3px}
 </style>
 </head>
 <body>
@@ -819,6 +825,15 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
   <span class="btn-note">يتطلب Claude Code. يعمل على macOS وLinux وWindows.</span>
 </div></div>
 
+<div class="keep" id="keep" hidden><div class="wrap narrow">
+  <h2>لتعرف حين يصدر شيء جديد</h2>
+  <p>كل بضعة أسابيع تُضاف إلى الإضافة تعبيرات وتحسينات. اترك بريدك وسأرسل لك سطراً حين يحدث ذلك.</p>
+  <div class="row">
+    <a class="btn" id="keepmail" href="#" hidden>اترك بريدك</a>
+    <a class="tip" id="keeptip" href="#" hidden>اشترِ لي قهوة</a>
+  </div>
+</div></div>
+
 </main>
 
 <footer><div class="wrap">
@@ -834,6 +849,13 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
 <script>
 (function () {
   var HERE = "ar";
+  /* Leaving an e-mail and leaving a tip are the only two things a visitor can
+     give back, because the install itself is anonymous and always will be.
+     Paste a signup page and a tip page here and the block appears; leave
+     either empty and that half stays off the page. */
+  var KEEP_EMAIL_URL = '';
+  var KEEP_TIP_URL   = '';
+
   var ROUTES = {"he":"/sidenote-en/","en":"/sidenote-en/home/en/","es":"/sidenote-en/home/es/","ru":"/sidenote-en/home/ru/","ar":"/sidenote-en/home/ar/"};
 
   /* Only the shared root guesses. A link straight to /home/es came from an ad
@@ -1046,6 +1068,18 @@ claude plugin install sidenote@sidenote" data-done="تم النسخ">انسخ</b
     var a = e.target.closest && e.target.closest('a[href*="github.com"]');
     if (a) track('out-github', 'Left for the GitHub repo');
   });
+
+  (function () {
+    var box = document.getElementById('keep');
+    if (!box) return;
+    var mail = document.getElementById('keepmail');
+    var tip = document.getElementById('keeptip');
+    if (KEEP_EMAIL_URL && mail) { mail.href = KEEP_EMAIL_URL; mail.hidden = false; }
+    if (KEEP_TIP_URL && tip) { tip.href = KEEP_TIP_URL; tip.hidden = false; }
+    if (KEEP_EMAIL_URL || KEEP_TIP_URL) box.hidden = false;
+    if (mail) mail.addEventListener('click', function () { track('keep-email', 'Went to leave an e-mail'); });
+    if (tip) tip.addEventListener('click', function () { track('keep-tip', 'Went to leave a tip'); });
+  })();
 
   ['cp', 'cp2', 'cp3'].forEach(function (id) {
     var cp = document.getElementById(id);
