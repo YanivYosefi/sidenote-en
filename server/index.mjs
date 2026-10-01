@@ -120,7 +120,11 @@ function addDays(days) {
   return d.toISOString();
 }
 
-const EMPTY = { version: 1, profile: { native: 'he' }, words: [] };
+/* No default native language. The landing page exists in Hebrew, English,
+   Spanish, Russian and Arabic, so assuming Hebrew would greet most arrivals
+   in a language they do not read. It is left unset until setup reads it off
+   the language the learner is actually writing in. */
+const EMPTY = { version: 1, profile: {}, words: [] };
 
 function load() {
   if (!existsSync(FILE)) return structuredClone(EMPTY);
@@ -176,7 +180,7 @@ const TOOLS = [
       type: 'object',
       properties: {
         target: { type: 'string', description: 'Language being learned, as a two-letter code (en, es, it, fr, de, pt, he, ar, ru, nl).' },
-        native: { type: 'string', description: "The learner's own language, as a two-letter code. Defaults to he." },
+        native: { type: 'string', description: "The learner's own language, as a two-letter code. Read it off the language they are writing to you in. Never assume it." },
         level: { type: 'string', enum: ['A2', 'B1', 'B2', 'C1'], description: 'CEFR level. Guess it from how the learner writes, then confirm with them.' },
         goal: { type: 'string', description: 'One short line on why they are learning, in their own words.' },
       },
@@ -271,7 +275,7 @@ function callTool(name, args = {}) {
       if (!p.target) {
         save(state);
         return toolText(
-          'No profile yet. Ask the learner which language they want to pick up, guess their level from how they write, confirm it, then call sidenote_setup. After that, answer their question normally.',
+          'No profile yet. Ask the learner which language they want to pick up, in the language they just wrote to you in. Guess their level from how they write, confirm it, then call sidenote_setup — passing that same language as native. After that, answer their question normally.',
           { configured: false }
         );
       }
@@ -286,7 +290,7 @@ function callTool(name, args = {}) {
         .reverse();
 
       const lines = [
-        `Learner profile: studying ${langName(p.target)}, writes in ${langName(p.native)}, level ${p.level || 'unknown'}.`,
+        `Learner profile: studying ${langName(p.target)}, writes in ${langName(p.native) || 'a language they have not told you — use the one they write in'}, level ${p.level || 'unknown'}.`,
         p.goal ? `Reason they gave: ${p.goal}` : null,
         `Saved so far: ${c.total} expression${c.total === 1 ? '' : 's'}.`,
         '',
@@ -309,7 +313,8 @@ function callTool(name, args = {}) {
       if (!target) return toolText('A target language is required.');
 
       p.target = target;
-      p.native = String(args.native || p.native || 'he').toLowerCase().slice(0, 5);
+      const native = String(args.native || p.native || '').toLowerCase().slice(0, 5);
+      if (native) p.native = native;
       if (args.level) p.level = String(args.level).toUpperCase().slice(0, 2);
       if (args.goal) p.goal = String(args.goal).slice(0, 300);
       p.created_at = p.created_at || now();
@@ -317,7 +322,7 @@ function callTool(name, args = {}) {
       save(state);
 
       return toolText(
-        `Saved. Learning ${langName(p.target)}, writing in ${langName(p.native)}, level ${p.level || 'unset'}. Now answer the question they actually asked.`,
+        `Saved. Learning ${langName(p.target)}, writing in ${langName(p.native) || 'unset'}, level ${p.level || 'unset'}. Now answer the question they actually asked.`,
         { target: p.target, native: p.native, level: p.level || null, goal: p.goal || null }
       );
     }
@@ -412,7 +417,7 @@ function callTool(name, args = {}) {
     case 'sidenote_forget': {
       if (args.all === true) {
         state.words = [];
-        state.profile = { native: p.native || 'he' };
+        state.profile = p.native ? { native: p.native } : {};
         save(state);
         return toolText('Everything was deleted: expressions and profile. Confirm that to the learner.', {
           deleted: 'all',

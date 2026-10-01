@@ -159,8 +159,6 @@ header .lede-b{display:block;margin-top:10px;font-family:var(--serif);
 .cmd.light .p{color:var(--teal-l)}
 .copyrow{display:flex;justify-content:center;align-items:center;gap:12px;
   flex-wrap:wrap;margin-top:14px}
-.installs{margin:10px 0 0;font-size:14px;color:var(--muted);text-align:center}
-.installs b{color:var(--teal-d);font-weight:700}
 
 /* hero film — a person, not a screenshot */
 .hero-media{position:relative;max-width:880px;margin:40px auto 0;
@@ -567,7 +565,6 @@ claude plugin install sidenote@sidenote" data-done="Copiado">Copia y empieza</bu
       <span class="btn-note" style="margin:0">Dos líneas, una sola vez. Funciona con la suscripción que ya pagas.</span>
     </div>
   </div>
-  <p class="installs" id="installs" hidden></p>
   <p class="srcline"><a href="https://github.com/YanivYosefi/sidenote-en" target="_blank" rel="noopener"><svg class="ghm" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Código abierto en GitHub ↗</a></p>
   <div class="works-in">
     <span>Funciona en</span>
@@ -807,7 +804,7 @@ Una línea sobre el retraso, una fecha nueva y sin disculpas largas.</span></div
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>Preguntas justas</h2>
-  <div class="qlist"><details class="q"><summary>¿Me ralentiza?</summary><p>No. La respuesta que pediste sigue completa y va primero. La expresión llega después, en una línea.</p></details><details class="q"><summary>¿Necesito cuenta?</summary><p>Ninguna. Sin registro, sin correo, sin dirección personal.</p></details><details class="q"><summary>¿Cuánto cuesta?</summary><p>Nada. El plugin funciona con la suscripción de Claude que ya tienes.</p></details><details class="q"><summary>¿Dónde se guarda mi progreso?</summary><p>En un archivo de tu equipo, en <code dir="ltr">~/.sidenote/state.json</code>. Nada sale de ahí.</p></details><details class="q"><summary>¿Qué idiomas?</summary><p>Cualquiera que Claude conozca. Inglés, francés, italiano, alemán, portugués, japonés, hebreo, árabe, ruso y más.</p></details><details class="q"><summary>¿Cómo lo borro todo?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code> y borras la carpeta. Ya está.</p></details><details class="q"><summary>He parado un mes. ¿Qué pasa?</summary><p>No se pierde nada. El archivo sigue donde estaba y las expresiones esperan. No se acumulan en una deuda de doscientos repasos que te caen encima el día que vuelves. Sigues donde lo dejaste.</p></details><details class="q"><summary>¿Cómo recibo expresiones y mejoras nuevas?</summary><p>Activa las actualizaciones automáticas: en Claude Code escribe <code>/plugin</code>, abre Marketplaces, elige sidenote y pulsa Enable auto-update. O de vez en cuando: <code>claude plugin update sidenote@sidenote</code>.</p></details></div>
+  <div class="qlist"><details class="q"><summary>¿Me ralentiza?</summary><p>No. La respuesta que pediste sigue completa y va primero. La expresión llega después, en una línea.</p></details><details class="q"><summary>¿Necesito cuenta?</summary><p>Ninguna. Sin registro, sin correo, sin dirección personal.</p></details><details class="q"><summary>¿Cuánto cuesta?</summary><p>Nada. El plugin funciona con la suscripción de Claude que ya tienes.</p></details><details class="q"><summary>¿Dónde se guarda mi progreso?</summary><p>En un archivo de tu equipo, en <code dir="ltr">~/.sidenote/state.json</code>. Nada sale de ahí.</p></details><details class="q"><summary>¿Qué idiomas?</summary><p>Cualquiera que Claude conozca. Inglés, francés, italiano, alemán, portugués, japonés, hebreo, árabe, ruso y más.</p></details><details class="q"><summary>¿Cómo lo borro todo?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code> y borras la carpeta. Ya está.</p></details><details class="q"><summary>He parado un mes. ¿Qué pasa?</summary><p>No se pierde nada. El archivo sigue donde estaba y las expresiones esperan. No se acumulan en una deuda de doscientos repasos que te caen encima el día que vuelves. Sigues donde lo dejaste.</p></details><details class="q"><summary>¿Cómo recibo expresiones y mejoras nuevas?</summary><p>Activa las actualizaciones automáticas: en Claude Code escribe <code>/plugin</code>, abre Marketplaces, elige sidenote y pulsa Enable auto-update. O de vez en cuando: <code>claude plugin update sidenote@sidenote</code>.</p></details><details class="q"><summary>¿Esta página mide algo?</summary><p>Sí, lo mínimo. GoatCounter cuenta las visitas: qué página se abrió, desde dónde llegaste y de qué país, y no pone cookies. El plugin de tu ordenador es otra cosa. Escribe en un solo archivo y ahí se queda.</p></details></div>
 </div></div>
 
 
@@ -1068,26 +1065,6 @@ claude plugin install sidenote@sidenote" data-done="Copiado">Copiar</button>
   }
 
 
-  /* Live download count. The number is written daily by a GitHub Action into
-     data/installs.json — it is unique git cloners from GitHub's own traffic
-     API, which is the only install signal that exists, since the plugin
-     never phones home and never will.
-
-     It stays hidden below MIN. A launch-day "3 downloads" argues against the
-     product better than silence does. Raise or lower MIN to taste; set it to
-     0 to always show. Any failure leaves the line hidden — a counter is not
-     worth a broken page. */
-  var MIN = 25;
-  var slot = document.getElementById('installs');
-  if (slot) fetch('/sidenote-en/data/installs.json', { cache: 'no-cache' })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (d) {
-      if (!d || !(d.installs >= MIN)) return;
-      slot.innerHTML = "{n} descargas hasta ahora".replace('{n}', '<b>' + d.installs.toLocaleString("es") + '</b>');
-      slot.hidden = false;
-    })
-    .catch(function () {});
-
 
   /* Goals: a tap toggles one, and the first tick brings up the line that
      points back to the install box. Nothing is stored or sent. */
@@ -1119,5 +1096,6 @@ claude plugin install sidenote@sidenote" data-done="Copiado">Copiar</button>
 
 })();
 </script>
+<script data-goatcounter="https://sidenote.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

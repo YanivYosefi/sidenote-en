@@ -10,7 +10,14 @@
  * That signal is a proxy, not a number of people. CI runners, mirrors and
  * scrapers clone too, one person on two machines counts twice, and a clone
  * says nothing about whether the plugin was ever run. `uniques` is the
- * closest of the two to a human, so that is what the site shows.
+ * closest of the two to a human.
+ *
+ * How badly CI pollutes it: on 2026-09-28 and 2026-09-29, the only two days
+ * with any traffic before launch, this repo logged 51 unique cloners. Nobody
+ * had heard of it yet — every `actions/checkout` is a clone, so the number
+ * was this repo's own pull requests. That is why no page shows it. Read the
+ * CSV next to the days you know you pushed, as a direction, never as a count
+ * of users.
  *
  * GitHub keeps only the last 14 days. This runs daily and merges each pull
  * into a CSV that is committed back, so the history survives past the
@@ -73,7 +80,7 @@ writeFileSync(JSON_OUT, JSON.stringify({
   clones: gross,
   since: dates[0] || null,
   updated: new Date().toISOString().slice(0, 10),
-  note: 'Unique git cloners, GitHub traffic API. A proxy for installs, not a headcount.',
+  note: "Unique git cloners, GitHub traffic API. Inflated by this repo's own CI checkouts — a direction, not a count of users, and not shown on any page.",
 }, null, 2) + '\n');
 
 console.log(`${dates.length} days, ${total} unique cloners, ${gross} clones total`);

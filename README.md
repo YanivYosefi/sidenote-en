@@ -46,6 +46,14 @@ claude plugin uninstall sidenote
 rm -rf ~/.sidenote
 ```
 
+## The website is a separate thing
+
+Everything above is about the plugin. The landing page is a static site on GitHub Pages, and [GoatCounter](https://www.goatcounter.com) counts visits on it: which page opened, where the reader arrived from, which country, and it sets no cookie. The plugin itself writes to one file on your machine and stays there.
+
+## License
+
+[MIT](LICENSE).
+
 ---
 
 ## בעברית
@@ -56,3 +64,7 @@ rm -rf ~/.sidenote
 
 **לבדוק בעצמכם:** אפשר לקרוא את הקובץ, להריץ `node .github/scripts/privacy-check.mjs`, או לבקש מ-Claude:
 > תקרא את https://github.com/YanivYosefi/sidenote-en/blob/main/server/index.mjs ותגיד לי אם הוא שולח משהו מהמחשב שלי החוצה.
+
+**האתר הוא דבר נפרד:** דף סטטי ב-GitHub Pages, ו-GoatCounter סופר בו כניסות: איזה עמוד נפתח, מאיפה הגעתם ומאיזו מדינה, בלי קוקיז. הפלאגין עצמו כותב רק לקובץ אחד במחשב שלכם.
+
+**רישיון:** [MIT](LICENSE).

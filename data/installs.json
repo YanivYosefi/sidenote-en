@@ -1,7 +1,7 @@
 {
-  "installs": 0,
-  "clones": 0,
-  "since": null,
-  "updated": null,
+  "installs": 51,
+  "clones": 86,
+  "since": "2026-09-16",
+  "updated": "2026-10-01",
   "note": "Unique git cloners, GitHub traffic API. A proxy for installs, not a headcount."
 }

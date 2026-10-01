@@ -1,6 +1,12 @@
+# Crawlers only read robots.txt from the root of a host, so on
+# yanivyosefi.github.io this file is advisory at best — the rules that actually
+# apply to the site live at yanivyosefi.github.io/robots.txt, which belongs to
+# the user-pages repo, not this one. It is kept valid so it starts working the
+# day the site moves to a domain of its own. Discovery meanwhile comes from the
+# <link rel="canonical"> and hreflang tags, and from Search Console, where the
+# sitemap is submitted by hand.
 User-agent: *
-Allow: /$
-Allow: /home/
-Allow: /en/
 Disallow: /reels/
+Allow: /
+
 Sitemap: https://yanivyosefi.github.io/sidenote-en/sitemap.xml
