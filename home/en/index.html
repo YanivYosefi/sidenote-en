@@ -1029,12 +1029,32 @@ claude plugin install sidenote@sidenote" data-done="Copied">Copy</button>
     still ? xfinal() : xstart();
   });
 
+  /* One line of measurement, and it lives on the page, never in the plugin.
+     GoatCounter loads async at the end of the body, so it may not be there
+     yet when someone clicks fast; in that case the click is simply not
+     counted, and nothing on the page waits for it or breaks. */
+  function track(path, title) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: path, title: title, event: true });
+      }
+    } catch (e) {}
+  }
+
+  /* Leaving for the repo is the other way in, so it counts as one too. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="github.com"]');
+    if (a) track('out-github', 'Left for the GitHub repo');
+  });
+
   ['cp', 'cp2', 'cp3'].forEach(function (id) {
     var cp = document.getElementById(id);
     if (!cp) return;
     cp.addEventListener('click', function () {
       var was = cp.textContent;
       navigator.clipboard.writeText(cp.dataset.copy);
+      track(id === 'cp3' ? 'copy-verify' : 'copy-install',
+            id === 'cp3' ? 'Copied the audit prompt' : 'Copied the install command');
       cp.textContent = cp.dataset.done;
       setTimeout(function () { cp.textContent = was; }, 1700);
     });
@@ -1083,6 +1103,7 @@ claude plugin install sidenote@sidenote" data-done="Copied">Copy</button>
     document.querySelectorAll('.sendme').forEach(function (b) {
       b.hidden = false;
       b.addEventListener('click', function () {
+        track('send-to-computer', 'Sent the command to their own computer');
         var text = b.dataset.intro + '\n\nclaude plugin marketplace add YanivYosefi/sidenote-en\nclaude plugin install sidenote@sidenote\n';
         var url = location.origin + location.pathname;
         if (navigator.share) {
