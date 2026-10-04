@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "sidenote",
-      "description": "Learn a language inside the chat you already open. One expression at the end of an answer, brought back on a spaced ladder. Stored locally, no account.",
+      "description": "Learn a language inside the chat you already open. A new expression with each answer, taken from what Claude just wrote. Stored locally, no account.",
       "source": "./",
       "category": "productivity",
       "homepage": "https://yanivyosefi.github.io/sidenote-en/"

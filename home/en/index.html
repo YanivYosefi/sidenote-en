@@ -805,7 +805,7 @@ One line on the delay, a new date, and no long apology.</span></div>
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>Fair questions</h2>
-  <div class="qlist"><details class="q"><summary>Does it slow me down?</summary><p>No. The answer you asked for stays complete and comes first. The expression follows it, in one line.</p></details><details class="q"><summary>Do I need an account?</summary><p>None. No signup, no email, no personal URL. Install and start.</p></details><details class="q"><summary>What does it cost?</summary><p>Nothing. The plugin runs on the Claude subscription you already have.</p></details><details class="q"><summary>Where is my progress stored?</summary><p>In one file on your own machine, at <code dir="ltr">~/.sidenote/state.json</code>. Sidenote has no external server or telemetry. Your profile and expressions retrieved for practice are shared with Claude as part of the conversation, under your Claude privacy settings.</p></details><details class="q"><summary>Which languages?</summary><p>Any language Claude knows. Spanish, French, Italian, German, Portuguese, Japanese, Hebrew, Arabic, Russian and more.</p></details><details class="q"><summary>How do I remove it completely?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code>, then delete the folder. That is all.</p></details><details class="q"><summary>I stopped for a month. What happens?</summary><p>Nothing is lost. The file stays where it is and the expressions wait. They do not pile up into a debt of two hundred reviews waiting for you on the day you come back. You pick up where you left off.</p></details><details class="q"><summary>How do I get new expressions and improvements?</summary><p>Turn on automatic updates: in Claude Code, type <code>/plugin</code>, open Marketplaces, pick sidenote and choose Enable auto-update. Or now and then: <code>claude plugin update sidenote@sidenote</code>.</p></details><details class="q"><summary>Does this site measure anything?</summary><p>Yes, the minimum. GoatCounter counts visits: which page opened, where you arrived from, which country, and it sets no cookie. The plugin on your computer is a separate thing. Progress is stored locally; tool results are shared with Claude in the conversation.</p></details></div>
+  <div class="qlist"><details class="q"><summary>Does it slow me down?</summary><p>No. The answer you asked for stays complete and comes first. The expression follows it, in one line.</p></details><details class="q"><summary>Do I need an account?</summary><p>None. No signup, no email, no personal URL. Install and start.</p></details><details class="q"><summary>What does it cost?</summary><p>Nothing. The plugin runs on the Claude subscription you already have.</p></details><details class="q"><summary>Where is my progress stored?</summary><p>In one file on your own machine, at <code dir="ltr">~/.sidenote/state.json</code>. Sidenote has no external server or telemetry. Your profile and expressions retrieved for practice are shared with Claude as part of the conversation, under your Claude privacy settings.</p></details><details class="q"><summary>Which languages?</summary><p>Any language Claude knows. Spanish, French, Italian, German, Portuguese, Japanese, Hebrew, Arabic, Russian and more.</p></details><details class="q"><summary>How do I remove it completely?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code>, then delete the folder. That is all.</p></details><details class="q"><summary>I stopped for a month. What happens?</summary><p>Nothing is lost. The file stays where it is and the expressions wait. They do not pile up into a debt of two hundred reviews waiting for you on the day you come back. You pick up where you left off.</p></details><details class="q"><summary>How do I get new expressions and improvements?</summary><p>Turn on automatic updates: in Claude Code, type <code>/plugin</code>, open Marketplaces, pick sidenote and choose Enable auto-update. Or now and then: <code>claude plugin update sidenote@sidenote</code>.</p></details><details class="q"><summary>Does this site measure anything?</summary><p>Yes, the minimum. A plain counter adds one each time the page opens or the install command is copied. A number only, and no cookie. The plugin on your computer is a separate thing. Progress is stored locally; tool results are shared with Claude in the conversation.</p></details></div>
 </div></div>
 
 
@@ -1031,16 +1031,16 @@ claude plugin install sidenote@sidenote" data-done="Copied">Copy</button>
   });
 
   /* One line of measurement, and it lives on the page, never in the plugin.
-     GoatCounter loads async at the end of the body, so it may not be there
-     yet when someone clicks fast; in that case the click is simply not
+     Each event bumps one number on a public counter; no account, no cookie,
+     nothing about the visitor. If the request fails the click is simply not
      counted, and nothing on the page waits for it or breaks. */
   function track(path, title) {
     try {
-      if (window.goatcounter && window.goatcounter.count) {
-        window.goatcounter.count({ path: path, title: title, event: true });
-      }
+      fetch('https://abacus.jasoncameron.dev/hit/sidenote-en/' + path,
+            { mode: 'no-cors', keepalive: true }).catch(function () {});
     } catch (e) {}
   }
+  track('view-' + (document.documentElement.lang || 'x'), 'Opened the page');
 
   /* Leaving for the repo is the other way in, so it counts as one too. */
   document.addEventListener('click', function (e) {
@@ -1118,6 +1118,5 @@ claude plugin install sidenote@sidenote" data-done="Copied">Copy</button>
 
 })();
 </script>
-<script data-goatcounter="https://sidenote.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

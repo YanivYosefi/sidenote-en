@@ -805,7 +805,7 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ск
 
 <div class="qs" id="qs"><div class="wrap">
   <h2>Честные вопросы</h2>
-  <div class="qlist"><details class="q"><summary>Это меня замедлит?</summary><p>Нет. Нужный ответ остаётся полным и идёт первым. Выражение приходит после него, одной строкой.</p></details><details class="q"><summary>Нужен аккаунт?</summary><p>Нет. Ни регистрации, ни почты, ни личного адреса.</p></details><details class="q"><summary>Сколько стоит?</summary><p>Ничего. Плагин работает на подписке Claude, которая у вас уже есть.</p></details><details class="q"><summary>Где хранится прогресс?</summary><p>В одном файле на вашем компьютере, в <code dir="ltr">~/.sidenote/state.json</code>. У Sidenote нет внешнего сервера и телеметрии. Профиль и выражения для практики передаются Claude как часть разговора в соответствии с вашими настройками конфиденциальности Claude.</p></details><details class="q"><summary>Какие языки?</summary><p>Любой, который знает Claude. Английский, испанский, французский, итальянский, немецкий, японский, иврит, арабский и другие.</p></details><details class="q"><summary>Как удалить всё?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code> и удалить папку. Всё.</p></details><details class="q"><summary>Я не заходил месяц. Что будет?</summary><p>Ничего не теряется. Файл остаётся на месте, а выражения ждут. Они не накапливаются в долг из двухсот повторов, который свалится на вас в день возвращения. Вы продолжите с того места, где остановились.</p></details><details class="q"><summary>Как получать новые выражения и улучшения?</summary><p>Включите автообновления: в Claude Code наберите <code>/plugin</code>, откройте Marketplaces, выберите sidenote и нажмите Enable auto-update. Или время от времени: <code>claude plugin update sidenote@sidenote</code>.</p></details><details class="q"><summary>Сайт что-нибудь измеряет?</summary><p>Да, по минимуму. GoatCounter считает заходы: какая страница открылась, откуда вы пришли и из какой страны. Cookies он не ставит. Плагин на вашем компьютере это отдельная история. Прогресс хранится локально; результаты инструментов передаются Claude в разговоре.</p></details></div>
+  <div class="qlist"><details class="q"><summary>Это меня замедлит?</summary><p>Нет. Нужный ответ остаётся полным и идёт первым. Выражение приходит после него, одной строкой.</p></details><details class="q"><summary>Нужен аккаунт?</summary><p>Нет. Ни регистрации, ни почты, ни личного адреса.</p></details><details class="q"><summary>Сколько стоит?</summary><p>Ничего. Плагин работает на подписке Claude, которая у вас уже есть.</p></details><details class="q"><summary>Где хранится прогресс?</summary><p>В одном файле на вашем компьютере, в <code dir="ltr">~/.sidenote/state.json</code>. У Sidenote нет внешнего сервера и телеметрии. Профиль и выражения для практики передаются Claude как часть разговора в соответствии с вашими настройками конфиденциальности Claude.</p></details><details class="q"><summary>Какие языки?</summary><p>Любой, который знает Claude. Английский, испанский, французский, итальянский, немецкий, японский, иврит, арабский и другие.</p></details><details class="q"><summary>Как удалить всё?</summary><p><code dir="ltr">claude plugin uninstall sidenote</code> и удалить папку. Всё.</p></details><details class="q"><summary>Я не заходил месяц. Что будет?</summary><p>Ничего не теряется. Файл остаётся на месте, а выражения ждут. Они не накапливаются в долг из двухсот повторов, который свалится на вас в день возвращения. Вы продолжите с того места, где остановились.</p></details><details class="q"><summary>Как получать новые выражения и улучшения?</summary><p>Включите автообновления: в Claude Code наберите <code>/plugin</code>, откройте Marketplaces, выберите sidenote и нажмите Enable auto-update. Или время от времени: <code>claude plugin update sidenote@sidenote</code>.</p></details><details class="q"><summary>Сайт что-нибудь измеряет?</summary><p>Да, по минимуму. Простой счётчик прибавляет единицу, когда открывается страница или копируется команда установки. Только число, без cookies. Плагин на вашем компьютере это отдельная история. Прогресс хранится локально; результаты инструментов передаются Claude в разговоре.</p></details></div>
 </div></div>
 
 
@@ -1031,16 +1031,16 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
   });
 
   /* One line of measurement, and it lives on the page, never in the plugin.
-     GoatCounter loads async at the end of the body, so it may not be there
-     yet when someone clicks fast; in that case the click is simply not
+     Each event bumps one number on a public counter; no account, no cookie,
+     nothing about the visitor. If the request fails the click is simply not
      counted, and nothing on the page waits for it or breaks. */
   function track(path, title) {
     try {
-      if (window.goatcounter && window.goatcounter.count) {
-        window.goatcounter.count({ path: path, title: title, event: true });
-      }
+      fetch('https://abacus.jasoncameron.dev/hit/sidenote-en/' + path,
+            { mode: 'no-cors', keepalive: true }).catch(function () {});
     } catch (e) {}
   }
+  track('view-' + (document.documentElement.lang || 'x'), 'Opened the page');
 
   /* Leaving for the repo is the other way in, so it counts as one too. */
   document.addEventListener('click', function (e) {
@@ -1118,6 +1118,5 @@ claude plugin install sidenote@sidenote" data-done="Скопировано">Ко
 
 })();
 </script>
-<script data-goatcounter="https://sidenote.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

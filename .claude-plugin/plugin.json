@@ -1,6 +1,6 @@
 {
   "name": "sidenote",
-  "description": "Learn a language inside the chat you already open. Claude teaches one expression at the end of an answer and brings it back on a 1-3-7-16-35-90 day ladder.",
+  "description": "Learn a language inside the chat you already open. Claude teaches a new expression with each answer, taken from what it just wrote, with a brief reminder when an older one comes due.",
   "version": "1.0.3",
   "author": { "name": "Yaniv Yosefi" },
   "license": "MIT",

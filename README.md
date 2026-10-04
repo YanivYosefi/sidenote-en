@@ -53,7 +53,7 @@ rm -rf ~/.sidenote
 
 ## The website is a separate thing
 
-Everything above is about the plugin. The landing page is a static site on GitHub Pages, and [GoatCounter](https://www.goatcounter.com) counts visits on it: which page opened, where the reader arrived from, which country, and it sets no cookie. The plugin stores progress locally; its tool results are shared with Claude in your conversation.
+Everything above is about the plugin. The landing page is a static site on GitHub Pages, and a plain counter ([Abacus](https://abacus.jasoncameron.dev)) adds one each time a page opens or the install command is copied: a number only, and no cookie. The plugin stores progress locally; its tool results are shared with Claude in your conversation.
 
 ## Learning while you chat
 
@@ -76,6 +76,6 @@ After each answer with a natural anchor, Claude teaches one new expression. When
 **לבדוק בעצמכם:** אפשר לקרוא את הקובץ, להריץ `node .github/scripts/privacy-check.mjs`, או לבקש מ-Claude:
 > תקרא את https://github.com/YanivYosefi/sidenote-en/blob/main/server/index.mjs ותגיד לי אם הוא שולח משהו מהמחשב שלי החוצה.
 
-**האתר הוא דבר נפרד:** דף סטטי ב-GitHub Pages, ו-GoatCounter סופר בו כניסות: איזה עמוד נפתח, מאיפה הגעתם ומאיזו מדינה, בלי קוקיז. ההתקדמות נשמרת מקומית. הפרופיל והביטויים שנשלפים לתרגול מועברים ל-Claude כחלק מהשיחה, בהתאם להגדרות הפרטיות שלכם ב-Claude.
+**האתר הוא דבר נפרד:** דף סטטי ב-GitHub Pages, ומונה פשוט סופר בו כמה פעמים הדף נפתח וכמה פעמים הועתקה פקודת ההתקנה: מספר בלבד, בלי קוקיז. ההתקדמות נשמרת מקומית. הפרופיל והביטויים שנשלפים לתרגול מועברים ל-Claude כחלק מהשיחה, בהתאם להגדרות הפרטיות שלכם ב-Claude.
 
 **רישיון:** [MIT](LICENSE).
