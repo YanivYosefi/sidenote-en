@@ -65,7 +65,8 @@ if (problems.length) {
 console.log(`Privacy check passed: ${files.length} file(s), only ${[...ALLOWED].join(', ')}, no network, no dependencies, no hooks.`);
 
 // The existing CI entry point also verifies the local MCP behavior.
-const tests = spawnSync(process.execPath, ['--test', join(ROOT, 'tests/sidenote.test.mjs')], {
+const tests = spawnSync(process.execPath, ['--test', 'tests/sidenote.test.mjs'], {
+  cwd: ROOT,
   stdio: 'inherit',
 });
 if (tests.error) {
