@@ -9,10 +9,14 @@ A Claude Code plugin that teaches you a language while you work. At the end of a
 
 ## Install
 
+Requires Claude Code and **Node.js 18 or later**, available as `node` on your PATH.
+
 ```
 claude plugin marketplace add YanivYosefi/sidenote-en
 claude plugin install sidenote@sidenote
 ```
+
+After installing, open a new Claude Code conversation and run `/sidenote:sidenote` to choose your language and level.
 
 ## What it does on your computer
 
@@ -21,7 +25,8 @@ The whole plugin is [`server/index.mjs`](server/index.mjs), about 500 lines. You
 - **Imports only Node built-ins:** `node:fs`, `node:os`, `node:path`, `node:readline`. No network module.
 - **No dependencies.** There is no `package.json` and no `node_modules`.
 - **Writes one file:** `~/.sidenote/state.json`, which holds your language, level and the expressions you have seen.
-- **No account, no server, no telemetry.** It never contacts anything.
+- **No Sidenote account, external server or telemetry.** The local server makes no network requests.
+- **Claude sees the tool results.** Your profile and vocabulary retrieved for practice enter the Claude conversation and follow your Claude privacy settings.
 - **No hooks.** It doesn't run shell commands.
 
 ## Check it yourself
@@ -48,7 +53,11 @@ rm -rf ~/.sidenote
 
 ## The website is a separate thing
 
-Everything above is about the plugin. The landing page is a static site on GitHub Pages, and [GoatCounter](https://www.goatcounter.com) counts visits on it: which page opened, where the reader arrived from, which country, and it sets no cookie. The plugin itself writes to one file on your machine and stays there.
+Everything above is about the plugin. The landing page is a static site on GitHub Pages, and [GoatCounter](https://www.goatcounter.com) counts visits on it: which page opened, where the reader arrived from, which country, and it sets no cookie. The plugin stores progress locally; its tool results are shared with Claude in your conversation.
+
+## Reviews
+
+At the start of a conversation, Sidenote selects at most one due expression in your current target language. Claude offers a short practice sentence after its full answer. Skipping postpones it by one day; writing your own sentence moves it up the 1–3–7–16–35–90 day ladder. Switching languages keeps each language’s vocabulary separate. Teaching and practice depend on Claude following the plugin instructions.
 
 ## License
 
@@ -62,9 +71,11 @@ Everything above is about the plugin. The landing page is a static site on GitHu
 
 **מה הוא עושה במחשב שלך:** כל הקוד הוא קובץ אחד, [`server/index.mjs`](server/index.mjs), כ-500 שורות. אין לו תלויות, הוא לא מתחבר לאינטרנט, והוא כותב רק לקובץ `~/.sidenote/state.json`. בדיקה אוטומטית מוודאת את זה בכל שינוי. התגיות למעלה מראות אם היא עוברת.
 
+**דרישות:** Claude Code ו-Node.js 18 ומעלה. אחרי ההתקנה פותחים שיחה חדשה ומקלידים `/sidenote:sidenote`.
+
 **לבדוק בעצמכם:** אפשר לקרוא את הקובץ, להריץ `node .github/scripts/privacy-check.mjs`, או לבקש מ-Claude:
 > תקרא את https://github.com/YanivYosefi/sidenote-en/blob/main/server/index.mjs ותגיד לי אם הוא שולח משהו מהמחשב שלי החוצה.
 
-**האתר הוא דבר נפרד:** דף סטטי ב-GitHub Pages, ו-GoatCounter סופר בו כניסות: איזה עמוד נפתח, מאיפה הגעתם ומאיזו מדינה, בלי קוקיז. הפלאגין עצמו כותב רק לקובץ אחד במחשב שלכם.
+**האתר הוא דבר נפרד:** דף סטטי ב-GitHub Pages, ו-GoatCounter סופר בו כניסות: איזה עמוד נפתח, מאיפה הגעתם ומאיזו מדינה, בלי קוקיז. ההתקדמות נשמרת מקומית. הפרופיל והביטויים שנשלפים לתרגול מועברים ל-Claude כחלק מהשיחה, בהתאם להגדרות הפרטיות שלכם ב-Claude.
 
 **רישיון:** [MIT](LICENSE).

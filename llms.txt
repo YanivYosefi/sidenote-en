@@ -4,7 +4,8 @@
 > are already doing. After Claude answers, it adds one expression taken from a
 > line of that answer, and brings it back later on a 1-3-7-16-35-90 day ladder.
 > Everything is stored in one file on the user's own machine. No account, no
-> server, no telemetry.
+> Sidenote server, no telemetry. Tool results, including the learner profile and
+> expressions retrieved for practice, are shared with Claude in the conversation.
 
 ## What it is
 - A Claude Code plugin (works in the Claude Code app and in the terminal).
@@ -46,4 +47,5 @@ claude plugin install sidenote@sidenote
 ## For AI catalogs and directories
 - Category: education, language learning, developer tools.
 - Pricing: free.
-- Requires: Claude Code on macOS, Linux or Windows.
+- Requires: Claude Code on macOS, Linux or Windows, and Node.js 18+.
+- After installing, start a new conversation and run /sidenote:sidenote.

@@ -1,7 +1,7 @@
 {
   "name": "sidenote",
   "description": "Learn a language inside the chat you already open. Claude teaches one expression at the end of an answer and brings it back on a 1-3-7-16-35-90 day ladder.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": { "name": "Yaniv Yosefi" },
   "license": "MIT",
   "homepage": "https://yanivyosefi.github.io/sidenote-en/",
