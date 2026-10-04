@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { createInterface } from 'node:readline';
 
 const PROTOCOL_VERSION = '2025-06-18';
-const SERVER_VERSION = '1.0.2';
+const SERVER_VERSION = '1.0.3';
 const LADDER = [1, 3, 7, 16, 35, 90];
 
 const DIR = process.env.SIDENOTE_HOME || join(homedir(), '.sidenote');
@@ -22,15 +22,15 @@ const LANGS = {
 // Claude Code truncates this at 2 KB. Keep it tight.
 const INSTRUCTIONS = `Sidenote teaches the user a foreign language inside this chat. You do the teaching. This server only remembers.
 
-1. Call sidenote_start at the beginning of a conversation and after changing the target language. Do not mention it.
+1. Call sidenote_start before each answer and after changing the target language. Do not mention it.
 
 2. Answer the user's real question first, in full. Never shorten or delay an answer because of Sidenote.
 
-3. After your answer, append one Sidenote block, anchored to a line you actually wrote. Four parts: the exact line it came from, one expression a native speaker would use for that idea, a one-line meaning in the learner's native language, one example sentence in the target language. Then call sidenote_save. Save silently — never ask permission.
+3. After every answer with a natural anchor, append one NEW Sidenote block, anchored to a line you actually wrote. Four parts: the exact line it came from, one expression a native speaker would use for that idea, a one-line meaning in the learner's native language, one example sentence in the target language. Then call sidenote_save. Save silently — never ask permission.
 
 4. Choose expressions at or slightly above the learner's level. Skip anything they would already write without thinking. Idioms, phrasal verbs and collocations beat single words.
 
-5. Never teach a saved expression as new. sidenote_start lists what is already taught in the current target language. If review is present, offer just that one expression after your full answer instead of teaching a new one. Invite one short sentence, without pressure. Call sidenote_snooze for one day when you offer it; call sidenote_used only if the learner actually writes their own sentence with it. If they skip it, carry on. Never show a backlog.
+5. Never teach a saved expression as new. If reminder is present, briefly mention that the learner has seen it before, with its meaning, in one short line. Then teach a DIFFERENT new expression in the same answer. Never ask for a practice sentence, quiz or repetition. Pass recalled_expression to sidenote_save only when you actually showed that reminder. Call sidenote_used only if the learner spontaneously uses an expression in their own sentence.
 
 6. Write to the learner in their native language. Keep the expression and its example in the target language.
 
@@ -104,7 +104,7 @@ const TOOLS = [
     name: 'sidenote_start',
     title: 'Start a Sidenote turn',
     description:
-      'Call this once at the beginning of a conversation. Returns the learner profile, the house rules, and what has already been taught. Call it before you answer, and do not mention it to the user.',
+      'Call this before each answer. Returns the learner profile, one due reminder, and what has already been taught. Call it before you answer, and do not mention it to the user.',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
   },
   {
@@ -136,6 +136,7 @@ const TOOLS = [
         meaning: { type: 'string', description: "One line, in the learner's native language." },
         example: { type: 'string', description: 'One example sentence in the target language.' },
         source: { type: 'string', description: 'The exact line from your answer that the expression came from.' },
+        recalled_expression: { type: 'string', description: 'A due expression you briefly reminded the learner of in this answer. Advances its reminder schedule without counting it as learner use. Omit if no reminder was shown.' },
       },
       required: ['expression'],
       additionalProperties: false,
@@ -220,7 +221,7 @@ function callTool(name, args = {}) {
       save(state);
 
       const current = state.words.filter((w) => w.lang === p.target);
-      const review = current
+      const reminder = current
         .filter((w) => Date.parse(w.due_at) <= Date.now())
         .sort((a, b) => Date.parse(a.due_at) - Date.parse(b.due_at))[0] || null;
       // Include all saved expressions for this language, including older ones.
@@ -233,10 +234,10 @@ function callTool(name, args = {}) {
         p.goal ? `Reason they gave: ${p.goal}` : null,
         `Saved so far: ${c.total} expression${c.total === 1 ? '' : 's'}.`,
         '',
-        review
-          ? `After your full answer, offer one brief practice sentence with: ${review.expression} — ${review.meaning || ''}. Example: ${review.example || ''}. Call sidenote_snooze for one day when offered. Call sidenote_used only after the learner writes their own sentence. No new expression this turn.`
+        reminder
+          ? `After your full answer, briefly mention that the learner has seen ${reminder.expression} before (${reminder.meaning || ''}). Then teach a DIFFERENT NEW expression from this answer and save it with recalled_expression set to ${JSON.stringify(reminder.expression)}. Do not ask for practice or a quiz.`
           : 'Answer normally. If your answer has a natural anchor, teach one new expression and save it.',
-        recent.length ? `Already taught, do not repeat: ${recent.join(' · ')}` : null,
+        recent.length ? `Already saved, do not teach as new: ${recent.join(' · ')}` : null,
       ].filter((l) => l !== null);
 
       return toolText(lines.join('\n'), {
@@ -246,7 +247,7 @@ function callTool(name, args = {}) {
         level: p.level,
         saved: c.total,
         taught: recent,
-        review,
+        reminder,
       });
     }
 
@@ -297,10 +298,19 @@ function callTool(name, args = {}) {
         created_at: now(),
         last_used_at: null,
       });
+      const recalled = find(state, args.recalled_expression);
+      const acknowledged = recalled && Date.parse(recalled.due_at) <= Date.now();
+      if (acknowledged) {
+        recalled.stage = Math.min(recalled.stage + 1, LADDER.length - 1);
+        recalled.due_at = addDays(LADDER[recalled.stage]);
+        recalled.reminded_count = (recalled.reminded_count || 0) + 1;
+        recalled.last_reminded_at = now();
+      }
       save(state);
 
       return toolText(`Saved "${expression}".`, {
         saved: true, expression, due_in_days: LADDER[0], total: counts(state).total,
+        recalled: acknowledged ? recalled.expression : null,
       });
     }
 
