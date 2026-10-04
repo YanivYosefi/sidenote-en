@@ -1,6 +1,6 @@
 /*
- * The landing page promises that nothing leaves your machine. This is the
- * promise written as a test, so it cannot quietly stop being true.
+ * The local server has no direct network APIs, dependencies or hooks.
+ * This check guards those properties; MCP tool results still go to Claude.
  *
  * It fails the build if the plugin:
  *   - imports anything but the four Node built-ins it needs today,
@@ -12,6 +12,7 @@
  */
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const ROOT = process.argv[2] || '.';
 const ALLOWED = new Set(['node:fs', 'node:os', 'node:path', 'node:readline']);
@@ -62,3 +63,13 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(`Privacy check passed: ${files.length} file(s), only ${[...ALLOWED].join(', ')}, no network, no dependencies, no hooks.`);
+
+// The existing CI entry point also verifies the local MCP behavior.
+const tests = spawnSync(process.execPath, ['--test', join(ROOT, 'tests/sidenote.test.mjs')], {
+  stdio: 'inherit',
+});
+if (tests.error) {
+  console.error(tests.error.message);
+  process.exit(1);
+}
+if (tests.status !== 0) process.exit(tests.status || 1);

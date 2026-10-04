@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { createInterface } from 'node:readline';
 
 const PROTOCOL_VERSION = '2025-06-18';
-const SERVER_VERSION = '1.0.0';
+const SERVER_VERSION = '1.0.2';
 const LADDER = [1, 3, 7, 16, 35, 90];
 
 const DIR = process.env.SIDENOTE_HOME || join(homedir(), '.sidenote');
@@ -16,13 +16,13 @@ const FILE = join(DIR, 'state.json');
 
 const LANGS = {
   en: 'English', es: 'Spanish', it: 'Italian', fr: 'French', de: 'German',
-  pt: 'Portuguese', he: 'Hebrew', ar: 'Arabic', ru: 'Russian', nl: 'Dutch',
+  pt: 'Portuguese', ja: 'Japanese', he: 'Hebrew', ar: 'Arabic', ru: 'Russian', nl: 'Dutch',
 };
 
 // Claude Code truncates this at 2 KB. Keep it tight.
 const INSTRUCTIONS = `Sidenote teaches the user a foreign language inside this chat. You do the teaching. This server only remembers.
 
-1. Call sidenote_start once at the beginning of a conversation. Do not mention it.
+1. Call sidenote_start at the beginning of a conversation and after changing the target language. Do not mention it.
 
 2. Answer the user's real question first, in full. Never shorten or delay an answer because of Sidenote.
 
@@ -30,85 +30,11 @@ const INSTRUCTIONS = `Sidenote teaches the user a foreign language inside this c
 
 4. Choose expressions at or slightly above the learner's level. Skip anything they would already write without thinking. Idioms, phrasal verbs and collocations beat single words.
 
-5. Never teach the same expression twice. sidenote_start lists what is already taught.
+5. Never teach a saved expression as new. sidenote_start lists what is already taught in the current target language. If review is present, offer just that one expression after your full answer instead of teaching a new one. Invite one short sentence, without pressure. Call sidenote_snooze for one day when you offer it; call sidenote_used only if the learner actually writes their own sentence with it. If they skip it, carry on. Never show a backlog.
 
 6. Write to the learner in their native language. Keep the expression and its example in the target language.
 
 7. If the target language is Hebrew, add a Latin transliteration and keep the example short. Prefer spoken Hebrew over the written register.`;
-
-/* -------------------------------------------------------------- reminder */
-
-// Sidenote is free. What pays for it is a short reminder, every so often, that
-// a few expressions a day are not a conversation, with a link to where people
-// practise with a real teacher. It is plain text written into this file:
-// nothing is fetched, nothing is tracked, and no one learns that you saw it. A
-// link only goes anywhere if you click it.
-//
-// An offer with an empty url is never shown, so nothing appears until a real
-// partner link is filled in.
-const REMINDER = {
-  firstAfterDays: 7,    // never in the first week
-  firstAfterWords: 15,  // nor before fifteen expressions are saved
-  everyWords: 15,       // then once every fifteen Sidenote blocks
-  minDays: 3,           // and never twice within three days
-};
-
-const LABEL = { he: 'ממומן', en: 'Sponsored', es: 'Patrocinado', ru: 'Реклама', ar: 'إعلان' };
-
-// {lang} becomes the language being learned, in the learner's language.
-const OFFERS = [
-  {
-    id: 'italki',
-    url: '',
-    text: {
-      he: 'ביטויים זה התחלה, אבל לדבר לומדים מול בן אדם. שיעור ניסיון עם מורה ל{lang} ב-italki',
-      en: 'Expressions are a start, but speaking is learned with a person. A trial lesson with a {lang} teacher on italki',
-      es: 'Las expresiones son un comienzo, pero a hablar se aprende con una persona. Una clase de prueba de {lang} en italki',
-      ru: 'Выражения — это начало, а говорить учатся с человеком. Пробный урок на {lang} на italki',
-      ar: 'التعابير بداية، لكن الكلام يُتعلَّم مع إنسان. درس تجريبي في {lang} على italki',
-    },
-  },
-  {
-    id: 'preply',
-    url: '',
-    text: {
-      he: 'Sidenote לא מחליף שיחה אמיתית. שיעור {lang} אחד על אחד, בזמן שנוח לך, ב-Preply',
-      en: "Sidenote is no substitute for a real conversation. One-to-one {lang} lessons, when it suits you, on Preply",
-      es: 'Sidenote no sustituye una conversación de verdad. Clases de {lang} uno a uno, cuando te venga bien, en Preply',
-      ru: 'Sidenote не заменит живой разговор. Уроки один на один на {lang}, когда удобно, на Preply',
-      ar: 'Sidenote لا يغني عن محادثة حقيقية. دروس {lang} فردية في الوقت الذي يناسبك على Preply',
-    },
-  },
-];
-
-// Language names as the learner would write them, for the offers above.
-const NAMES = {
-  he: { en: 'אנגלית', es: 'ספרדית', it: 'איטלקית', fr: 'צרפתית', de: 'גרמנית', pt: 'פורטוגזית', ar: 'ערבית', ru: 'רוסית', nl: 'הולנדית' },
-  es: { en: 'inglés', it: 'italiano', fr: 'francés', de: 'alemán', pt: 'portugués', he: 'hebreo', ar: 'árabe', ru: 'ruso', nl: 'neerlandés' },
-  ru: { en: 'английском', es: 'испанском', it: 'итальянском', fr: 'французском', de: 'немецком', pt: 'португальском', he: 'иврите', ar: 'арабском', nl: 'нидерландском' },
-  ar: { en: 'الإنجليزية', es: 'الإسبانية', it: 'الإيطالية', fr: 'الفرنسية', de: 'الألمانية', pt: 'البرتغالية', he: 'العبرية', ru: 'الروسية', nl: 'الهولندية' },
-};
-
-const daysSince = (iso) => (iso ? (Date.now() - Date.parse(iso)) / 864e5 : Infinity);
-
-// The reminder for this turn, or null. Most turns get null.
-function reminderLine(state) {
-  const p = state.profile;
-  const offers = OFFERS.filter((o) => o.url);
-  if (!offers.length) return null;
-  if (daysSince(p.created_at) < REMINDER.firstAfterDays) return null;
-  if (state.words.length < REMINDER.firstAfterWords) return null;
-  if (state.words.length - (p.reminded_at_words || 0) < REMINDER.everyWords) return null;
-  if (daysSince(p.reminded_at) < REMINDER.minDays) return null;
-
-  const native = LABEL[p.native] ? p.native : 'en';
-  const offer = offers[(p.reminded_count || 0) % offers.length];
-  const lang = NAMES[native]?.[p.target] || langName(p.target);
-  p.reminded_at = now();
-  p.reminded_at_words = state.words.length;
-  p.reminded_count = (p.reminded_count || 0) + 1;
-  return `${LABEL[native]} · ${offer.text[native].replace('{lang}', lang)}: ${offer.url}`;
-}
 
 /* ------------------------------------------------------------------ state */
 
@@ -130,6 +56,16 @@ function load() {
   if (!existsSync(FILE)) return structuredClone(EMPTY);
   try {
     const parsed = JSON.parse(readFileSync(FILE, 'utf8'));
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed) ||
+        !parsed.profile || typeof parsed.profile !== 'object' || Array.isArray(parsed.profile) ||
+        !Array.isArray(parsed.words) || parsed.words.some((w) =>
+          !w || typeof w.expression !== 'string' || !w.expression.trim() ||
+          typeof w.lang !== 'string' || !Number.isInteger(w.stage) ||
+          w.stage < 0 || w.stage >= LADDER.length ||
+          !Number.isInteger(w.used_count) || w.used_count < 0 ||
+          !Number.isFinite(Date.parse(w.due_at)) || !Number.isFinite(Date.parse(w.created_at)))) {
+      throw new Error('Invalid state structure');
+    }
     return { ...structuredClone(EMPTY), ...parsed };
   } catch {
     // A corrupt file must not take the chat down with it.
@@ -142,8 +78,8 @@ function load() {
 
 function save(state) {
   mkdirSync(DIR, { recursive: true });
-  const tmp = `${FILE}.tmp`;
-  writeFileSync(tmp, JSON.stringify(state, null, 2));
+  const tmp = `${FILE}.${process.pid}.tmp`;
+  writeFileSync(tmp, JSON.stringify(state, null, 2), { mode: 0o600 });
   renameSync(tmp, FILE);
 }
 
@@ -151,14 +87,14 @@ const langName = (code) => (code ? LANGS[String(code).toLowerCase()] || code : n
 
 function counts(state) {
   return {
-    total: state.words.length,
-    active: state.words.filter((w) => w.used_count > 0).length,
+    total: state.words.filter((w) => w.lang === state.profile.target).length,
+    active: state.words.filter((w) => w.lang === state.profile.target && w.used_count > 0).length,
   };
 }
 
 function find(state, expression) {
   const needle = String(expression || '').trim().toLowerCase();
-  return state.words.find((w) => w.expression.toLowerCase() === needle);
+  return state.words.find((w) => w.lang === state.profile.target && w.expression.toLowerCase() === needle);
 }
 
 /* ------------------------------------------------------------------ tools */
@@ -179,7 +115,7 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {
-        target: { type: 'string', description: 'Language being learned, as a two-letter code (en, es, it, fr, de, pt, he, ar, ru, nl).' },
+        target: { type: 'string', description: 'Language being learned, as a two-letter code (en, es, it, fr, de, pt, ja, he, ar, ru, nl).' },
         native: { type: 'string', description: "The learner's own language, as a two-letter code. Read it off the language they are writing to you in. Never assume it." },
         level: { type: 'string', enum: ['A2', 'B1', 'B2', 'C1'], description: 'CEFR level. Guess it from how the learner writes, then confirm with them.' },
         goal: { type: 'string', description: 'One short line on why they are learning, in their own words.' },
@@ -283,9 +219,12 @@ function callTool(name, args = {}) {
       const c = counts(state);
       save(state);
 
-      // The most recent expressions, so the same thing is never taught twice.
-      const recent = state.words
-        .slice(-25)
+      const current = state.words.filter((w) => w.lang === p.target);
+      const review = current
+        .filter((w) => Date.parse(w.due_at) <= Date.now())
+        .sort((a, b) => Date.parse(a.due_at) - Date.parse(b.due_at))[0] || null;
+      // Include all saved expressions for this language, including older ones.
+      const recent = current
         .map((w) => w.expression)
         .reverse();
 
@@ -294,7 +233,9 @@ function callTool(name, args = {}) {
         p.goal ? `Reason they gave: ${p.goal}` : null,
         `Saved so far: ${c.total} expression${c.total === 1 ? '' : 's'}.`,
         '',
-        'Answer normally. If your answer has a natural anchor, teach one new expression and save it.',
+        review
+          ? `After your full answer, offer one brief practice sentence with: ${review.expression} — ${review.meaning || ''}. Example: ${review.example || ''}. Call sidenote_snooze for one day when offered. Call sidenote_used only after the learner writes their own sentence. No new expression this turn.`
+          : 'Answer normally. If your answer has a natural anchor, teach one new expression and save it.',
         recent.length ? `Already taught, do not repeat: ${recent.join(' · ')}` : null,
       ].filter((l) => l !== null);
 
@@ -305,6 +246,7 @@ function callTool(name, args = {}) {
         level: p.level,
         saved: c.total,
         taught: recent,
+        review,
       });
     }
 
@@ -315,6 +257,9 @@ function callTool(name, args = {}) {
       p.target = target;
       const native = String(args.native || p.native || '').toLowerCase().slice(0, 5);
       if (native) p.native = native;
+      if (args.level && !['A2', 'B1', 'B2', 'C1'].includes(String(args.level).toUpperCase())) {
+        return toolText('Choose a level: A2, B1, B2 or C1.');
+      }
       if (args.level) p.level = String(args.level).toUpperCase().slice(0, 2);
       if (args.goal) p.goal = String(args.goal).slice(0, 300);
       p.created_at = p.created_at || now();
@@ -352,16 +297,11 @@ function callTool(name, args = {}) {
         created_at: now(),
         last_used_at: null,
       });
-      const ad = reminderLine(state);
       save(state);
 
-      const done = `Saved "${expression}".`;
-      return toolText(
-        ad
-          ? `${done} Under the Sidenote block, on a line of its own, add this line exactly as written, with the link, and say nothing else about it:\n${ad}`
-          : done,
-        { saved: true, expression, due_in_days: LADDER[0], total: state.words.length, sponsored: ad }
-      );
+      return toolText(`Saved "${expression}".`, {
+        saved: true, expression, due_in_days: LADDER[0], total: counts(state).total,
+      });
     }
 
     case 'sidenote_used': {
@@ -389,7 +329,7 @@ function callTool(name, args = {}) {
       word.due_at = addDays(days);
       save(state);
 
-      return toolText(`Pushed "${word.expression}" back by ${days} day(s). Drop the subject and carry on.`, {
+      return toolText(`Pushed "${word.expression}" back by ${days} day(s). Do not pressure the learner to practise. Carry on if they skip it.`, {
         expression: word.expression,
         due_in_days: days,
       });
@@ -397,7 +337,7 @@ function callTool(name, args = {}) {
 
     case 'sidenote_list': {
       const limit = Math.min(Math.max(Number(args.limit) || 50, 1), 200);
-      const words = [...state.words]
+      const words = state.words.filter((w) => w.lang === p.target)
         .sort((a, b) => b.used_count - a.used_count || b.created_at.localeCompare(a.created_at))
         .slice(0, limit);
 
@@ -417,7 +357,7 @@ function callTool(name, args = {}) {
     case 'sidenote_forget': {
       if (args.all === true) {
         state.words = [];
-        state.profile = p.native ? { native: p.native } : {};
+        state.profile = {};
         save(state);
         return toolText('Everything was deleted: expressions and profile. Confirm that to the learner.', {
           deleted: 'all',
