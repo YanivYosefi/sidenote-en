@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { createInterface } from 'node:readline';
 
 const PROTOCOL_VERSION = '2025-06-18';
-const SERVER_VERSION = '1.0.3';
+const SERVER_VERSION = '1.0.4';
 const LADDER = [1, 3, 7, 16, 35, 90];
 
 const DIR = process.env.SIDENOTE_HOME || join(homedir(), '.sidenote');
@@ -28,13 +28,23 @@ const INSTRUCTIONS = `Sidenote teaches the user a foreign language inside this c
 
 3. After every answer with a natural anchor, append one NEW Sidenote block, anchored to a line you actually wrote. Four parts: the exact line it came from, one expression a native speaker would use for that idea, a one-line meaning in the learner's native language, one example sentence in the target language. Then call sidenote_save. Save silently — never ask permission.
 
-4. Choose expressions at or slightly above the learner's level. Skip anything they would already write without thinking. Idioms, phrasal verbs and collocations beat single words.
+4. The learner's level decides the expression; the anchor line only supplies the idea. Follow the level note from sidenote_start. Never teach what they would already write without thinking: if the line is too plain for them, teach the idiomatic way a native would say the same idea. Idioms, phrasal verbs and collocations beat single words.
 
 5. Never teach a saved expression as new. If reminder is present, briefly mention that the learner has seen it before, with its meaning, in one short line. Then teach a DIFFERENT new expression in the same answer. Never ask for a practice sentence, quiz or repetition. Pass recalled_expression to sidenote_save only when you actually showed that reminder. Call sidenote_used only if the learner spontaneously uses an expression in their own sentence.
 
 6. Write to the learner in their native language. Keep the expression and its example in the target language.
 
 7. If the target language is Hebrew, add a Latin transliteration and keep the example short. Prefer spoken Hebrew over the written register.`;
+
+// One line per level, sent with every sidenote_start. "At the learner's level"
+// alone was not enough: a C1 learner was taught "not yet" because the answer
+// it came from was two words long.
+const LEVEL_NOTE = {
+  A2: 'Level A2: teach one common everyday phrase they will need this week. No idioms, no slang, a short example.',
+  B1: 'Level B1: teach a common collocation or phrasal verb. Not a single basic word, not a rare idiom.',
+  B2: 'Level B2: teach idiomatic phrases and phrasal verbs a native uses at work. Nothing a beginner course covers.',
+  C1: 'Level C1: they already write fluently. Teach only what a fluent non-native still misses: idioms, register, precise collocations. Never a basic phrase such as "not yet" or "of course"; if the anchor line is that plain, teach the more idiomatic way to say the same idea.',
+};
 
 /* ------------------------------------------------------------------ state */
 
@@ -231,6 +241,7 @@ function callTool(name, args = {}) {
 
       const lines = [
         `Learner profile: studying ${langName(p.target)}, writes in ${langName(p.native) || 'a language they have not told you — use the one they write in'}, level ${p.level || 'unknown'}.`,
+        LEVEL_NOTE[p.level] || null,
         p.goal ? `Reason they gave: ${p.goal}` : null,
         `Saved so far: ${c.total} expression${c.total === 1 ? '' : 's'}.`,
         '',

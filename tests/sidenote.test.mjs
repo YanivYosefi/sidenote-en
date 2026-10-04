@@ -133,3 +133,15 @@ test('a due reminder accompanies new learning and advances without requiring lea
   await s.call('sidenote_save', { expression: 'nuevo', recalled_expression: 'ship it' });
   assert.deepEqual(s.read().words[0], before);
 });
+
+test('sidenote_start tells Claude what the learner\'s level rules out', async (t) => {
+  const s = await session(t);
+  await s.call('sidenote_setup', { target: 'en', native: 'he', level: 'C1' });
+  const c1 = (await s.call('sidenote_start')).content[0].text;
+  assert.match(c1, /Level C1:/);
+  assert.match(c1, /Never a basic phrase/);
+  await s.call('sidenote_setup', { target: 'en', native: 'he', level: 'A2' });
+  const a2 = (await s.call('sidenote_start')).content[0].text;
+  assert.match(a2, /Level A2:/);
+  assert.match(a2, /No idioms/);
+});

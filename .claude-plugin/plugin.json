@@ -1,7 +1,7 @@
 {
   "name": "sidenote",
   "description": "Learn a language inside the chat you already open. Claude teaches a new expression with each answer, taken from what it just wrote, with a brief reminder when an older one comes due.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": { "name": "Yaniv Yosefi" },
   "license": "MIT",
   "homepage": "https://yanivyosefi.github.io/sidenote-en/",
