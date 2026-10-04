@@ -47,19 +47,19 @@ test('MCP initialization, onboarding and version agree with the manifest', async
   assert.equal((await s.request('tools/call', { name: 'unknown' })).error.code, -32602);
 });
 
-test('one overdue review, postponement and the complete spaced ladder', async (t) => {
+test('one overdue reminder, postponement and the complete spaced ladder', async (t) => {
   const s = await session(t);
   await s.call('sidenote_setup', { target: 'en' });
   for (const expression of ['ship it', 'circle back']) await s.call('sidenote_save', { expression, meaning: 'meaning', example: 'example' });
-  assert.equal((await s.call('sidenote_start')).structuredContent.review, null);
+  assert.equal((await s.call('sidenote_start')).structuredContent.reminder, null);
   const state = s.read();
   state.words[0].due_at = '2000-01-01T00:00:00.000Z';
   state.words[1].due_at = '2001-01-01T00:00:00.000Z';
   s.write(state);
   const start = (await s.call('sidenote_start')).structuredContent;
-  assert.equal(start.review.expression, 'ship it');
-  assert.equal(start.review.example, 'example');
-  assert.equal(Array.isArray(start.review), false);
+  assert.equal(start.reminder.expression, 'ship it');
+  assert.equal(start.reminder.example, 'example');
+  assert.equal(Array.isArray(start.reminder), false);
   await s.call('sidenote_snooze', { expression: 'ship it' });
   assert.ok(Date.parse(s.read().words[0].due_at) > Date.now());
   assert.equal(s.read().words[0].stage, 0);
@@ -70,14 +70,14 @@ test('one overdue review, postponement and the complete spaced ladder', async (t
   assert.equal(s.read().words[0].used_count, 6);
 });
 
-test('language switching isolates reviews, duplicate detection, use and deletion', async (t) => {
+test('language switching isolates reminders, duplicate detection, use and deletion', async (t) => {
   const s = await session(t);
   await s.call('sidenote_setup', { target: 'en', native: 'he' });
   await s.call('sidenote_save', { expression: 'same expression' });
   assert.equal((await s.call('sidenote_save', { expression: ' SAME EXPRESSION ' })).structuredContent.saved, false);
   const state = s.read(); state.words[0].due_at = '2000-01-01T00:00:00.000Z'; s.write(state);
   await s.call('sidenote_setup', { target: 'es' });
-  assert.equal((await s.call('sidenote_start')).structuredContent.review, null);
+  assert.equal((await s.call('sidenote_start')).structuredContent.reminder, null);
   assert.equal((await s.call('sidenote_list')).structuredContent.words.length, 0);
   assert.equal((await s.call('sidenote_save', { expression: 'same expression' })).structuredContent.saved, true);
   await s.call('sidenote_used', { expression: 'same expression' });
@@ -85,7 +85,7 @@ test('language switching isolates reviews, duplicate detection, use and deletion
   await s.call('sidenote_forget', { expression: 'same expression' });
   assert.equal(s.read().words.length, 1);
   await s.call('sidenote_setup', { target: 'en' });
-  assert.equal((await s.call('sidenote_start')).structuredContent.review.expression, 'same expression');
+  assert.equal((await s.call('sidenote_start')).structuredContent.reminder.expression, 'same expression');
   await s.call('sidenote_forget', { all: true });
   assert.deepEqual(s.read().profile, {});
   assert.deepEqual(s.read().words, []);
@@ -104,4 +104,32 @@ test('older vocabulary remains visible and malformed state is backed up', async 
   }
   s.write(original);
   assert.equal((await s.call('sidenote_start')).structuredContent.saved, 30);
+});
+
+
+test('a due reminder accompanies new learning and advances without requiring learner production', async (t) => {
+  const s = await session(t);
+  await s.call('sidenote_setup', { target: 'en' });
+  await s.call('sidenote_save', { expression: 'ship it' });
+  for (const [i, days] of [3, 7, 16, 35, 90, 90].entries()) {
+    const state = s.read(); state.words[0].due_at = '2000-01-01T00:00:00.000Z'; s.write(state);
+    const start = await s.call('sidenote_start');
+    assert.equal(start.structuredContent.reminder.expression, 'ship it');
+    assert.match(start.content[0].text, /DIFFERENT NEW expression/);
+    assert.equal(s.read().words[0].stage, Math.min(i, 5));
+    const saved = await s.call('sidenote_save', { expression: `new expression ${i}`, recalled_expression: 'ship it' });
+    assert.equal(saved.structuredContent.saved, true);
+    assert.equal(saved.structuredContent.recalled, 'ship it');
+    const word = s.read().words[0];
+    assert.equal(word.used_count, 0);
+    assert.equal(word.reminded_count, i + 1);
+    assert.ok(Math.abs((Date.parse(word.due_at) - Date.now()) / 864e5 - days) < 0.01);
+    assert.equal((await s.call('sidenote_start')).structuredContent.reminder, null);
+  }
+  const before = s.read().words[0];
+  await s.call('sidenote_save', { expression: 'future reminder ignored', recalled_expression: 'ship it' });
+  assert.deepEqual(s.read().words[0], before);
+  await s.call('sidenote_setup', { target: 'es' });
+  await s.call('sidenote_save', { expression: 'nuevo', recalled_expression: 'ship it' });
+  assert.deepEqual(s.read().words[0], before);
 });

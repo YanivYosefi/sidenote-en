@@ -2,7 +2,8 @@
 
 > A free Claude Code plugin that teaches a foreign language inside the work you
 > are already doing. After Claude answers, it adds one expression taken from a
-> line of that answer, and brings it back later on a 1-3-7-16-35-90 day ladder.
+> line of that answer, and briefly reminds you of older expressions on a 1-3-7-16-35-90 day ladder.
+> A due reminder never replaces the new expression. No quizzes or practice requests.
 > Everything is stored in one file on the user's own machine. No account, no
 > Sidenote server, no telemetry. Tool results, including the learner profile and
 > expressions retrieved for practice, are shared with Claude in the conversation.

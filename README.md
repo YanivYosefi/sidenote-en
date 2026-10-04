@@ -55,9 +55,9 @@ rm -rf ~/.sidenote
 
 Everything above is about the plugin. The landing page is a static site on GitHub Pages, and [GoatCounter](https://www.goatcounter.com) counts visits on it: which page opened, where the reader arrived from, which country, and it sets no cookie. The plugin stores progress locally; its tool results are shared with Claude in your conversation.
 
-## Reviews
+## Learning while you chat
 
-At the start of a conversation, Sidenote selects at most one due expression in your current target language. Claude offers a short practice sentence after its full answer. Skipping postpones it by one day; writing your own sentence moves it up the 1–3–7–16–35–90 day ladder. Switching languages keeps each language’s vocabulary separate. Teaching and practice depend on Claude following the plugin instructions.
+After each answer with a natural anchor, Claude teaches one new expression. When an older expression is due, Claude adds a brief “you have seen this before” reminder and still teaches a different new expression. No quizzes or requests to practise. Showing a reminder advances its 1–3–7–16–35–90 day schedule; spontaneous use is tracked separately. Switching languages keeps each language’s vocabulary separate. Teaching depends on Claude following the plugin instructions.
 
 ## License
 
